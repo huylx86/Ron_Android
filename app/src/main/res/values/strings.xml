@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">RON</string>
+
+    <!-- Sign In -->
+    <string name="sign_in">Đăng nhập</string>
+    <string name="code_sign_in">Nhập mã đăng nhập</string>
+
+    <!--Home -->
+    <string name="sale">Bán Hàng</string>
+    <string name="report">Báo Cáo</string>
+    <string name="account">Thu Chi Khác</string>
+    <string name="off_work">Ra Ca</string>
+    <string name="change_password">Đổi Mật Khẩu</string>
+    <string name="config">Cấu Hình</string>
+    <string name="website">Website : http://ronviet.vn</string>
+    <string name="hotline">Hotline : 0937 844185</string>
+
+    <!-- Sale Table -->
+    <string name="separate_table">Tách Bàn</string>
+    <string name="join_table">Ghép Bàn</string>
+</resources>
