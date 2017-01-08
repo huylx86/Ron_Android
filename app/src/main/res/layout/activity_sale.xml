@@ -19,7 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/ln_sub_menu"
+            android:animateLayoutChanges="true"
+            android:visibility="gone">
 
             <!-- Separate Table-->
             <FrameLayout
@@ -77,14 +80,14 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:id="@+id/recycler_view_tables"
             android:layout_marginBottom="50dp"/>
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/cardview_dark_background"
+        android:background="@color/lavender"
         android:layout_alignParentBottom="true"
         android:id="@+id/recycler_view_area" />
 

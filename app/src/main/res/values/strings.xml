@@ -15,7 +15,27 @@
     <string name="website">Website : http://ronviet.vn</string>
     <string name="hotline">Hotline : 0937 844185</string>
 
-    <!-- Sale Table -->
+    <!-- Menu -->
     <string name="separate_table">Tách Bàn</string>
     <string name="join_table">Ghép Bàn</string>
+
+    <string name="food">ĐỒ ĂN</string>
+    <string name="drink">ĐỒ UỐNG</string>
+    <string name="others">KHÁC</string>
+    <string name="title_activity_product_detail">ProductDetailActivity</string>
+    <string name="total">Tổng Tiền</string>
+    <string name="submit_order">Gửi Order</string>
+
+    <!-- Screen Name -->
+    <string name="title_table_map">SƠ ĐỒ BÀN</string>
+    <string name="title_list_order">DANH SÁCH ORDER</string>
+    <string name="title_add_list">THÊM MÓN</string>
+
+    <!-- Add Order -->
+    <string name="input_order">Nhập số lượng muốn order</string>
+
+    <!-- Order -->
+    <string name="before_change_order">Số lượng hiện tại  :</string>
+    <string name="change_order">Số lượng trả lại  :</string>
+    <string name="after_change_order">Số lượng còn lại  :</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.ronviet.ron.adapters;
 
 import android.content.Context;
+import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.models.AreaInfo;
+import com.ronviet.ron.models.TableInfo;
 
 import java.util.List;
 
@@ -19,10 +22,12 @@ public class AreaRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private List<AreaInfo> mLstAreas;
     private Context mContext;
+    private Handler mHandlerAreaSelection;
 
-    public AreaRecyclerViewAdapter(Context context, List<AreaInfo> lstAreas) {
+    public AreaRecyclerViewAdapter(Context context, List<AreaInfo> lstAreas, Handler handlerAreaSelection) {
         this.mLstAreas = lstAreas;
         this.mContext = context;
+        mHandlerAreaSelection = handlerAreaSelection;
     }
 
     @Override
@@ -44,7 +49,11 @@ public class AreaRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         final AreaRecyclerViewHolders areaHolder = (AreaRecyclerViewHolders) holder;
         AreaInfo areaInfo = mLstAreas.get(position);
         areaHolder.mAreaName.setText(areaInfo.getName());
-
+        if(areaInfo.ismIsSelection()) {
+            areaHolder.mAreaName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.button_select));
+        } else {
+            areaHolder.mAreaName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lavender));
+        }
         areaHolder.mView.setTag(position);
     }
 
@@ -74,6 +83,21 @@ public class AreaRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         public void onClick(View view) {
             int pos = Integer.parseInt(view.getTag().toString());
             //TODO : Send Handler to main activity to process
+            refreshSelectArea();
+            AreaInfo area = mLstAreas.get(pos);
+            area.setmIsSelection(true);
+            notifyDataSetChanged();
+            mHandlerAreaSelection.sendEmptyMessage(pos);
+        }
+    }
+
+    private void refreshSelectArea()
+    {
+        for(AreaInfo area : mLstAreas){
+            for(TableInfo table : area.getmLstTables()){
+                table.setSelection(false);
+            }
+            area.setmIsSelection(false);
         }
     }
 }

@@ -16,7 +16,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.HomeActivity" />
-        <activity android:name=".activities.SaleActivity"></activity>
+        <activity android:name=".activities.SaleActivity" />
+        <activity android:name=".activities.ProductActivity" />
+        <activity
+            android:name=".activities.ProductDetailActivity"
+            android:label="@string/title_activity_product_detail"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activities.OrderActivity" />
+        <activity android:name=".activities.BaseActivity"></activity>
     </application>
 
 </manifest>

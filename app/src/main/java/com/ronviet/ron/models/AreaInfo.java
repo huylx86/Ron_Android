@@ -7,8 +7,9 @@ import java.util.List;
  */
 
 public class AreaInfo {
-    String name;
-    List<TableInfo> mLstTables;
+    private String name;
+    private List<TableInfo> mLstTables;
+    private boolean mIsSelection;
 
     public String getName() {
         return name;
@@ -24,5 +25,13 @@ public class AreaInfo {
 
     public void setmLstTables(List<TableInfo> mLstTables) {
         this.mLstTables = mLstTables;
+    }
+
+    public boolean ismIsSelection() {
+        return mIsSelection;
+    }
+
+    public void setmIsSelection(boolean mIsSelection) {
+        this.mIsSelection = mIsSelection;
     }
 }
