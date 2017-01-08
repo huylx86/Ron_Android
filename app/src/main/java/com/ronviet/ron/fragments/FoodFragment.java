@@ -87,8 +87,8 @@ public class FoodFragment extends Fragment {
         for(int i=0; i<20; i++) {
             ProductInfo info = new ProductInfo();
             info.setId(i);
-            info.setName("Product Food " + i);
-            info.setDes("Des " + i);
+            info.setTenMon("Product Food " + i);
+            info.setDonGia(i);
             mLstProducts.add(info);
         }
     }

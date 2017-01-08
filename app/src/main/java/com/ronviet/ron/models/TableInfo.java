@@ -1,5 +1,7 @@
 package com.ronviet.ron.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,13 +9,30 @@ import java.io.Serializable;
  */
 
 public class TableInfo implements Serializable {
+    @SerializedName("id_ban")
     private long id;
+
+    @SerializedName("ten_ban")
     private String name;
-    private String date;
-    private boolean isOrder;
+
+    @SerializedName("id_phieu")
+    private long idPhieu;
+
+    @SerializedName("ma_phieu")
+    private String maPhieu;
+
+    @SerializedName("so_lan_in_phieu")
+    private long soLanInPhieu;
+
+    @SerializedName("tong_tien")
+    private float total;
+
+    private long areaId;
+//    private String date;
+//    private boolean isOrder;
     private boolean isSelection;
-    private long orderId = 0;
-    private long total = 0;
+//    private long orderId = 0;
+
 
     public long getId() {
         return id;
@@ -31,20 +50,44 @@ public class TableInfo implements Serializable {
         this.name = name;
     }
 
-    public String getDate() {
-        return date;
+    public long getIdPhieu() {
+        return idPhieu;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setIdPhieu(long idPhieu) {
+        this.idPhieu = idPhieu;
     }
 
-    public boolean isOrder() {
-        return isOrder;
+    public String getMaPhieu() {
+        return maPhieu;
     }
 
-    public void setOrder(boolean order) {
-        isOrder = order;
+    public void setMaPhieu(String maPhieu) {
+        this.maPhieu = maPhieu;
+    }
+
+    public long getSoLanInPhieu() {
+        return soLanInPhieu;
+    }
+
+    public void setSoLanInPhieu(long soLanInPhieu) {
+        this.soLanInPhieu = soLanInPhieu;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public long getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(long areaId) {
+        this.areaId = areaId;
     }
 
     public boolean isSelection() {
@@ -53,21 +96,5 @@ public class TableInfo implements Serializable {
 
     public void setSelection(boolean selection) {
         isSelection = selection;
-    }
-
-    public long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
-    }
-
-    public long getTotal() {
-        return total;
-    }
-
-    public void setTotal(long total) {
-        this.total = total;
     }
 }

@@ -87,8 +87,8 @@ public class OthersFragment extends Fragment {
         for(int i=0; i<20; i++) {
             ProductInfo info = new ProductInfo();
             info.setId(i);
-            info.setName("Product Others " + i);
-            info.setDes("Des " + i);
+            info.setTenMon("Product Others " + i);
+            info.setDonGia(i);
             mLstProducts.add(info);
         }
     }

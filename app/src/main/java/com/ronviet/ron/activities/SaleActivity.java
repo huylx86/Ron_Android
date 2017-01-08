@@ -13,9 +13,15 @@ import android.widget.LinearLayout;
 import com.ronviet.ron.R;
 import com.ronviet.ron.adapters.AreaRecyclerViewAdapter;
 import com.ronviet.ron.adapters.TableRecyclerViewAdapter;
+import com.ronviet.ron.api.APIConstants;
+import com.ronviet.ron.api.ResponseAreaInfoData;
+import com.ronviet.ron.api.ResponseCreateMaPhieuData;
+import com.ronviet.ron.api.ResponseTableInfoData;
+import com.ronviet.ron.api.SaleAPIHelper;
 import com.ronviet.ron.models.AreaInfo;
 import com.ronviet.ron.models.TableInfo;
 import com.ronviet.ron.utils.Constants;
+import com.ronviet.ron.utils.DialogUtiils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +34,7 @@ public class SaleActivity extends BaseActivity {
     private View mSubMenu;
     private List<TableInfo> mLstTables;
     private List<AreaInfo> mLstAreas;
+    private TableInfo mCurrentTableSelection;
 
 
     @Override
@@ -51,13 +58,12 @@ public class SaleActivity extends BaseActivity {
         mRecyclerAreas = (RecyclerView) findViewById(R.id.recycler_view_area);
         mSubMenu = findViewById(R.id.ln_sub_menu);
 
+        dummyTableData();
         dummyAreaTableData();
-
-        mLstTables = mLstAreas.get(0).getmLstTables();
 
         GridLayoutManager tableLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerTables.setLayoutManager(tableLayoutManager);
-        mAdapterTable = new TableRecyclerViewAdapter(this, mLstTables, mHandlerSubMenu);
+        mAdapterTable = new TableRecyclerViewAdapter(this, mLstTables, mHandlerProcessTable);
         mRecyclerTables.setAdapter(mAdapterTable);
 
         LinearLayoutManager areaLayoutManager = new LinearLayoutManager(this);
@@ -71,21 +77,111 @@ public class SaleActivity extends BaseActivity {
         setTotal("0");
     }
 
-//    private void dummyTableData()
-//    {
-//        mLstTables = new ArrayList<>();
-//        for(int i=0;i<5;i++)
-//        {
-//            TableInfo info = new TableInfo();
-//            info.setName(String.valueOf(i));
+    private void loadAreaData()
+    {
+        mLstAreas = new ArrayList<>();
+        new SaleAPIHelper().getAreaInfo(mContext, mHanlderGetArea, true);
+    }
+
+    private void loadTableData(long areaId)
+    {
+        mLstTables = new ArrayList<>();
+        new SaleAPIHelper().getTableInfo(mContext, areaId, mHanlderGetTable, true);
+    }
+
+    private void createMaPhieu()
+    {
+        new SaleAPIHelper().getMaPhieu(mContext, mHanlderGetMaPhieu, true);
+    }
+
+    private Handler mHanlderGetArea = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseAreaInfoData res = (ResponseAreaInfoData) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        mLstAreas = res.data;
+                        mAdapterArea.updateData(mLstAreas);
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
+
+    private Handler mHanlderGetTable = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseTableInfoData res = (ResponseTableInfoData) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        mLstTables = res.data;
+                        mAdapterTable.updateData(mLstTables);
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
+
+    private Handler mHanlderGetMaPhieu = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseCreateMaPhieuData res = (ResponseCreateMaPhieuData) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        if(mCurrentTableSelection != null) {
+                            mCurrentTableSelection.setMaPhieu(res.data.maPhieu);
+                        }
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
+
+    private void dummyTableData()
+    {
+        mLstTables = new ArrayList<>();
+        for(int i=0;i<5;i++)
+        {
+            TableInfo info = new TableInfo();
+            info.setName(String.valueOf(i));
 //            info.setOrder(true);
-//            if(i%2 == 0) {
+            if(i%2 == 0) {
 //                info.setOrder(false);
-//            }
+            }
 //            info.setSelection(false);
-//            mLstTables.add(info);
-//        }
-//    }
+            mLstTables.add(info);
+        }
+    }
 
     private void dummyAreaTableData()
     {
@@ -97,24 +193,11 @@ public class SaleActivity extends BaseActivity {
             if(i==0) {
                 area.setmIsSelection(true);
             }
-            List<TableInfo> tables = new ArrayList<>();
-            for(int j=0;j<5;j++)
-            {
-                TableInfo info = new TableInfo();
-                info.setName("Khu " + i +  " - " + String.valueOf(i));
-                info.setOrder(true);
-                if(j%2 == 0) {
-                    info.setOrder(false);
-                }
-                info.setSelection(false);
-                tables.add(info);
-            }
-            area.setmLstTables(tables);
             mLstAreas.add(area);
         }
     }
 
-    protected Handler mHandlerSubMenu = new Handler() {
+    protected Handler mHandlerProcessTable = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
@@ -126,6 +209,12 @@ public class SaleActivity extends BaseActivity {
                     mTableSelection = (TableInfo)msg.obj;
                     mSubMenu.setVisibility(View.VISIBLE);
                     break;
+                case Constants.HANDLER_OPEN_TABLE:
+                    mCurrentTableSelection = (TableInfo) msg.obj;
+                    Intent iProduct = new Intent(mContext, ProductActivity.class);
+                    iProduct.putExtra(Constants.EXTRA_TABLE, mCurrentTableSelection);
+                    mContext.startActivity(iProduct);
+                    break;
             }
         }
     };
@@ -134,8 +223,7 @@ public class SaleActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             int pos = msg.what;
-            mLstTables = mLstAreas.get(pos).getmLstTables();
-            mAdapterTable.updateData(mLstTables);
+            loadTableData(mLstAreas.get(pos).getId());
         }
     };
 }

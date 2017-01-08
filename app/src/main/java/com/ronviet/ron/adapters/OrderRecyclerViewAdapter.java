@@ -54,8 +54,8 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         OrderRecyclerViewHolders orderHolder = (OrderRecyclerViewHolders) holder;
         OrderInfo orderInfo = mLstOrders.get(position);
-        orderHolder.mProdName.setText(orderInfo.getName());
-        orderHolder.mProdPrice.setText(orderInfo.getPrice());
+        orderHolder.mProdName.setText(orderInfo.getTenMon());
+        orderHolder.mProdPrice.setText(String.valueOf(orderInfo.getDonGia()));
         orderHolder.mProdPromotion.setText(orderInfo.getPromotion());
         orderHolder.mProdNumber.setText(String.valueOf(orderInfo.getNumber()));
         orderHolder.mProdTotal.setText(String.valueOf(orderInfo.getTotal()));
@@ -142,7 +142,7 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             }
         });
         TextView tvProdName = (TextView)promptsView.findViewById(R.id.tv_prod_name);
-        tvProdName.setText(order.getName());
+        tvProdName.setText(order.getTenMon());
 
         alertDialogBuilder
                 .setCancelable(false)

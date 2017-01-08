@@ -54,8 +54,8 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ProductRecyclerViewHolders prodHolder = (ProductRecyclerViewHolders) holder;
         ProductInfo prodInfo = mLstProducts.get(position);
-        prodHolder.mProdName.setText(prodInfo.getName());
-        prodHolder.mProdDes.setText(prodInfo.getDes());
+        prodHolder.mProdName.setText(prodInfo.getTenMon());
+        prodHolder.mProdDes.setText(String.valueOf(prodInfo.getDonGia()));
         prodHolder.mView.setTag(position);
     }
 
@@ -89,7 +89,7 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             ProductInfo info = mLstProducts.get(pos);
 
             if(mIsProductDetail) {
-               showInputDialog(info.getName());
+               showInputDialog(info.getTenMon());
             } else {
                 Intent iProduct = new Intent(mContext, ProductDetailActivity.class);
                 iProduct.putExtra(Constants.EXTRA_PRODUCT, info);

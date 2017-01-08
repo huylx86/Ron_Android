@@ -1,15 +1,28 @@
 package com.ronviet.ron.models;
 
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by hle59 on 1/6/2017.
  */
 
 public class AreaInfo {
+
+    @SerializedName("id")
+    private long id;
+
+    @SerializedName("ten")
     private String name;
-    private List<TableInfo> mLstTables;
+
     private boolean mIsSelection;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -17,14 +30,6 @@ public class AreaInfo {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<TableInfo> getmLstTables() {
-        return mLstTables;
-    }
-
-    public void setmLstTables(List<TableInfo> mLstTables) {
-        this.mLstTables = mLstTables;
     }
 
     public boolean ismIsSelection() {

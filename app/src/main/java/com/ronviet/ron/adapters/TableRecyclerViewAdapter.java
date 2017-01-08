@@ -1,7 +1,6 @@
 package com.ronviet.ron.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ronviet.ron.R;
-import com.ronviet.ron.activities.ProductActivity;
 import com.ronviet.ron.models.TableInfo;
 import com.ronviet.ron.utils.Constants;
 
@@ -25,12 +23,12 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private List<TableInfo> mLstTables;
     private Context mContext;
-    private Handler mHandlerSubMenu;
+    private Handler mHandlerProcessTable;
 
-    public TableRecyclerViewAdapter(Context context, List<TableInfo> lstTables, Handler handlerSubMenu) {
+    public TableRecyclerViewAdapter(Context context, List<TableInfo> lstTables, Handler handlerProcessTable) {
         this.mLstTables = lstTables;
         this.mContext = context;
-        mHandlerSubMenu = handlerSubMenu;
+        mHandlerProcessTable = handlerProcessTable;
     }
 
     @Override
@@ -113,20 +111,21 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
                 Message msg = Message.obtain();
                 msg.obj = info;
-                if(info.isOrder()){
+                if(info.getIdPhieu() > 0){
                     msg.what = Constants.HANDLER_OPEN_SUB_MENU;
-                    mHandlerSubMenu.sendMessage(msg);
+                    mHandlerProcessTable.sendMessage(msg);
                 } else {
                     msg.what = Constants.HANDLER_CLOSE_SUB_MENU;
-                    mHandlerSubMenu.sendMessage(msg);
+                    mHandlerProcessTable.sendMessage(msg);
                 }
                 handler.postDelayed(r, 250);
             } else if (iCount == 2) {
                 //Double click
                 iCount = 0;
-                Intent iProduct = new Intent(mContext, ProductActivity.class);
-                iProduct.putExtra(Constants.EXTRA_TABLE, info);
-                mContext.startActivity(iProduct);
+                Message msg = Message.obtain();
+                msg.what = Constants.HANDLER_OPEN_TABLE;
+                msg.obj = info;
+                mHandlerProcessTable.sendMessage(msg);
             }
 
 

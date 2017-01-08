@@ -44,7 +44,7 @@ public class ProductDetailActivity extends BaseActivity {
         initHeader();
         setTotal(String.valueOf(mTableInfo.getTotal()));
         if(mProductInfo != null) {
-            setTitle(mProductInfo.getName());
+            setTitle(mProductInfo.getTenMon());
         }
     }
 
@@ -54,8 +54,8 @@ public class ProductDetailActivity extends BaseActivity {
         for(int i=0; i<20; i++) {
             ProductInfo info = new ProductInfo();
             info.setId(i);
-            info.setName(mProductInfo.getName() + " - " + i);
-            info.setDes("[Gia] - " + i);
+            info.setTenMon(mProductInfo.getTenMon() + " - " + i);
+            info.setDonGia(i);
             mLstProducts.add(info);
         }
     }

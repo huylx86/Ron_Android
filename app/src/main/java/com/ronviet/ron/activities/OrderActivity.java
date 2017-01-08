@@ -58,8 +58,8 @@ public class OrderActivity extends BaseActivity {
         for(int i=0;i<10;i++)
         {
             OrderInfo info = new OrderInfo();
-            info.setName("Product " + i);
-            info.setPrice(String.valueOf(i*1000 + 1000));
+            info.setTenMon("Product " + i);
+            info.setDonGia(i*1000 + 1000);
             info.setPromotion("Giam gia " + i*1000);
             info.setNumber(i);
             info.setTotal((i*1000 + 1000)*i);
