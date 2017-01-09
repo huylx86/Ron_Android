@@ -278,4 +278,304 @@ public class SaleAPIHelper extends APIHelper {
             new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
         }
     }
+
+    public void getOrderCode(Context context, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCreateOrderCodeData> response = service.getOrderCode(3, 1, CommonUtils.convertDateFormat(new Date()), false);
+
+            response.enqueue(new Callback<ResponseCreateOrderCodeData>() {
+                @Override
+                public void onResponse(Call<ResponseCreateOrderCodeData> call, Response<ResponseCreateOrderCodeData> response) {
+                    ResponseCreateOrderCodeData res = response.body();
+                    if (res == null) {
+                        res = new ResponseCreateOrderCodeData();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCreateOrderCodeData> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void submitOrderMon(Context context, String orderCode, long idPhieu, long idMon, String maMon, String tenMon,
+                               float soLuong, long donViTinhId, float giaGoc, float donGia, boolean giaCoThue, float thue,
+                               long idBan, String yeuCauThem, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCommon> response = service.submitOrderMon(-1000, orderCode, -1000, idPhieu, "ORDER", idMon, maMon, tenMon, soLuong,
+                                                            donViTinhId, giaGoc, donGia, giaCoThue, thue, 3, 3, 1, CommonUtils.convertDateFormat(new Date()),
+                                                            idBan, yeuCauThem);
+
+            response.enqueue(new Callback<ResponseCommon>() {
+                @Override
+                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
+                    ResponseCommon res = response.body();
+                    if (res == null) {
+                        res = new ResponseCommon();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void getReviewOrder(Context context, String orderCode, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseReviewOrderData> response = service.getReviewOrder(orderCode);
+
+            response.enqueue(new Callback<ResponseReviewOrderData>() {
+                @Override
+                public void onResponse(Call<ResponseReviewOrderData> call, Response<ResponseReviewOrderData> response) {
+                    ResponseReviewOrderData res = response.body();
+                    if (res == null) {
+                        res = new ResponseReviewOrderData();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseReviewOrderData> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void confirmOrder(Context context, long idPhieu, long idBan, String orderCode, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCommon> response = service.confirmOrder(idPhieu, idBan, orderCode, 1);
+
+            response.enqueue(new Callback<ResponseCommon>() {
+                @Override
+                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
+                    ResponseCommon res = response.body();
+                    if (res == null) {
+                        res = new ResponseReviewOrderData();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void getOrderForReturn(Context context, long idPhieu, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseReturnOrderData> response = service.getOrderForReturn(idPhieu);
+
+            response.enqueue(new Callback<ResponseReturnOrderData>() {
+                @Override
+                public void onResponse(Call<ResponseReturnOrderData> call, Response<ResponseReturnOrderData> response) {
+                    ResponseReturnOrderData res = response.body();
+                    if (res == null) {
+                        res = new ResponseReturnOrderData();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseReturnOrderData> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void submitOrderTungMon(Context context, long idChiTietPhieu, long idPhieu, long idMon, String maMon, String tenMon, float soLuongTra,
+                                   long donViTinhId, String mota, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCommon> response = service.submitOrderTungMon(idChiTietPhieu, idPhieu, idMon, maMon, tenMon, soLuongTra, donViTinhId,
+                                                                    mota, 3, 1, 3);
+
+            response.enqueue(new Callback<ResponseCommon>() {
+                @Override
+                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
+                    ResponseCommon res = response.body();
+                    if (res == null) {
+                        res = new ResponseCommon();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void confirmReturn(Context context, long idPhieu, String orderCode, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCommon> response = service.confirmReturn(idPhieu, orderCode, 1,"TRAHANG");
+
+            response.enqueue(new Callback<ResponseCommon>() {
+                @Override
+                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
+                    ResponseCommon res = response.body();
+                    if (res == null) {
+                        res = new ResponseCommon();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
 }

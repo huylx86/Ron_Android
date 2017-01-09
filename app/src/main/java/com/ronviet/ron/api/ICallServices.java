@@ -45,5 +45,37 @@ public interface ICallServices {
     @POST("")
     Call<ResponseProductData> getProducts(@Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Field("khu_vuc_id") long khuId, @Field("ngay_ban_hang") String ngayBanHang, @Field("id_nhom") long idProductCat,
                                                       @Field("loai_tien_te") long tienTeId,  @Field("ngon_ngu_id") int ngonNguId);
+
+    @POST("")
+    Call<ResponseCreateOrderCodeData> getOrderCode(@Field("trung_tam_id") long trungTamId, @Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDanhId, @Field("ngay_ban_hang") String ngayBanHang, @Field("ban_hang_khac_ngay") boolean isBanHangNgayKhac);
+
+    @POST("")
+    Call<ResponseCommon> submitOrderMon(@Field("order_id") long orderId, @Field("order_code") String orderCode, @Field("order_id_chi_tiet") long orderIdChiTietPhieu, @Field("id_phieu") long idPhieu,
+                                        @Field("trang_thai") String trangThai, @Field("id_mon") long idMon, @Field("ma_mon") String maMon, @Field("ten_mon") String tenMon,
+                                        @Field("so_luong") float soLuong, @Field("don_vi_tinh_id") long idDonViTinh, @Field("gia_goc") float giaGoc, @Field("don_gia") float donGia,
+                                        @Field("gia_co_thue") boolean isGiaCoThue, @Field("thue") float thue, @Field("ma_may") int maMay, @Field("trung_tam_id") long trungTamId,
+                                        @Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Field("ngay_ban_hang") String ngayBanHang, @Field("id_ban") long idBan, @Field("yeu_cau_them") String yeuCauThem);
+
+    @POST("")
+    Call<ResponseReviewOrderData> getReviewOrder(@Field("order_code") String orderCode);
+
+    @POST("")
+    Call<ResponseCommon> confirmOrder(@Field("id_phieu") long idPhieu, @Field("id_ban") long idBan, @Field("order_code") String orderCode, @Field("id_nhan_vien") long isNhanVien);
+
+    @POST("")
+    Call<ResponseReturnOrderData> getOrderForReturn(@Field("id_phieu") long idPhieu);
+
+    @POST("")
+    Call<ResponseCommon> submitOrderTungMon(@Field("id_chi_tiet_phieu") long idChiTietPhieu, @Field("id_phieu") long idPhieu,
+                                                     @Field("id_mon") long idMon, @Field("ma_mon") String maMon,
+                                                     @Field("ten_mon") String tenMon, @Field("so_luong_tra") float soLuongTra,
+                                                     @Field("don_vi_tinh_id") long donViTinhId, @Field("mo_ta") String moTa,
+                                                     @Field("trung_tam_id") long trungTamId, @Field("tien_te_id") long tienTeId,
+                                                     @Field("pc_id") long pcId);
+
+
+    @POST("")
+    Call<ResponseCommon> confirmReturn(@Field("id_phieu") long idPhieu, @Field("order_code") String orderCode, @Field("nhan_vien_id") long nhanVienId, @Field("trang_thai") String trangThai);
+
 }
 
