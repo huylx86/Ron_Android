@@ -92,11 +92,8 @@ public class AreaRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void refreshSelectArea()
     {
-//        for(AreaInfo area : mLstAreas){
-//            for(TableInfo table : area.getmLstTables()){
-//                table.setSelection(false);
-//            }
-//            area.setmIsSelection(false);
-//        }
+        for(AreaInfo area : mLstAreas){
+            area.setmIsSelection(false);
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,7 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ronviet.ron.R;
-import com.ronviet.ron.models.OrderInfo;
+import com.ronviet.ron.models.OrderReturnInfo;
 import com.ronviet.ron.utils.Constants;
 
 import java.util.List;
@@ -22,16 +23,16 @@ import java.util.List;
 /**
  * Created by LENOVO on 9/4/2016.
  */
-public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<OrderInfo> mLstOrders;
+    private List<OrderReturnInfo> mLstReturnOrders;
     private Context mContext;
     private Handler mHandlerProcessSubmitOrder;
-    private int mRemainingProdCheck = 0;
-    private OrderInfo mOrderReturnProd;
+    private float mRemainingProdCheck = 0;
+    private OrderReturnInfo mOrderReturnProd;
 
-    public OrderRecyclerViewAdapter(Context context, List<OrderInfo> lstOrders, Handler handler) {
-        this.mLstOrders = lstOrders;
+    public OrderReturnRecyclerViewAdapter(Context context, List<OrderReturnInfo> lstReturnOrders, Handler handler) {
+        this.mLstReturnOrders = lstReturnOrders;
         this.mContext = context;
         mHandlerProcessSubmitOrder = handler;
     }
@@ -45,40 +46,40 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.order_item, parent, false);
-        OrderRecyclerViewHolders holders = new OrderRecyclerViewHolders(view);
+        OrderReturnRecyclerViewHolders holders = new OrderReturnRecyclerViewHolders(view);
         return holders;
 
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        OrderRecyclerViewHolders orderHolder = (OrderRecyclerViewHolders) holder;
-        OrderInfo orderInfo = mLstOrders.get(position);
+        OrderReturnRecyclerViewHolders orderHolder = (OrderReturnRecyclerViewHolders) holder;
+        OrderReturnInfo orderInfo = mLstReturnOrders.get(position);
         orderHolder.mProdName.setText(orderInfo.getTenMon());
         orderHolder.mProdPrice.setText(String.valueOf(orderInfo.getDonGia()));
         orderHolder.mProdPromotion.setText(orderInfo.getPromotion());
-        orderHolder.mProdNumber.setText(String.valueOf(orderInfo.getNumber()));
+        orderHolder.mProdNumber.setText(String.valueOf(orderInfo.getSoLuong()));
         orderHolder.mProdTotal.setText(String.valueOf(orderInfo.getTotal()));
         orderHolder.mView.setTag(position);
     }
 
     @Override
     public int getItemCount() {
-        return this.mLstOrders == null ? 0 : this.mLstOrders.size();
+        return this.mLstReturnOrders == null ? 0 : this.mLstReturnOrders.size();
     }
 
-    public void updateData(List<OrderInfo> lstOrders) {
-        mLstOrders = lstOrders;
+    public void updateData(List<OrderReturnInfo> lstReturnOrders) {
+        mLstReturnOrders = lstReturnOrders;
         notifyDataSetChanged();
     }
 
-    public class OrderRecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class OrderReturnRecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView mProdName, mProdPrice, mProdPromotion;
         public TextView mProdNumber, mProdTotal;
         public View mView;
 
-        public OrderRecyclerViewHolders(View itemView) {
+        public OrderReturnRecyclerViewHolders(View itemView) {
             super(itemView);
             mView = itemView;
             itemView.setOnClickListener(this);
@@ -92,14 +93,14 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         @Override
         public void onClick(View view) {
             int pos = Integer.parseInt(view.getTag().toString());
-            OrderInfo info = mLstOrders.get(pos);
+            OrderReturnInfo info = mLstReturnOrders.get(pos);
             mOrderReturnProd = info;
-            mRemainingProdCheck = info.getNumber();
+            mRemainingProdCheck = info.getSoLuong();
             showInputDialog(info);
         }
     }
 
-    private void showInputDialog(final OrderInfo order)
+    private void showInputDialog(final OrderReturnInfo order)
     {
         LayoutInflater li = LayoutInflater.from(mContext);
         View promptsView = li.inflate(R.layout.dialog_input_return_prod_layout, null);
@@ -114,8 +115,8 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
         final String textAfterChange = mContext.getString(R.string.after_change_order);
 
-        tvBeforeChangeOrder.setText(mContext.getString(R.string.before_change_order) + order.getNumber() );
-        tvAfterChangeOrder.setText(textAfterChange + String.valueOf(order.getNumber()));
+        tvBeforeChangeOrder.setText(mContext.getString(R.string.before_change_order) + order.getSoLuong() );
+        tvAfterChangeOrder.setText(textAfterChange + String.valueOf(order.getSoLuong()));
 
         final EditText userInput = (EditText) promptsView.findViewById(R.id.edt_change_order);
         userInput.addTextChangedListener(new TextWatcher() {
@@ -126,7 +127,7 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 try {
                      number = Integer.parseInt(userInput.getText().toString());
                 }catch (Exception e){}
-                mRemainingProdCheck = order.getNumber() - number;
+                mRemainingProdCheck = order.getSoLuong() - number;
                 tvAfterChangeOrder.setText(textAfterChange + String.valueOf(mRemainingProdCheck) );
             }
 
@@ -149,10 +150,13 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
-                                if(mRemainingProdCheck != order.getNumber()) {
+                                if(mRemainingProdCheck != order.getSoLuong()) {
 //                                    mOrderReturnProd.setReturnProd(true);
-                                    mOrderReturnProd.setNumber(mRemainingProdCheck);
-                                    mHandlerProcessSubmitOrder.sendEmptyMessage(Constants.HANDLER_OPEN_SUB_MENU);
+                                    mOrderReturnProd.setSoLuong(mRemainingProdCheck);
+                                    Message msg = Message.obtain();
+                                    msg.obj = mOrderReturnProd;
+                                    msg.what = Constants.HANDLER_OPEN_SUB_MENU;
+                                    mHandlerProcessSubmitOrder.sendMessage(msg);
                                     notifyDataSetChanged();
                                 }
                             }

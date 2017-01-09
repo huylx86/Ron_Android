@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public class ResponseReturnOrderData extends ResponseCommon {
-    List<OrderReturnInfo> data;
+    public List<OrderReturnInfo> data;
 }

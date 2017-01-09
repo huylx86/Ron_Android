@@ -12,6 +12,6 @@ public class ResponseCreatePhieuData extends ResponseCommon {
 
     public class Phieu {
         @SerializedName("id_phieu")
-        public String idPhieu;
+        public long idPhieu;
     }
 }

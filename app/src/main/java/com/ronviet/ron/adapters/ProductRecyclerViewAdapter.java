@@ -3,7 +3,8 @@ package com.ronviet.ron.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ronviet.ron.R;
-import com.ronviet.ron.activities.ProductDetailActivity;
+import com.ronviet.ron.models.OrderInfo;
 import com.ronviet.ron.models.ProductInfo;
 import com.ronviet.ron.models.TableInfo;
-import com.ronviet.ron.utils.Constants;
 
 import java.util.List;
 
@@ -27,13 +27,13 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private List<ProductInfo> mLstProducts;
     private TableInfo mTableInfo;
     private Context mContext;
-    private boolean mIsProductDetail = false;
+    private Handler mHandlerInputSoLuong;
 
-    public ProductRecyclerViewAdapter(Context context, List<ProductInfo> lstProducts, TableInfo tableInfo, boolean isProductDetail) {
+    public ProductRecyclerViewAdapter(Context context, List<ProductInfo> lstProducts, TableInfo tableInfo, Handler handlerInputSoLuong) {
         this.mLstProducts = lstProducts;
         this.mContext = context;
-        mIsProductDetail = isProductDetail;
         mTableInfo = tableInfo;
+        mHandlerInputSoLuong = handlerInputSoLuong;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         ProductRecyclerViewHolders prodHolder = (ProductRecyclerViewHolders) holder;
         ProductInfo prodInfo = mLstProducts.get(position);
         prodHolder.mProdName.setText(prodInfo.getTenMon());
-        prodHolder.mProdDes.setText(String.valueOf(prodInfo.getDonGia()));
+//        prodHolder.mProdDes.setText(String.valueOf(prodInfo.getDonGia()));
         prodHolder.mView.setTag(position);
     }
 
@@ -85,23 +85,12 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         @Override
         public void onClick(View view) {
             int pos = Integer.parseInt(view.getTag().toString());
-
             ProductInfo info = mLstProducts.get(pos);
-
-            if(mIsProductDetail) {
-               showInputDialog(info.getTenMon());
-            } else {
-                Intent iProduct = new Intent(mContext, ProductDetailActivity.class);
-                iProduct.putExtra(Constants.EXTRA_PRODUCT, info);
-                iProduct.putExtra(Constants.EXTRA_TABLE, mTableInfo);
-                mContext.startActivity(iProduct);
-            }
-
-
+            showInputDialog(info);
         }
     }
 
-    private void showInputDialog(String prodName)
+    private void showInputDialog(final ProductInfo prod)
     {
         LayoutInflater li = LayoutInflater.from(mContext);
         View promptsView = li.inflate(R.layout.dialog_input_number_layout, null);
@@ -114,14 +103,29 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         final EditText userInput = (EditText) promptsView.findViewById(R.id.edt_input_number);
 
         TextView tvProdName = (TextView)promptsView.findViewById(R.id.tv_prod_name);
-        tvProdName.setText(prodName);
+        tvProdName.setText(prod.getTenMon());
 
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
+                                String soLuong = userInput.getText().toString();
+                                float fSoLuong = Float.parseFloat(soLuong);
+                                OrderInfo order = new OrderInfo();
+                                order.setId(prod.getId());
+                                order.setTenMon(prod.getTenMon());
+                                order.setSoLuong(fSoLuong);
+                                order.setMaMon(prod.getMaMon());
+                                order.setDonGia(prod.getDonGia());
+                                order.setDonViTinhId(prod.getDonViTinhId());
+                                order.setGiaGoc(prod.getGiaGoc());
+                                order.setGiaCoThue(prod.isGiaCoThue());
+                                order.setThue(prod.getThue());
 
+                                Message msg = Message.obtain();
+                                msg.obj = order;
+                                mHandlerInputSoLuong.sendMessage(msg);
                             }
                         })
                 .setNegativeButton("Cancel",

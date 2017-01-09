@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ronviet.ron.R;
-import com.ronviet.ron.adapters.ProductRecyclerViewAdapter;
-import com.ronviet.ron.models.ProductInfo;
+import com.ronviet.ron.adapters.ProductCatRecyclerViewAdapter;
+import com.ronviet.ron.api.SaleAPIHelper;
+import com.ronviet.ron.models.ProductCatInfo;
 import com.ronviet.ron.models.TableInfo;
+import com.ronviet.ron.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,17 +25,17 @@ import java.util.List;
  * Use the {@link FoodFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FoodFragment extends Fragment {
+public class FoodFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private TableInfo mTableInfo;
-
-    private ProductRecyclerViewAdapter mAdapterProduct;
-    private List<ProductInfo> mLstProducts;
+//    private TableInfo mTableInfo;
+//
+//    private ProductRecyclerViewAdapter mAdapterProduct;
+//    private List<ProductInfo> mLstProducts;
 
     public FoodFragment() {
         // Required empty public constructor
@@ -63,6 +64,7 @@ public class FoodFragment extends Fragment {
         if (getArguments() != null) {
             mTableInfo = (TableInfo) getArguments().getSerializable(ARG_PARAM1);
         }
+        mLstProductCats = new ArrayList<>();
         dummyData();
     }
 
@@ -75,21 +77,25 @@ public class FoodFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView)root.findViewById(R.id.recycler_view_product);
         GridLayoutManager tableLayoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(tableLayoutManager);
-        mAdapterProduct = new ProductRecyclerViewAdapter(getContext(), mLstProducts, mTableInfo, false);
-        recyclerView.setAdapter(mAdapterProduct);
+        mAdapterProductCat = new ProductCatRecyclerViewAdapter(getContext(), mLstProductCats, mTableInfo);
+        recyclerView.setAdapter(mAdapterProductCat);
 
         return root;
     }
 
+    private void loadData()
+    {
+        new SaleAPIHelper().getProductCategories(getContext(), mTableInfo.getAreaId(), Constants.FOOD_CATEGORY, mHandlerProductCat, true);
+    }
+
     private void dummyData()
     {
-        mLstProducts = new ArrayList<>();
+        mLstProductCats = new ArrayList<>();
         for(int i=0; i<20; i++) {
-            ProductInfo info = new ProductInfo();
+            ProductCatInfo info = new ProductCatInfo();
             info.setId(i);
-            info.setTenMon("Product Food " + i);
-            info.setDonGia(i);
-            mLstProducts.add(info);
+            info.setTenNhom("Product Food " + i);
+            mLstProductCats.add(info);
         }
     }
 

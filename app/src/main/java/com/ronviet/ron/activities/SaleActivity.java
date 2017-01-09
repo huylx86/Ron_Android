@@ -16,6 +16,7 @@ import com.ronviet.ron.adapters.TableRecyclerViewAdapter;
 import com.ronviet.ron.api.APIConstants;
 import com.ronviet.ron.api.ResponseAreaInfoData;
 import com.ronviet.ron.api.ResponseCreateMaPhieuData;
+import com.ronviet.ron.api.ResponseCreatePhieuData;
 import com.ronviet.ron.api.ResponseTableInfoData;
 import com.ronviet.ron.api.SaleAPIHelper;
 import com.ronviet.ron.models.AreaInfo;
@@ -35,6 +36,7 @@ public class SaleActivity extends BaseActivity {
     private List<TableInfo> mLstTables;
     private List<AreaInfo> mLstAreas;
     private TableInfo mCurrentTableSelection;
+    private SaleAPIHelper mSaleHelper;
 
 
     @Override
@@ -42,6 +44,7 @@ public class SaleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale);
         mContext = this;
+        mSaleHelper = new SaleAPIHelper();
         initLayout();
     }
 
@@ -51,7 +54,7 @@ public class SaleActivity extends BaseActivity {
         lnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SaleActivity.this, OrderActivity.class));
+                startActivity(new Intent(SaleActivity.this, OrderReviewActivity.class));
             }
         });
         mRecyclerTables = (RecyclerView) findViewById(R.id.recycler_view_tables);
@@ -80,21 +83,51 @@ public class SaleActivity extends BaseActivity {
     private void loadAreaData()
     {
         mLstAreas = new ArrayList<>();
-        new SaleAPIHelper().getAreaInfo(mContext, mHanlderGetArea, true);
+        mSaleHelper.getAreaInfo(mContext, mHandlerGetArea, true);
     }
 
     private void loadTableData(long areaId)
     {
         mLstTables = new ArrayList<>();
-        new SaleAPIHelper().getTableInfo(mContext, areaId, mHanlderGetTable, true);
+        mSaleHelper.getTableInfo(mContext, areaId, mHanlderGetTable, true);
     }
 
     private void createMaPhieu()
     {
-        new SaleAPIHelper().getMaPhieu(mContext, mHanlderGetMaPhieu, true);
+        mSaleHelper.getMaPhieu(mContext, mHandlerGetMaPhieu, true);
     }
 
-    private Handler mHanlderGetArea = new Handler(){
+    private void dummyTableData()
+    {
+        mLstTables = new ArrayList<>();
+        for(int i=0;i<5;i++)
+        {
+            TableInfo info = new TableInfo();
+            info.setName(String.valueOf(i));
+//            info.setOrder(true);
+            if(i%2 == 0) {
+//                info.setOrder(false);
+            }
+//            info.setSelection(false);
+            mLstTables.add(info);
+        }
+    }
+
+    private void dummyAreaTableData()
+    {
+        mLstAreas = new ArrayList<>();
+        for(int i = 0 ;i<5; i++){
+            AreaInfo area = new AreaInfo();
+            area.setName(String.valueOf("Khu " + i));
+            area.setmIsSelection(false);
+            if(i==0) {
+                area.setmIsSelection(true);
+            }
+            mLstAreas.add(area);
+        }
+    }
+
+    private Handler mHandlerGetArea = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -102,7 +135,11 @@ public class SaleActivity extends BaseActivity {
                     ResponseAreaInfoData res = (ResponseAreaInfoData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         mLstAreas = res.data;
+                        if(mLstAreas.size() > 0) {
+                            mLstAreas.get(0).setmIsSelection(true);
+                        }
                         mAdapterArea.updateData(mLstAreas);
+                        loadTableData(mLstAreas.get(0).getId());
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
@@ -142,7 +179,7 @@ public class SaleActivity extends BaseActivity {
         }
     };
 
-    private Handler mHanlderGetMaPhieu = new Handler(){
+    private Handler mHandlerGetMaPhieu = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -151,6 +188,8 @@ public class SaleActivity extends BaseActivity {
                     if(res.code == APIConstants.REQUEST_OK) {
                         if(mCurrentTableSelection != null) {
                             mCurrentTableSelection.setMaPhieu(res.data.maPhieu);
+                            mSaleHelper.getIdPhieu(mContext, mCurrentTableSelection.getMaPhieu(), mCurrentTableSelection.getAreaId(),
+                                    mCurrentTableSelection.getId(), mHandlerGetIdPhieu, true);
                         }
                     } else {
                         if(res.message != null) {
@@ -167,35 +206,34 @@ public class SaleActivity extends BaseActivity {
         }
     };
 
-    private void dummyTableData()
-    {
-        mLstTables = new ArrayList<>();
-        for(int i=0;i<5;i++)
-        {
-            TableInfo info = new TableInfo();
-            info.setName(String.valueOf(i));
-//            info.setOrder(true);
-            if(i%2 == 0) {
-//                info.setOrder(false);
+    private Handler mHandlerGetIdPhieu = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseCreatePhieuData res = (ResponseCreatePhieuData) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        if(mCurrentTableSelection != null) {
+                            mCurrentTableSelection.setIdPhieu(res.data.idPhieu);
+                            Intent iProduct = new Intent(mContext, ProductActivity.class);
+                            iProduct.putExtra(Constants.EXTRA_TABLE, mCurrentTableSelection);
+                            mContext.startActivity(iProduct);
+                        }
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
             }
-//            info.setSelection(false);
-            mLstTables.add(info);
         }
-    }
+    };
 
-    private void dummyAreaTableData()
-    {
-        mLstAreas = new ArrayList<>();
-        for(int i = 0 ;i<5; i++){
-            AreaInfo area = new AreaInfo();
-            area.setName(String.valueOf("Khu " + i));
-            area.setmIsSelection(false);
-            if(i==0) {
-                area.setmIsSelection(true);
-            }
-            mLstAreas.add(area);
-        }
-    }
 
     protected Handler mHandlerProcessTable = new Handler() {
         @Override
@@ -211,9 +249,13 @@ public class SaleActivity extends BaseActivity {
                     break;
                 case Constants.HANDLER_OPEN_TABLE:
                     mCurrentTableSelection = (TableInfo) msg.obj;
-                    Intent iProduct = new Intent(mContext, ProductActivity.class);
-                    iProduct.putExtra(Constants.EXTRA_TABLE, mCurrentTableSelection);
-                    mContext.startActivity(iProduct);
+                    if(mCurrentTableSelection.getMaPhieu() == null) {
+                        new SaleAPIHelper().getMaPhieu(mContext, mHandlerGetMaPhieu, true);
+                    } else {
+                        Intent iProduct = new Intent(mContext, ProductActivity.class);
+                        iProduct.putExtra(Constants.EXTRA_TABLE, mCurrentTableSelection);
+                        mContext.startActivity(iProduct);
+                    }
                     break;
             }
         }

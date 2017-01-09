@@ -43,4 +43,7 @@
     <string name="change_order">Số lượng trả lại  :</string>
     <string name="after_change_order">Số lượng còn lại  :</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

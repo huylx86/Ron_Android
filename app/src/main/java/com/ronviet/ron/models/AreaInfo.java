@@ -14,7 +14,7 @@ public class AreaInfo {
     @SerializedName("ten")
     private String name;
 
-    private boolean mIsSelection;
+    private boolean mIsSelection = false;
 
     public long getId() {
         return id;

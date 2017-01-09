@@ -321,7 +321,7 @@ public class SaleAPIHelper extends APIHelper {
         }
     }
 
-    public void submitOrderMon(Context context, String orderCode, long idPhieu, long idMon, String maMon, String tenMon,
+    public void submitOrderTungMon(Context context, String orderCode, long idPhieu, long idMon, String maMon, String tenMon,
                                float soLuong, long donViTinhId, float giaGoc, float donGia, boolean giaCoThue, float thue,
                                long idBan, String yeuCauThem, final Handler handler, boolean isShowProgress)
     {
@@ -336,7 +336,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.submitOrderMon(-1000, orderCode, -1000, idPhieu, "ORDER", idMon, maMon, tenMon, soLuong,
+            Call<ResponseCommon> response = service.submitOrderTungMon(-1000, orderCode, -1000, idPhieu, "ORDER", idMon, maMon, tenMon, soLuong,
                                                             donViTinhId, giaGoc, donGia, giaCoThue, thue, 3, 3, 1, CommonUtils.convertDateFormat(new Date()),
                                                             idBan, yeuCauThem);
 
@@ -493,7 +493,7 @@ public class SaleAPIHelper extends APIHelper {
         }
     }
 
-    public void submitOrderTungMon(Context context, long idChiTietPhieu, long idPhieu, long idMon, String maMon, String tenMon, float soLuongTra,
+    public void submitReturnOrderTungMon(Context context, long idChiTietPhieu, long idPhieu, long idMon, String maMon, String tenMon, float soLuongTra,
                                    long donViTinhId, String mota, final Handler handler, boolean isShowProgress)
     {
         if(NetworkUtils.isNetworkAvailable(context)) {
@@ -507,7 +507,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.submitOrderTungMon(idChiTietPhieu, idPhieu, idMon, maMon, tenMon, soLuongTra, donViTinhId,
+            Call<ResponseCommon> response = service.submitReturnOrderTungMon(idChiTietPhieu, idPhieu, idMon, maMon, tenMon, soLuongTra, donViTinhId,
                                                                     mota, 3, 1, 3);
 
             response.enqueue(new Callback<ResponseCommon>() {

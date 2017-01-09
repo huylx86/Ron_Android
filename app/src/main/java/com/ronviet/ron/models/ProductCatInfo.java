@@ -2,11 +2,13 @@ package com.ronviet.ron.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by LENOVO on 1/8/2017.
  */
 
-public class ProductCatInfo {
+public class ProductCatInfo implements Serializable {
 
     @SerializedName("id_nhom")
     private long id;

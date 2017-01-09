@@ -59,7 +59,7 @@ public class BaseActivity extends AppCompatActivity {
                             mContext.startActivity(iProduct);
                             ((Activity)mContext).finish();
                         } else {
-                            Intent iOrder = new Intent(mContext, OrderActivity.class);
+                            Intent iOrder = new Intent(mContext, OrderReviewActivity.class);
                             iOrder.putExtra(Constants.EXTRA_TABLE, mTableSelection);
                             startActivity(iOrder);
                         }
