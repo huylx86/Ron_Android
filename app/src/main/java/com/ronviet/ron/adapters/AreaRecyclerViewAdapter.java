@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.models.AreaInfo;
-import com.ronviet.ron.models.TableInfo;
 
 import java.util.List;
 

@@ -30,7 +30,7 @@ public class ProductInfo implements Serializable{
     @SerializedName("gia_goc")
     private float giaGoc;
 
-    @SerializedName("gia_goc")
+    @SerializedName("don_gia")
     private float donGia;
 
     @SerializedName("gia_co_thue")
