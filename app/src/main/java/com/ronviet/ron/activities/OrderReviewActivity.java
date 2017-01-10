@@ -61,7 +61,9 @@ public class OrderReviewActivity extends BaseActivity {
         mBtnSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSaleApiHelper.confirmOrder(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
+                //TODO : Open comment to submit confirm order
+                new DialogUtiils().showDialog(mContext, "Gửi Order thành công!", true);
+//                mSaleApiHelper.confirmOrder(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
             }
         });
 

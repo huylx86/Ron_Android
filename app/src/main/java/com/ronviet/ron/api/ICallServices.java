@@ -2,8 +2,9 @@ package com.ronviet.ron.api;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by LENOVO on 1/8/2017.
@@ -11,12 +12,14 @@ import retrofit2.http.POST;
 
 public interface ICallServices {
 
-    @FormUrlEncoded
-    @POST("")
-    Call<ResponseAreaInfoData> getAreaInfo(@Field("trung_tam_id") long trungTamId, @Field("ngon_ngu_id") long ngonNguId, @Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId);
+//    @GET("api/Common/GetListKhu/{ngon_ngu_id}")
+//    Call<ResponseAreaInfoData> getAreaInfoTemp(@Field("trung_tam_id") long trungTamId, @Field("ngon_ngu_id") long ngonNguId, @Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId);
 
-    @POST("")
-    Call<ResponseTableInfoData> getTableInfo(@Field("khu_vuc_id") long khuId, @Field("ngon_ngu_id") long ngonNguId, @Field("trung_tam_id") long trungTamId);
+    @GET("/api/Common/GetListKhu")
+    Call<ResponseAreaInfoData> getAreaInfo(@Query("trung_tam_id") long trungTamId, @Query("ngon_ngu_id") long ngonNguId, @Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId);
+
+    @GET("/api/SoDoBan/GetSoDoBan")
+    Call<ResponseTableInfoData> getTableInfo(@Query("khu_vuc_id") long khuId, @Query("ngon_ngu_id") long ngonNguId, @Query("trung_tam_id") long trungTamId);
 
     @POST("")
     Call<ResponseCreateMaPhieuData> getMaPhieu(@Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Field("trung_tam_id") long trungTamId, @Field("quay_id") long quayId, @Field("ngay_ban_hang") String ngayBanHang,
@@ -38,13 +41,13 @@ public interface ICallServices {
                                              @Field("danh_muc_ca_id") long danhMucCaId, @Field("ma_ca") String maCa
                                                 );
 
-    @POST("")
-    Call<ResponseProductCatData> getProductCategories(@Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Field("trung_tam_id") long trungTamId, @Field("ngon_ngu_id") long ngonNguId, @Field("khu_vuc_id") long khuId,
-                                               @Field("tien_te_id") long tienTeId,  @Field("loai_hang_hoa") int loaiHangHoa);
+    @GET("/api/SoDoBan/GetDanhSachNhom")
+    Call<ResponseProductCatData> getProductCategories(@Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Query("trung_tam_id") long trungTamId, @Query("ngon_ngu_id") long ngonNguId, @Query("khu_vuc_id") long khuId,
+                                               @Query("tien_te_id") long tienTeId,  @Query("loai_hang_hoa") int loaiHangHoa, @Query("cap_menu") int capMenu, @Query("ngay_ban_hang") String ngayBan);
 
-    @POST("")
-    Call<ResponseProductData> getProducts(@Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Field("khu_vuc_id") long khuId, @Field("ngay_ban_hang") String ngayBanHang, @Field("id_nhom") long idProductCat,
-                                                      @Field("loai_tien_te") long tienTeId,  @Field("ngon_ngu_id") int ngonNguId);
+    @GET("/api/SoDoBan/GetDanhSachMonAn")
+    Call<ResponseProductData> getProducts(@Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Query("khu_vuc_id") long khuId, @Query("ngay_ban_hang") String ngayBanHang, @Query("id_nhom") long idProductCat,
+                                                      @Query("loai_tien_te") long tienTeId,  @Query("ngon_ngu_id") int ngonNguId, @Query("trung_tam_id") long trungTamId);
 
     @POST("")
     Call<ResponseCreateOrderCodeData> getOrderCode(@Field("trung_tam_id") long trungTamId, @Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDanhId, @Field("ngay_ban_hang") String ngayBanHang, @Field("ban_hang_khac_ngay") boolean isBanHangNgayKhac);

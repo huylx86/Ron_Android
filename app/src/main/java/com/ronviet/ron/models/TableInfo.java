@@ -27,6 +27,7 @@ public class TableInfo implements Serializable {
     @SerializedName("tong_tien")
     private float total;
 
+    @SerializedName("khu_vuc_id")
     private long areaId;
 //    private String date;
 //    private boolean isOrder;

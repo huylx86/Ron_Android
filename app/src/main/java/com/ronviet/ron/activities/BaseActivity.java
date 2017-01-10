@@ -89,4 +89,11 @@ public class BaseActivity extends AppCompatActivity {
         isAddOrder = true;
         mTvProdTotal.setVisibility(View.GONE);
     }
+
+    protected void hidePayment()
+    {
+        if(mLnTotal != null) {
+            mLnTotal.setVisibility(View.GONE);
+        }
+    }
 }

@@ -69,8 +69,9 @@ public class SaleActivity extends BaseActivity {
             }
         });
 
-        dummyTableData(0);
-        dummyAreaTableData();
+//        dummyTableData(0);
+//        dummyAreaTableData();
+        loadAreaData();
 
         GridLayoutManager tableLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerTables.setLayoutManager(tableLayoutManager);
@@ -91,13 +92,14 @@ public class SaleActivity extends BaseActivity {
     private void loadAreaData()
     {
         mLstAreas = new ArrayList<>();
+        mLstTables = new ArrayList<>();
         mSaleHelper.getAreaInfo(mContext, mHandlerGetArea, true);
     }
 
     private void loadTableData(long areaId)
     {
         mLstTables = new ArrayList<>();
-        mSaleHelper.getTableInfo(mContext, areaId, mHanlderGetTable, true);
+        new SaleAPIHelper().getTableInfo(mContext, areaId, mHanlderGetTable, true);
     }
 
     private void createMaPhieu()
@@ -111,7 +113,9 @@ public class SaleActivity extends BaseActivity {
         for(int i=0;i<5;i++)
         {
             TableInfo info = new TableInfo();
+            info.setAreaId(3);
             info.setName(String.format("%d - %d", pos, i));
+            info.setIdPhieu(1);
             mLstTables.add(info);
         }
     }
@@ -165,7 +169,7 @@ public class SaleActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseTableInfoData res = (ResponseTableInfoData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        mLstTables = res.data;
+                        mLstTables.addAll(res.data);
                         mAdapterTable.updateData(mLstTables);
                     } else {
                         if(res.message != null) {
@@ -254,13 +258,17 @@ public class SaleActivity extends BaseActivity {
                     break;
                 case Constants.HANDLER_OPEN_TABLE:
                     mTableSelection = (TableInfo) msg.obj;
-                    if(mTableSelection.getMaPhieu() == null) {
-                        new SaleAPIHelper().getMaPhieu(mContext, mHandlerGetMaPhieu, true);
-                    } else {
-                        Intent iProduct = new Intent(mContext, ProductActivity.class);
-                        iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
-                        mContext.startActivity(iProduct);
-                    }
+                    //TODO : Open comment to get MaPhieu from server
+                    Intent iProduct = new Intent(mContext, ProductActivity.class);
+                    iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
+                    mContext.startActivity(iProduct);
+//                    if(mTableSelection.getMaPhieu() == null) {
+//                        new SaleAPIHelper().getMaPhieu(mContext, mHandlerGetMaPhieu, true);
+//                    } else {
+//                        Intent iProduct = new Intent(mContext, ProductActivity.class);
+//                        iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
+//                        mContext.startActivity(iProduct);
+//                    }
                     break;
             }
         }
@@ -270,12 +278,11 @@ public class SaleActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             int pos = msg.what;
-
-            //TODO: Open comment to load tables from server
-            mLstTables = new ArrayList<>();
-            dummyTableData(pos);
-            mAdapterTable.updateData(mLstTables);
-//            loadTableData(mLstAreas.get(pos).getId());
+            mSubMenu.setVisibility(View.GONE);
+//            mLstTables = new ArrayList<>();
+//            dummyTableData(pos);
+//            mAdapterTable.updateData(mLstTables);
+            loadTableData(mLstAreas.get(pos).getId());
         }
     };
 }

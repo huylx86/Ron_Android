@@ -10,6 +10,7 @@ import com.ronviet.ron.R;
 import com.ronviet.ron.adapters.ProductRecyclerViewAdapter;
 import com.ronviet.ron.api.APIConstants;
 import com.ronviet.ron.api.ResponseCreateOrderCodeData;
+import com.ronviet.ron.api.ResponseProductData;
 import com.ronviet.ron.api.SaleAPIHelper;
 import com.ronviet.ron.models.OrderInfo;
 import com.ronviet.ron.models.PendingOrder;
@@ -39,8 +40,10 @@ public class ProductDetailActivity extends BaseActivity {
         mProductCatInfo = (ProductCatInfo)getIntent().getSerializableExtra(Constants.EXTRA_PRODUCT);
         mTableSelection = (TableInfo)getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
         mSaleApiHelper = new SaleAPIHelper();
-        dummyData();
+        mLstProducts = new ArrayList<>();
+//        dummyData();
         initLayout();
+        loadData();
 
     }
 
@@ -71,21 +74,50 @@ public class ProductDetailActivity extends BaseActivity {
         }
     }
 
+    private void loadData()
+    {
+        mSaleApiHelper.getProducts(mContext, mTableSelection.getAreaId(), mProductCatInfo.getId(), mHandlerGetProduct, true );
+    }
 
+
+    private Handler mHandlerGetProduct = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseProductData res = (ResponseProductData) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        mLstProducts = res.data;
+                        mAdapterProduct.updateData(mLstProducts);
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
 
     protected Handler mHandlerInputSoLuong = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             mCurrentOrder = (OrderInfo) msg.obj;
-            String orderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
-            if(orderCode != null) {
-                mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
-                        mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
-                        mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
-                        mHandlerSubmitOrderTungMon, true);
-            } else {
-                mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
-            }
+            //TODO: Open comment to submit order mon
+//            String orderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
+//            if(orderCode != null) {
+//                mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
+//                        mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
+//                        mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
+//                        mHandlerSubmitOrderTungMon, true);
+//            } else {
+//                mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
+//            }
 
         }
     };

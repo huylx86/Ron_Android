@@ -18,15 +18,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.HomeActivity" />
-        <activity android:name=".activities.SaleActivity" />
-        <activity android:name=".activities.ProductActivity" />
+        <activity android:name=".activities.HomeActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".activities.SaleActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ProductActivity"
+                  android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.ProductDetailActivity"
             android:label="@string/title_activity_product_detail"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".activities.OrderReviewActivity" />
-        <activity android:name=".activities.BaseActivity"></activity>
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.OrderReviewActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".activities.OrderReturnActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".activities.BaseActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

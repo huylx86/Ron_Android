@@ -60,13 +60,15 @@ public class OrderReturnActivity extends BaseActivity {
         mBtnSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSaleApiHelper.confirmReturn(mContext, mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmReturnOrder, true);
+                //TODO : Open comment to submit confirm return order
+                new DialogUtiils().showDialog(mContext, "Trả hàng thành công!", true);
+//                mSaleApiHelper.confirmReturn(mContext, mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmReturnOrder, true);
             }
         });
 
         initHeader();
         setTitle(getString(R.string.title_list_order));
-        setAddOrder();
+        hidePayment();
     }
 
     private void loadData()
@@ -149,9 +151,10 @@ public class OrderReturnActivity extends BaseActivity {
                     break;
                 case Constants.HANDLER_OPEN_SUB_MENU:
                     OrderReturnInfo order = (OrderReturnInfo) msg.obj;
-                    mSaleApiHelper.submitReturnOrderTungMon(mContext, order.getIdChiTietPhieu(), order.getIdPhieu(), order.getId(),
-                                                            order.getMaMon(), order.getTenMon(), order.getSoLuong(), order.getDonViTinhId(), "",
-                                                            mHandlerReturnOrderTungMon, true);
+                    //TODO : Open comment to submit return tung mon
+//                    mSaleApiHelper.submitReturnOrderTungMon(mContext, order.getIdChiTietPhieu(), order.getIdPhieu(), order.getId(),
+//                                                            order.getMaMon(), order.getTenMon(), order.getSoLuong(), order.getDonViTinhId(), "",
+//                                                            mHandlerReturnOrderTungMon, true);
                     mBtnSubmitOrder.setVisibility(View.VISIBLE);
                     break;
             }

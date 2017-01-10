@@ -24,13 +24,13 @@
             android:animateLayoutChanges="true"
             android:visibility="gone">
 
-            <!-- Separate Table-->
+            <!-- Move Table-->
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="@dimen/height_sub_menu_button"
                 android:padding="5dp"
                 android:layout_weight="1"
-                android:id="@+id/fl_separate_table">
+                android:id="@+id/fl_move_table">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -45,39 +45,39 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/separate_table"
+                        android:text="@string/move_table"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_sub_menu_button"/>
                 </LinearLayout>
             </FrameLayout>
 
             <!-- Join Table -->
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="@dimen/height_sub_menu_button"
-                android:padding="5dp"
-                android:layout_weight="1"
-                android:id="@+id/fl_join_table">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:background="@drawable/background_rectangle_highlight"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/join_table"
-                        android:layout_marginRight="10dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/join_table"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_sub_menu_button"/>
-                </LinearLayout>
-            </FrameLayout>
+            <!--<FrameLayout-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="@dimen/height_sub_menu_button"-->
+                <!--android:padding="5dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:id="@+id/fl_join_table">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:gravity="center"-->
+                    <!--android:background="@drawable/background_rectangle_highlight"-->
+                    <!--android:layout_weight="1">-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="20dp"-->
+                        <!--android:layout_height="20dp"-->
+                        <!--android:src="@drawable/join_table"-->
+                        <!--android:layout_marginRight="10dp"/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/join_table"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:textSize="@dimen/text_size_sub_menu_button"/>-->
+                <!--</LinearLayout>-->
+            <!--</FrameLayout>-->
 
             <!-- Return Order -->
             <FrameLayout

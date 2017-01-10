@@ -65,7 +65,8 @@ public class DrinkingFragment extends BaseFragment {
             mTableInfo = (TableInfo) getArguments().getSerializable(ARG_PARAM1);
         }
         mLstProductCats = new ArrayList<>();
-        dummyData();
+
+//        dummyData();
     }
 
     @Override
@@ -80,6 +81,7 @@ public class DrinkingFragment extends BaseFragment {
         mAdapterProductCat = new ProductCatRecyclerViewAdapter(getContext(), mLstProductCats, mTableInfo);
         recyclerView.setAdapter(mAdapterProductCat);
 
+        loadData();
         return root;
     }
 

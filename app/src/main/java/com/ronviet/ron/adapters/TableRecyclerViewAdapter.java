@@ -25,6 +25,9 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private Context mContext;
     private Handler mHandlerProcessTable;
 
+    private int mCurrentSelectPos = -1;
+    private int iCount;
+
     public TableRecyclerViewAdapter(Context context, List<TableInfo> lstTables, Handler handlerProcessTable) {
         this.mLstTables = lstTables;
         this.mContext = context;
@@ -68,12 +71,11 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         notifyDataSetChanged();
     }
 
+
     public class TableRecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView mTableName;
         public View mView;
-        private int mCurrentSelectPos = -1;
-        private int iCount;
 
         public TableRecyclerViewHolders(View itemView) {
             super(itemView);
@@ -88,12 +90,14 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             //TODO : Send Handler to main activity to process
 
             TableInfo info = mLstTables.get(pos);
+
             if(mCurrentSelectPos != pos) {
                 mCurrentSelectPos = pos;
                 iCount =0;
             }
 
             iCount++;
+
             Handler handler = new Handler();
             Runnable r = new Runnable() {
 
@@ -118,7 +122,7 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
                     msg.what = Constants.HANDLER_CLOSE_SUB_MENU;
                     mHandlerProcessTable.sendMessage(msg);
                 }
-                handler.postDelayed(r, 250);
+                handler.postDelayed(r, 550);
             } else if (iCount == 2) {
                 //Double click
                 iCount = 0;

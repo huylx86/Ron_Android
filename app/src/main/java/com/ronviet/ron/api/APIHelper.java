@@ -10,7 +10,7 @@ import com.ronviet.ron.utils.ProgressDialogUtils;
  */
 
 public class APIHelper {
-    public static final String HOST_NAME = "http://pon.cm";
+    public static final String HOST_NAME = "http://demo.ronviet.vn";
 
     protected ProgressDialogUtils mProgressDialogUtils;
 

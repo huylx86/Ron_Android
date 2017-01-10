@@ -208,7 +208,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseProductCatData> response = service.getProductCategories(1, 3, 1, khuId, 1, loaiHangHoa);
+            Call<ResponseProductCatData> response = service.getProductCategories(1, 3, 1, khuId, 1, loaiHangHoa, 1, CommonUtils.convertDateFormat(new Date()));
 
             response.enqueue(new Callback<ResponseProductCatData>() {
                 @Override
@@ -237,7 +237,7 @@ public class SaleAPIHelper extends APIHelper {
         }
     }
 
-    public void getProducts(Context context, long khuId, int idProductCat, final Handler handler, boolean isShowProgress)
+    public void getProducts(Context context, long khuId, long idProductCat, final Handler handler, boolean isShowProgress)
     {
         if(NetworkUtils.isNetworkAvailable(context)) {
             if (isShowProgress) {
@@ -250,7 +250,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseProductData> response = service.getProducts(1, khuId, CommonUtils.convertDateFormat(new Date()), idProductCat, 1, 1);
+            Call<ResponseProductData> response = service.getProducts(1, khuId, CommonUtils.convertDateFormat(new Date()), idProductCat, 1, 1, 3);
 
             response.enqueue(new Callback<ResponseProductData>() {
                 @Override
