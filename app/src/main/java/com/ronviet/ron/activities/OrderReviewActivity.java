@@ -20,6 +20,7 @@ import com.ronviet.ron.models.OrderInfo;
 import com.ronviet.ron.models.TableInfo;
 import com.ronviet.ron.utils.Constants;
 import com.ronviet.ron.utils.DialogUtiils;
+import com.ronviet.ron.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,10 @@ public class OrderReviewActivity extends BaseActivity {
     private void loadData()
     {
         mLstOrders = new ArrayList<>();
-        mSaleApiHelper.getReviewOrder(mContext, mCurrentOrderCode, mHandlerReviewOrder, true );
+        mCurrentOrderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
+        if(mCurrentOrderCode != null) {
+            mSaleApiHelper.getReviewOrder(mContext, mCurrentOrderCode, mHandlerReviewOrder, true);
+        }
     }
 
     private Handler mHandlerReviewOrder = new Handler(){
@@ -106,8 +110,10 @@ public class OrderReviewActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
+                        //Remove order code of table after submit order succesfully
+                        SharedPreferenceUtils.removeOrderCode(mContext, mCurrentOrderCode);
                         if(res.message != null) {
-                            new DialogUtiils().showDialog(mContext, res.message, false);
+                            new DialogUtiils().showDialog(mContext, res.message, true);
                         }
                     } else {
                         if(res.message != null) {

@@ -35,7 +35,6 @@ public class SaleActivity extends BaseActivity {
     private View mSubMenu;
     private List<TableInfo> mLstTables;
     private List<AreaInfo> mLstAreas;
-    private TableInfo mCurrentTableSelection;
     private SaleAPIHelper mSaleHelper;
 
 
@@ -60,8 +59,17 @@ public class SaleActivity extends BaseActivity {
         mRecyclerTables = (RecyclerView) findViewById(R.id.recycler_view_tables);
         mRecyclerAreas = (RecyclerView) findViewById(R.id.recycler_view_area);
         mSubMenu = findViewById(R.id.ln_sub_menu);
+        View vReturnOrder = findViewById(R.id.fl_return_order);
+        vReturnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iReturnOrder = new Intent(mContext, OrderReturnActivity.class);
+                iReturnOrder.putExtra(Constants.EXTRA_TABLE, mTableSelection);
+                startActivity(iReturnOrder);
+            }
+        });
 
-        dummyTableData();
+        dummyTableData(0);
         dummyAreaTableData();
 
         GridLayoutManager tableLayoutManager = new GridLayoutManager(this, 3);
@@ -97,18 +105,13 @@ public class SaleActivity extends BaseActivity {
         mSaleHelper.getMaPhieu(mContext, mHandlerGetMaPhieu, true);
     }
 
-    private void dummyTableData()
+    private void dummyTableData(int pos)
     {
         mLstTables = new ArrayList<>();
         for(int i=0;i<5;i++)
         {
             TableInfo info = new TableInfo();
-            info.setName(String.valueOf(i));
-//            info.setOrder(true);
-            if(i%2 == 0) {
-//                info.setOrder(false);
-            }
-//            info.setSelection(false);
+            info.setName(String.format("%d - %d", pos, i));
             mLstTables.add(info);
         }
     }
@@ -186,10 +189,10 @@ public class SaleActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCreateMaPhieuData res = (ResponseCreateMaPhieuData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        if(mCurrentTableSelection != null) {
-                            mCurrentTableSelection.setMaPhieu(res.data.maPhieu);
-                            mSaleHelper.getIdPhieu(mContext, mCurrentTableSelection.getMaPhieu(), mCurrentTableSelection.getAreaId(),
-                                    mCurrentTableSelection.getId(), mHandlerGetIdPhieu, true);
+                        if(mTableSelection != null) {
+                            mTableSelection.setMaPhieu(res.data.maPhieu);
+                            mSaleHelper.getIdPhieu(mContext, mTableSelection.getMaPhieu(), mTableSelection.getAreaId(),
+                                    mTableSelection.getId(), mHandlerGetIdPhieu, true);
                         }
                     } else {
                         if(res.message != null) {
@@ -213,10 +216,10 @@ public class SaleActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCreatePhieuData res = (ResponseCreatePhieuData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        if(mCurrentTableSelection != null) {
-                            mCurrentTableSelection.setIdPhieu(res.data.idPhieu);
+                        if(mTableSelection != null) {
+                            mTableSelection.setIdPhieu(res.data.idPhieu);
                             Intent iProduct = new Intent(mContext, ProductActivity.class);
-                            iProduct.putExtra(Constants.EXTRA_TABLE, mCurrentTableSelection);
+                            iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
                             mContext.startActivity(iProduct);
                         }
                     } else {
@@ -241,19 +244,21 @@ public class SaleActivity extends BaseActivity {
             switch (msg.what){
                 case Constants.HANDLER_CLOSE_SUB_MENU:
                     mTableSelection = (TableInfo)msg.obj;
+                    setTotal(String.valueOf(mTableSelection.getTotal()));
                     mSubMenu.setVisibility(View.GONE);
                     break;
                 case Constants.HANDLER_OPEN_SUB_MENU:
                     mTableSelection = (TableInfo)msg.obj;
+                    setTotal(String.valueOf(mTableSelection.getTotal()));
                     mSubMenu.setVisibility(View.VISIBLE);
                     break;
                 case Constants.HANDLER_OPEN_TABLE:
-                    mCurrentTableSelection = (TableInfo) msg.obj;
-                    if(mCurrentTableSelection.getMaPhieu() == null) {
+                    mTableSelection = (TableInfo) msg.obj;
+                    if(mTableSelection.getMaPhieu() == null) {
                         new SaleAPIHelper().getMaPhieu(mContext, mHandlerGetMaPhieu, true);
                     } else {
                         Intent iProduct = new Intent(mContext, ProductActivity.class);
-                        iProduct.putExtra(Constants.EXTRA_TABLE, mCurrentTableSelection);
+                        iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
                         mContext.startActivity(iProduct);
                     }
                     break;
@@ -265,7 +270,12 @@ public class SaleActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             int pos = msg.what;
-            loadTableData(mLstAreas.get(pos).getId());
+
+            //TODO: Open comment to load tables from server
+            mLstTables = new ArrayList<>();
+            dummyTableData(pos);
+            mAdapterTable.updateData(mLstTables);
+//            loadTableData(mLstAreas.get(pos).getId());
         }
     };
 }

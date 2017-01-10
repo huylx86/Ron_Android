@@ -16,4 +16,6 @@ public class Constants {
     public static final int FOOD_CATEGORY = 1;
     public static final int DRINK_CATEGORY = 2;
     public static final int OTHER_CATEGORY = 3;
+
+    public static final String PREF_NAME = "Ron_Preference";
 }

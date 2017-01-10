@@ -22,6 +22,7 @@
     <!-- Menu -->
     <string name="separate_table">Tách Bàn</string>
     <string name="join_table">Ghép Bàn</string>
+    <string name="return_order">Trả Hàng</string>
 
     <string name="food">ĐỒ ĂN</string>
     <string name="drink">ĐỒ UỐNG</string>

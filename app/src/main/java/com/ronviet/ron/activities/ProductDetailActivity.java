@@ -12,11 +12,13 @@ import com.ronviet.ron.api.APIConstants;
 import com.ronviet.ron.api.ResponseCreateOrderCodeData;
 import com.ronviet.ron.api.SaleAPIHelper;
 import com.ronviet.ron.models.OrderInfo;
+import com.ronviet.ron.models.PendingOrder;
 import com.ronviet.ron.models.ProductCatInfo;
 import com.ronviet.ron.models.ProductInfo;
 import com.ronviet.ron.models.TableInfo;
 import com.ronviet.ron.utils.Constants;
 import com.ronviet.ron.utils.DialogUtiils;
+import com.ronviet.ron.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,6 @@ public class ProductDetailActivity extends BaseActivity {
     private ProductRecyclerViewAdapter mAdapterProduct;
     private List<ProductInfo> mLstProducts;
     private ProductCatInfo mProductCatInfo;
-    private TableInfo mTableInfo;
     private SaleAPIHelper mSaleApiHelper;
     private OrderInfo mCurrentOrder;
 
@@ -36,8 +37,7 @@ public class ProductDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_product_detail);
         mContext = this;
         mProductCatInfo = (ProductCatInfo)getIntent().getSerializableExtra(Constants.EXTRA_PRODUCT);
-        mTableInfo = (TableInfo)getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
-        mTableSelection = mTableInfo;
+        mTableSelection = (TableInfo)getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
         mSaleApiHelper = new SaleAPIHelper();
         dummyData();
         initLayout();
@@ -49,11 +49,11 @@ public class ProductDetailActivity extends BaseActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view_product);
         GridLayoutManager tableLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(tableLayoutManager);
-        mAdapterProduct = new ProductRecyclerViewAdapter(this, mLstProducts, mTableInfo, mHandlerInputSoLuong);
+        mAdapterProduct = new ProductRecyclerViewAdapter(this, mLstProducts, mTableSelection, mHandlerInputSoLuong);
         recyclerView.setAdapter(mAdapterProduct);
 
         initHeader();
-        setTotal(String.valueOf(mTableInfo.getTotal()));
+        setTotal(String.valueOf(mTableSelection.getTotal()));
         if(mProductCatInfo != null) {
             setTitle(mProductCatInfo.getTenNhom());
         }
@@ -71,11 +71,22 @@ public class ProductDetailActivity extends BaseActivity {
         }
     }
 
+
+
     protected Handler mHandlerInputSoLuong = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             mCurrentOrder = (OrderInfo) msg.obj;
-            mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
+            String orderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
+            if(orderCode != null) {
+                mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
+                        mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
+                        mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
+                        mHandlerSubmitOrderTungMon, true);
+            } else {
+                mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
+            }
+
         }
     };
 
@@ -85,10 +96,17 @@ public class ProductDetailActivity extends BaseActivity {
             switch (msg.what) {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCreateOrderCodeData res = (ResponseCreateOrderCodeData) msg.obj;
+
+                    //Store order code for using next time till submit this order
+                    PendingOrder order = new PendingOrder();
+                    order.banId = mTableSelection.getId();
+                    order.orderCode = res.data.orderCode;
+                    SharedPreferenceUtils.savePendingOrder(mContext, order);
+
                     if(res.code == APIConstants.REQUEST_OK) {
-                        mSaleApiHelper.submitOrderTungMon(mContext, res.data.orderCode, mTableInfo.getIdPhieu(),mCurrentOrder.getId(),
+                        mSaleApiHelper.submitOrderTungMon(mContext, res.data.orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
                                 mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
-                                mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableInfo.getId(), "",
+                                mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
                                 mHandlerSubmitOrderTungMon, true);
                     } else {
                         if(res.message != null) {
