@@ -120,3 +120,14 @@ build/intermediates/dex-cache/cache.xml
 .idea/libraries/support_fragment_25_1_0.xml
 .idea/libraries/support_media_compat_25_1_0.xml
 .idea/workspace.xml
+.gradle/2.14.1/taskArtifacts/cache.properties
+.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin
+.idea/libraries/converter_gson_2_0_2.xml
+.idea/libraries/gson_2_6_1.xml
+.idea/libraries/hamcrest_core_1_3.xml
+.idea/libraries/jsr305_2_0_1.xml
+.idea/libraries/junit_4_12.xml
+.idea/libraries/okhttp_3_3_0.xml
+.idea/libraries/okio_1_8_0.xml
+.idea/libraries/retrofit_2_1_0.xml
+.idea/libraries/support_v4_25_1_0.xml
