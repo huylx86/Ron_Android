@@ -6,7 +6,7 @@
     <!-- Home -->
     <dimen name="height_button">100dp</dimen>
     <dimen name="text_size_button">18sp</dimen>
-    <dimen name="margin_button">10dp</dimen>
+    <dimen name="margin_button">5dp</dimen>
 
     <!-- Sale Table -->
     <dimen name="height_sub_menu_button">50dp</dimen>

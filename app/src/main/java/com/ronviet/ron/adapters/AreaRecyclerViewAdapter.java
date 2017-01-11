@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.models.AreaInfo;
+import com.ronviet.ron.utils.CommonUtils;
 
 import java.util.List;
 
@@ -38,6 +39,11 @@ public class AreaRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.area_item, null);
+        if(this.mLstAreas.size() < 4) {
+            view.setMinimumWidth(CommonUtils.getWidthScreen(mContext) / mLstAreas.size());
+        } else {
+            view.setMinimumWidth(CommonUtils.getWidthScreen(mContext) / 4);
+        }
         AreaRecyclerViewHolders holders = new AreaRecyclerViewHolders(view);
         return holders;
 

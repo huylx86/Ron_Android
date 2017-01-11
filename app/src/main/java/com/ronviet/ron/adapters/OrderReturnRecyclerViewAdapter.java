@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -123,12 +124,12 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int number = 0;
+                float number = 0;
                 try {
-                     number = Integer.parseInt(userInput.getText().toString());
+                     number = Float.parseFloat(userInput.getText().toString());
                 }catch (Exception e){}
                 mRemainingProdCheck = order.getSoLuong() - number;
-                tvAfterChangeOrder.setText(textAfterChange + String.valueOf(mRemainingProdCheck) );
+                tvAfterChangeOrder.setText(textAfterChange + String.format("%.2f", mRemainingProdCheck));
             }
 
             @Override
@@ -169,8 +170,16 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                         });
 
         // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
+        final AlertDialog alertDialog = alertDialogBuilder.create();
 
+        userInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
         // show it
         alertDialog.show();
     }

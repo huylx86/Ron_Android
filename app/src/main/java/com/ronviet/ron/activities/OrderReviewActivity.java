@@ -62,7 +62,8 @@ public class OrderReviewActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //TODO : Open comment to submit confirm order
-                new DialogUtiils().showDialog(mContext, "Gửi Order thành công!", true);
+//                new DialogUtiils().showDialog(mContext, "Gửi Order thành công!", true);
+                finish();
 //                mSaleApiHelper.confirmOrder(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
             }
         });

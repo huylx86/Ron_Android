@@ -1,6 +1,7 @@
 package com.ronviet.ron.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -56,8 +57,10 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         if(tableInfo.isSelection()){
             tableHolder.mTableName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.button_select));
         } else {
-            tableHolder.mTableName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.transparent));
+            tableHolder.mTableName.setBackgroundColor(Color.parseColor(tableInfo.getMaMau()));
+//            tableHolder.mTableName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.transparent));
         }
+
         tableHolder.mView.setTag(position);
     }
 

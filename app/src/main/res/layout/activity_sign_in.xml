@@ -32,7 +32,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:background="@android:color/transparent"
-            android:inputType="textPassword"
+            android:inputType="numberPassword"
             android:hint="@string/code_sign_in"
             android:id="@+id/edt_sign_in" />
         <View

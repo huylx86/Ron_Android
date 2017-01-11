@@ -29,6 +29,9 @@ public class TableInfo implements Serializable {
 
     @SerializedName("khu_vuc_id")
     private long areaId;
+
+    @SerializedName("ma_mau")
+    private String maMau;
 //    private String date;
 //    private boolean isOrder;
     private boolean isSelection;
@@ -97,5 +100,13 @@ public class TableInfo implements Serializable {
 
     public void setSelection(boolean selection) {
         isSelection = selection;
+    }
+
+    public String getMaMau() {
+        return maMau;
+    }
+
+    public void setMaMau(String maMau) {
+        this.maMau = maMau;
     }
 }

@@ -56,11 +56,10 @@
             android:id="@+id/edt_change_order"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:inputType="number"
+            android:text="1"
+            android:selectAllOnFocus="true"
+            android:inputType="numberDecimal"
             android:background="@color/transparent">
-
-            <requestFocus />
-
         </EditText>
     </LinearLayout>
     <View

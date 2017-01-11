@@ -61,7 +61,8 @@ public class OrderReturnActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //TODO : Open comment to submit confirm return order
-                new DialogUtiils().showDialog(mContext, "Trả hàng thành công!", true);
+                finish();
+//                new DialogUtiils().showDialog(mContext, "Trả hàng thành công!", true);
 //                mSaleApiHelper.confirmReturn(mContext, mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmReturnOrder, true);
             }
         });

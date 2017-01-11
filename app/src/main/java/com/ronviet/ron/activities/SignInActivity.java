@@ -21,7 +21,9 @@ public class SignInActivity extends AppCompatActivity {
         mBtnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SignInActivity.this, HomeActivity.class));
+                Intent iSignIn = new Intent(SignInActivity.this, HomeActivity.class);
+                iSignIn.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(iSignIn);
             }
         });
     }
