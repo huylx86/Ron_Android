@@ -149,7 +149,7 @@ public class SaleAPIHelper extends APIHelper {
         }
     }
 
-    public void getIdPhieu(Context context, String maPhieu, long khuId, long banId, final Handler handler, boolean isShowProgress)
+    public void getIdPhieu(Context context, long khuId, long banId, final Handler handler, boolean isShowProgress)
     {
         if(NetworkUtils.isNetworkAvailable(context)) {
             if (isShowProgress) {
@@ -292,7 +292,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCreateOrderCodeData> response = service.getOrderCode(3, 1, CommonUtils.convertDateFormat(new Date()), false);
+            Call<ResponseCreateOrderCodeData> response = service.getOrderCode(3, 1, 2, CommonUtils.convertDateFormat(new Date()), false);
 
             response.enqueue(new Callback<ResponseCreateOrderCodeData>() {
                 @Override
@@ -336,9 +336,9 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.submitOrderTungMon(-1000, orderCode, -1000, idPhieu, "ORDER", idMon, maMon, tenMon, soLuong,
+            Call<ResponseCommon> response = service.submitOrderTungMon(-1000, orderCode, -1000, idPhieu, "INSERT", idMon, maMon, tenMon, soLuong,
                                                             donViTinhId, giaGoc, donGia, giaCoThue, thue, 3, 3, 1, CommonUtils.convertDateFormat(new Date()),
-                                                            idBan, yeuCauThem);
+                                                            idBan, yeuCauThem, false, -1, 3, 3, false, 1);
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override

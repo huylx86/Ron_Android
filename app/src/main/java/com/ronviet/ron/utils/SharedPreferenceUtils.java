@@ -51,9 +51,11 @@ public class SharedPreferenceUtils {
 
     public static String getOrderCodeFromPendingOrder(Context context, long banId){
        List<PendingOrder> lstPendingOrders = getPendingOrder(context);
-        for(PendingOrder order : lstPendingOrders) {
-            if (banId == order.banId) {
-                return order.orderCode;
+        if(lstPendingOrders != null && lstPendingOrders.size() > 0) {
+            for (PendingOrder order : lstPendingOrders) {
+                if (banId == order.banId) {
+                    return order.orderCode;
+                }
             }
         }
         return null;

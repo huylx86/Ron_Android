@@ -195,7 +195,7 @@ public class SaleActivity extends BaseActivity {
                     if(res.code == APIConstants.REQUEST_OK) {
                         if(mTableSelection != null) {
                             mTableSelection.setMaPhieu(res.data.maPhieu);
-                            mSaleHelper.getIdPhieu(mContext, mTableSelection.getMaPhieu(), mTableSelection.getAreaId(),
+                            mSaleHelper.getIdPhieu(mContext, mTableSelection.getAreaId(),
                                     mTableSelection.getId(), mHandlerGetIdPhieu, true);
                         }
                     } else {
@@ -221,10 +221,12 @@ public class SaleActivity extends BaseActivity {
                     ResponseCreatePhieuData res = (ResponseCreatePhieuData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         if(mTableSelection != null) {
-                            mTableSelection.setIdPhieu(res.data.idPhieu);
-                            Intent iProduct = new Intent(mContext, ProductActivity.class);
-                            iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
-                            mContext.startActivity(iProduct);
+                            if(res.data != null) {
+                                mTableSelection.setIdPhieu(res.data.idPhieu);
+                                Intent iProduct = new Intent(mContext, ProductActivity.class);
+                                iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
+                                mContext.startActivity(iProduct);
+                            }
                         }
                     } else {
                         if(res.message != null) {
@@ -258,12 +260,8 @@ public class SaleActivity extends BaseActivity {
                     break;
                 case Constants.HANDLER_OPEN_TABLE:
                     mTableSelection = (TableInfo) msg.obj;
-                    //TODO : Open comment to get MaPhieu from server
-//                    Intent iProduct = new Intent(mContext, ProductActivity.class);
-//                    iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
-//                    mContext.startActivity(iProduct);
                     if(mTableSelection.getIdPhieu() < 1) {
-                        mSaleHelper.getIdPhieu(mContext, "", mTableSelection.getAreaId(),
+                        mSaleHelper.getIdPhieu(mContext, mTableSelection.getAreaId(),
                                 mTableSelection.getId(), mHandlerGetIdPhieu, true);
 //                        new SaleAPIHelper().getMaPhieu(mContext, mHandlerGetMaPhieu, true);
                     } else {
@@ -281,9 +279,6 @@ public class SaleActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             int pos = msg.what;
             mSubMenu.setVisibility(View.GONE);
-//            mLstTables = new ArrayList<>();
-//            dummyTableData(pos);
-//            mAdapterTable.updateData(mLstTables);
             loadTableData(mLstAreas.get(pos).getId());
         }
     };

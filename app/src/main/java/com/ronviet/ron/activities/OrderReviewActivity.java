@@ -43,8 +43,9 @@ public class OrderReviewActivity extends BaseActivity {
         mTableSelection = (TableInfo) getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
         mSaleApiHelper = new SaleAPIHelper();
         mLstOrders = new ArrayList<>();
-        dummyData();
+//        dummyData();
         initLayout();
+        loadData();
     }
 
     private void initLayout()

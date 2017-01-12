@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.ronviet.ron.R;
 import com.ronviet.ron.adapters.ProductRecyclerViewAdapter;
 import com.ronviet.ron.api.APIConstants;
+import com.ronviet.ron.api.ResponseCommon;
 import com.ronviet.ron.api.ResponseCreateOrderCodeData;
 import com.ronviet.ron.api.ResponseProductData;
 import com.ronviet.ron.api.SaleAPIHelper;
@@ -109,15 +110,15 @@ public class ProductDetailActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             mCurrentOrder = (OrderInfo) msg.obj;
             //TODO: Open comment to submit order mon
-//            String orderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
-//            if(orderCode != null) {
-//                mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
-//                        mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
-//                        mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
-//                        mHandlerSubmitOrderTungMon, true);
-//            } else {
-//                mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
-//            }
+            String orderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
+            if(orderCode != null) {
+                mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
+                        mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
+                        mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
+                        mHandlerSubmitOrderTungMon, true);
+            } else {
+                mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
+            }
 
         }
     };
@@ -130,18 +131,26 @@ public class ProductDetailActivity extends BaseActivity {
                     ResponseCreateOrderCodeData res = (ResponseCreateOrderCodeData) msg.obj;
 
                     //Store order code for using next time till submit this order
-                    PendingOrder order = new PendingOrder();
-                    order.banId = mTableSelection.getId();
-                    order.orderCode = res.data.orderCode;
-                    SharedPreferenceUtils.savePendingOrder(mContext, order);
+                    if(res.data != null) {
+                        PendingOrder order = new PendingOrder();
+                        order.banId = mTableSelection.getId();
+                        order.orderCode = res.data.orderCode;
+                        SharedPreferenceUtils.savePendingOrder(mContext, order);
 
-                    if(res.code == APIConstants.REQUEST_OK) {
-                        mSaleApiHelper.submitOrderTungMon(mContext, res.data.orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
-                                mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
-                                mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
-                                mHandlerSubmitOrderTungMon, true);
+                        if (res.code == APIConstants.REQUEST_OK) {
+                            mSaleApiHelper.submitOrderTungMon(mContext, res.data.orderCode, mTableSelection.getIdPhieu(), mCurrentOrder.getId(),
+                                    mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
+                                    mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
+                                    mHandlerSubmitOrderTungMon, true);
+                        } else {
+                            if (res.message != null) {
+                                new DialogUtiils().showDialog(mContext, res.message, false);
+                            } else {
+                                new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                            }
+                        }
                     } else {
-                        if(res.message != null) {
+                        if (res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
                         } else {
                             new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
@@ -160,7 +169,7 @@ public class ProductDetailActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
-                    ResponseCreateOrderCodeData res = (ResponseCreateOrderCodeData) msg.obj;
+                    ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
