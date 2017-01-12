@@ -25,16 +25,17 @@ public interface ICallServices {
     Call<ResponseCreateMaPhieuData> getMaPhieu(@Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Query("trung_tam_id") long trungTamId, @Query("quay_id") long quayId, @Query("ngay_ban_hang") String ngayBanHang,
                                            @Query("ban_hang_khac_ngay") boolean banHangKhacNgay);
 
+    //@Query("ma_phieu") String maPhieu,
     @GET("/api/SoDoBan/GetTaoPhieu")
-    Call<ResponseCreatePhieuData> getPhieuId(@Query("phieu_id") long phieuId, @Query("ma_phieu") String maPhieu, @Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId,
+    Call<ResponseCreatePhieuData> getPhieuId(@Query("phieu_id") long phieuId, @Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId,
                                              @Query("nguoi_tao_phieu") String nguoiTaoPhieu, @Query("thu_ngan") String thuNgan,
-                                             @Query("phuc_vu") String phucVu, @Query("quan_li") String quanLi, @Query("khach_hang_id") long khachHangId,
+                                             @Query("phuc_vu") String phucVu, @Query("quan_ly") String quanLi, @Query("khach_hang_id") long khachHangId,
                                              @Query("ma_khach_hang") String maKh, @Query("ten_khach_hang") String tenKh, @Query("so_luong_khach") int soluongKhachHang,
                                              @Query("la_phieu_ban_le") boolean isPhieuBanLe, @Query("co_hoa_don") boolean isCoHD, @Query("ghi_chu") String ghiChu,
                                              @Query("phan_tram_dich_vu") int phanTramDV, @Query("phan_tram_vat") int phanTramVAT, @Query("phan_tram_giam_phieu") int phanTramGiamPhieu,
                                              @Query("khu_id") long khuId, @Query("co_chuyen") boolean isCoChuyen, @Query("co_ghep") boolean isCoGhep,
                                              @Query("co_huy") boolean isCoHuy, @Query("co_goi_lai") boolean isCoGuiLai, @Query("co_giu_phieu") boolean isCoGiuPhieu,
-                                             @Query("co_tiep_khach") boolean isCoTiepKhach, @Field("co_dat_coc") boolean isCoDatCoc, @Query("co_no") boolean isCoNo,
+                                             @Query("co_tiep_khach") boolean isCoTiepKhach, @Query("co_dat_coc") boolean isCoDatCoc, @Query("co_no") boolean isCoNo,
                                              @Query("tien_te_id") int tienTeId, @Query("quay_id") long quayId, @Query("trung_tam_id") long trungTamId,
                                              @Query("ban_id") long banId, @Query("ngay_ban_hang") String ngayBanHang, @Query("ban_hang_khac_ngay") boolean isBanHangNgayKhac,
                                              @Query("thoi_gian_tao_phieu") String thoiGianTaoPhieu, @Query("thoi_gian_sua_phieu") String thoiGianSuaPhieu, @Query("trang_thai") String trangThai,

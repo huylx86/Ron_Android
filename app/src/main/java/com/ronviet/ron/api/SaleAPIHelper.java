@@ -162,7 +162,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCreatePhieuData> response = service.getPhieuId(-1000, maPhieu, 1, "", "", "", "", -1000, "", "", 1,
+            Call<ResponseCreatePhieuData> response = service.getPhieuId(-1000, 1, "huy", "aaa", "bbb", "", -1000, "", "", 1,
                                                         false, false, "", 0, 0, 0, khuId, false, false, false, false, false, false,
                                                         false, false, 1, 2, 3, banId, CommonUtils.convertDateFormat(new Date()), false,
                                                         CommonUtils.convertDateFormat(new Date()), CommonUtils.convertDateFormat(new Date()),

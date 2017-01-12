@@ -259,16 +259,18 @@ public class SaleActivity extends BaseActivity {
                 case Constants.HANDLER_OPEN_TABLE:
                     mTableSelection = (TableInfo) msg.obj;
                     //TODO : Open comment to get MaPhieu from server
-                    Intent iProduct = new Intent(mContext, ProductActivity.class);
-                    iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
-                    mContext.startActivity(iProduct);
-//                    if(mTableSelection.getMaPhieu() == null) {
+//                    Intent iProduct = new Intent(mContext, ProductActivity.class);
+//                    iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
+//                    mContext.startActivity(iProduct);
+                    if(mTableSelection.getIdPhieu() < 1) {
+                        mSaleHelper.getIdPhieu(mContext, "", mTableSelection.getAreaId(),
+                                mTableSelection.getId(), mHandlerGetIdPhieu, true);
 //                        new SaleAPIHelper().getMaPhieu(mContext, mHandlerGetMaPhieu, true);
-//                    } else {
-//                        Intent iProduct = new Intent(mContext, ProductActivity.class);
-//                        iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
-//                        mContext.startActivity(iProduct);
-//                    }
+                    } else {
+                        Intent iProduct = new Intent(mContext, ProductActivity.class);
+                        iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
+                        mContext.startActivity(iProduct);
+                    }
                     break;
             }
         }
