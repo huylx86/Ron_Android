@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.models.OrderInfo;
+import com.ronviet.ron.utils.CommonUtils;
 
 import java.util.List;
 
@@ -44,10 +45,15 @@ public class OrderReviewRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         OrderReviewRecyclerViewHolders orderHolder = (OrderReviewRecyclerViewHolders) holder;
         OrderInfo orderInfo = mLstOrders.get(position);
         orderHolder.mProdName.setText(orderInfo.getTenMon());
-        orderHolder.mProdPrice.setText(String.valueOf(orderInfo.getDonGia()));
-        orderHolder.mProdPromotion.setText(orderInfo.getPromotion());
+        orderHolder.mProdPrice.setText(CommonUtils.formatCurrency((int)orderInfo.getDonGia()));
+        if(orderInfo.getPromotion() != null){
+            orderHolder.mProdPromotion.setText(orderInfo.getPromotion());
+            orderHolder.mProdPromotion.setVisibility(View.VISIBLE);
+        } else {
+            orderHolder.mProdPromotion.setVisibility(View.GONE);
+        }
         orderHolder.mProdNumber.setText(String.valueOf(orderInfo.getSoLuong()));
-        orderHolder.mProdTotal.setText(String.valueOf(orderInfo.getTotal()));
+        orderHolder.mProdTotal.setText(CommonUtils.formatCurrency((int)orderInfo.getTotal()));
         orderHolder.mView.setTag(position);
     }
 

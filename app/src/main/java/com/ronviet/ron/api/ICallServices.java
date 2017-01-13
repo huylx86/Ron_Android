@@ -64,14 +64,15 @@ public interface ICallServices {
                                             @Field("is_mix") boolean isMix, @Field("id_mat_hang_cha") long idMatHangCha, @Field("nv_id") long nvId,
                                             @Field("user_fullname") long userFullName, @Field("ban_hang_khac_ngay") boolean banHangKhacNgay, @Field("loai_tien_te_id") long loaiTienTeId);
 
-    @FormUrlEncoded
-    @POST("/api/SoDoBan/XemOrderTruocSubmit")
-    Call<ResponseReviewOrderData> getReviewOrder(@Field("order_code") String orderCode);
+    @GET("/api/SoDoBan/XemOrderTruocSubmit")
+    Call<ResponseReviewOrderData> getReviewOrder(@Query("order_code") String orderCode);
 
+    @FormUrlEncoded
     @POST("/api/SoDoBan/GuiOrder")
     Call<ResponseCommon> confirmOrder(@Field("id_phieu") long idPhieu, @Field("id_ban") long idBan, @Field("order_code") String orderCode, @Field("id_nhan_vien") long isNhanVien, @Field("trang_thai") String trangThai);
 
-    @POST("")
+    @FormUrlEncoded
+    @POST("/api/SoDoBan/XemOrderSauSubmit")
     Call<ResponseReturnOrderData> getOrderForReturn(@Field("id_phieu") long idPhieu);
 
     @POST("")

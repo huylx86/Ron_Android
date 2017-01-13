@@ -56,7 +56,7 @@ public class ProductActivity extends BaseActivity {
 
         initHeader();
         setTitle(getString(R.string.title_add_list));
-        setTotal(String.valueOf(mTableInfo.getTotal()));
+        setTotal(mTableInfo.getTotal());
     }
 
     private void setupViewPager(ViewPager viewPager) {

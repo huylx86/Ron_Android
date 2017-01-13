@@ -5,8 +5,10 @@ import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by LENOVO on 1/8/2017.
@@ -26,5 +28,12 @@ public class CommonUtils {
         Point size = new Point();
         display.getSize(size);
         return size.x;
+    }
+
+    public static String formatCurrency(int tongTien)
+    {
+        Locale vn = new Locale("vn", "VN");
+        NumberFormat vnFormat = NumberFormat.getCurrencyInstance(vn);
+        return vnFormat.format(tongTien);
     }
 }

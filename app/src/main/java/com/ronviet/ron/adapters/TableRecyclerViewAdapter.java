@@ -58,7 +58,6 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
             tableHolder.mTableName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.button_select));
         } else {
             tableHolder.mTableName.setBackgroundColor(Color.parseColor(tableInfo.getMaMau()));
-//            tableHolder.mTableName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.transparent));
         }
 
         tableHolder.mView.setTag(position);
@@ -118,6 +117,7 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
                 Message msg = Message.obtain();
                 msg.obj = info;
+                msg.arg1 = pos;
                 if(info.getIdPhieu() > 0){
                     msg.what = Constants.HANDLER_OPEN_SUB_MENU;
                     mHandlerProcessTable.sendMessage(msg);

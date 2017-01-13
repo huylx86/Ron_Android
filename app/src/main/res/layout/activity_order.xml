@@ -56,10 +56,11 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
-                android:text="6.000.000"
+                android:text=""
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:textSize="22sp"/>
+                android:textSize="22sp"
+                android:id="@+id/tv_tong_tien"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -36,6 +36,8 @@ public class SaleActivity extends BaseActivity {
     private List<TableInfo> mLstTables;
     private List<AreaInfo> mLstAreas;
     private SaleAPIHelper mSaleHelper;
+    private static int mSelectedArea = 0;
+    private static int mSelectedTable = -1;
 
 
     @Override
@@ -44,7 +46,15 @@ public class SaleActivity extends BaseActivity {
         setContentView(R.layout.activity_sale);
         mContext = this;
         mSaleHelper = new SaleAPIHelper();
+        mLstAreas = new ArrayList<>();
+        mLstTables = new ArrayList<>();
         initLayout();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadAreaData();
     }
 
     private void initLayout()
@@ -71,7 +81,7 @@ public class SaleActivity extends BaseActivity {
 
 //        dummyTableData(0);
 //        dummyAreaTableData();
-        loadAreaData();
+
 
         GridLayoutManager tableLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerTables.setLayoutManager(tableLayoutManager);
@@ -86,7 +96,7 @@ public class SaleActivity extends BaseActivity {
 
         initHeader();
         setTitle(getString(R.string.title_table_map));
-        setTotal("0");
+        setTotal(0);
     }
 
     private void loadAreaData()
@@ -142,11 +152,12 @@ public class SaleActivity extends BaseActivity {
                     ResponseAreaInfoData res = (ResponseAreaInfoData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         mLstAreas = res.data;
-                        if(mLstAreas.size() > 0) {
-                            mLstAreas.get(0).setmIsSelection(true);
+                        mLstTables = new ArrayList<>();
+                        if(mLstAreas.size() > 0 && mSelectedArea < mLstAreas.size()) {
+                            mLstAreas.get(mSelectedArea).setmIsSelection(true);
+                            loadTableData(mLstAreas.get(mSelectedArea).getId());
                         }
                         mAdapterArea.updateData(mLstAreas);
-                        loadTableData(mLstAreas.get(0).getId());
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
@@ -170,6 +181,9 @@ public class SaleActivity extends BaseActivity {
                     ResponseTableInfoData res = (ResponseTableInfoData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         mLstTables.addAll(res.data);
+                        if(mSelectedTable > -1 && mSelectedTable < mLstTables.size()) {
+                            mLstTables.get(mSelectedTable).setSelection(true);
+                        }
                         mAdapterTable.updateData(mLstTables);
                     } else {
                         if(res.message != null) {
@@ -250,13 +264,15 @@ public class SaleActivity extends BaseActivity {
             switch (msg.what){
                 case Constants.HANDLER_CLOSE_SUB_MENU:
                     mTableSelection = (TableInfo)msg.obj;
-                    setTotal(String.valueOf(mTableSelection.getTotal()));
+                    setTotal(mTableSelection.getTotal());
                     mSubMenu.setVisibility(View.GONE);
+                    mSelectedTable = msg.arg1;
                     break;
                 case Constants.HANDLER_OPEN_SUB_MENU:
                     mTableSelection = (TableInfo)msg.obj;
-                    setTotal(String.valueOf(mTableSelection.getTotal()));
+                    setTotal(mTableSelection.getTotal());
                     mSubMenu.setVisibility(View.VISIBLE);
+                    mSelectedTable = msg.arg1;
                     break;
                 case Constants.HANDLER_OPEN_TABLE:
                     mTableSelection = (TableInfo) msg.obj;
@@ -279,7 +295,11 @@ public class SaleActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             int pos = msg.what;
             mSubMenu.setVisibility(View.GONE);
-            loadTableData(mLstAreas.get(pos).getId());
+            mSelectedTable = -1;
+            mSelectedArea = pos;
+            if(mSelectedArea < mLstAreas.size()) {
+                loadTableData(mLstAreas.get(mSelectedArea).getId());
+            }
         }
     };
 }

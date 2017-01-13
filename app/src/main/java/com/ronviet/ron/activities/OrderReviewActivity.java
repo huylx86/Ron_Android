@@ -1,5 +1,6 @@
 package com.ronviet.ron.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.adapters.DividerItemDecoration;
@@ -18,12 +20,15 @@ import com.ronviet.ron.api.ResponseReviewOrderData;
 import com.ronviet.ron.api.SaleAPIHelper;
 import com.ronviet.ron.models.OrderInfo;
 import com.ronviet.ron.models.TableInfo;
+import com.ronviet.ron.utils.CommonUtils;
 import com.ronviet.ron.utils.Constants;
 import com.ronviet.ron.utils.DialogUtiils;
 import com.ronviet.ron.utils.SharedPreferenceUtils;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class OrderReviewActivity extends BaseActivity {
 
@@ -31,8 +36,8 @@ public class OrderReviewActivity extends BaseActivity {
     private List<OrderInfo> mLstOrders;
     private Button mBtnSubmitOrder;
     private SaleAPIHelper mSaleApiHelper;
+    private TextView mTvTongTien;
 
-    //TODO: How to Get Order Code?
     private String mCurrentOrderCode;
 
     @Override
@@ -51,6 +56,7 @@ public class OrderReviewActivity extends BaseActivity {
     private void initLayout()
     {
         mBtnSubmitOrder = (Button)findViewById(R.id.btn_submit_order);
+        mTvTongTien = (TextView)findViewById(R.id.tv_tong_tien);
         RecyclerView rvOrder = (RecyclerView)findViewById(R.id.recycler_view_order);
         LinearLayoutManager orderLayoutManager = new LinearLayoutManager(this);
         rvOrder.setLayoutManager(orderLayoutManager);
@@ -64,6 +70,10 @@ public class OrderReviewActivity extends BaseActivity {
             public void onClick(View view) {
                 //TODO : Open comment to submit confirm order
 //                new DialogUtiils().showDialog(mContext, "Gửi Order thành công!", true);
+                Intent iHome = new Intent(OrderReviewActivity.this, HomeActivity.class);
+                iHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                iHome.putExtra(Constants.EXTRA_RESTART_SALE_SCREEN, true);
+                startActivity(iHome);
                 finish();
 //                mSaleApiHelper.confirmOrder(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
             }
@@ -91,6 +101,13 @@ public class OrderReviewActivity extends BaseActivity {
                     ResponseReviewOrderData res = (ResponseReviewOrderData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         mLstOrders = res.data;
+                        int tongTien = 0;
+                        for(OrderInfo order : mLstOrders){
+                            float total = order.getSoLuong()*order.getDonGia();
+                            order.setTotal(total);
+                            tongTien +=total;
+                        }
+                        mTvTongTien.setText(CommonUtils.formatCurrency(tongTien));
                         mAdapterOrder.updateData(mLstOrders);
                     } else {
                         if(res.message != null) {
@@ -116,6 +133,10 @@ public class OrderReviewActivity extends BaseActivity {
                     if(res.code == APIConstants.REQUEST_OK) {
                         //Remove order code of table after submit order succesfully
                         SharedPreferenceUtils.removeOrderCode(mContext, mCurrentOrderCode);
+                        Intent iHome = new Intent(OrderReviewActivity.this, HomeActivity.class);
+                        iHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        iHome.putExtra(Constants.EXTRA_RESTART_SALE_SCREEN, true);
+                        startActivity(iHome);
                         finish();
                     } else {
                         if(res.message != null) {

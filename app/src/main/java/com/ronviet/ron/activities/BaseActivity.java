@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.models.TableInfo;
+import com.ronviet.ron.utils.CommonUtils;
 import com.ronviet.ron.utils.Constants;
 
 public class BaseActivity extends AppCompatActivity {
@@ -76,10 +77,10 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void setTotal(String total)
+    protected void setTotal(float total)
     {
         if(mTvProdTotal != null){
-            mTvProdTotal.setText(total);
+            mTvProdTotal.setText(CommonUtils.formatCurrency((int)total));
         }
     }
 

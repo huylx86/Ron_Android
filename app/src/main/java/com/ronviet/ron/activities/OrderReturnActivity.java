@@ -42,8 +42,9 @@ public class OrderReturnActivity extends BaseActivity {
         mTableSelection = (TableInfo) getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
         mSaleApiHelper = new SaleAPIHelper();
         mLstReturnOrders = new ArrayList<>();
-        dummyData();
+//        dummyData();
         initLayout();
+        loadData();
     }
 
     private void initLayout()

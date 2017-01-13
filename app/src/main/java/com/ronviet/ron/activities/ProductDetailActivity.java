@@ -57,7 +57,7 @@ public class ProductDetailActivity extends BaseActivity {
         recyclerView.setAdapter(mAdapterProduct);
 
         initHeader();
-        setTotal(String.valueOf(mTableSelection.getTotal()));
+        setTotal(mTableSelection.getTotal());
         if(mProductCatInfo != null) {
             setTitle(mProductCatInfo.getTenNhom());
         }

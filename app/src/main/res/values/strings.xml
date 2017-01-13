@@ -29,7 +29,7 @@
     <string name="drink">ĐỒ UỐNG</string>
     <string name="others">KHÁC</string>
     <string name="title_activity_product_detail">ProductDetailActivity</string>
-    <string name="total">Tổng Tiền</string>
+    <string name="total">Tổng Tiền :</string>
     <string name="submit_order">Gửi Order</string>
 
     <!-- Screen Name -->
