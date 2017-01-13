@@ -109,7 +109,6 @@ public class ProductDetailActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             mCurrentOrder = (OrderInfo) msg.obj;
-            //TODO: Open comment to submit order mon
             String orderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
             if(orderCode != null) {
                 mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),

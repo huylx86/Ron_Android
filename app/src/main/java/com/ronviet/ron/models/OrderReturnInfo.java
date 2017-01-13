@@ -28,6 +28,7 @@ public class OrderReturnInfo extends ProductInfo {
     @SerializedName("so_luong")
     private float soLuong;
 
+    private float soLuongTra = 0;
     private float total;
     private String promotion;
 //    private boolean isReturnProd;
@@ -103,5 +104,13 @@ public class OrderReturnInfo extends ProductInfo {
 
     public void setPromotion(String promotion) {
         this.promotion = promotion;
+    }
+
+    public float getSoLuongTra() {
+        return soLuongTra;
+    }
+
+    public void setSoLuongTra(float soLuongTra) {
+        this.soLuongTra = soLuongTra;
     }
 }

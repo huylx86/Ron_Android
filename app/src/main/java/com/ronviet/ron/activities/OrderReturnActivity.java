@@ -1,5 +1,6 @@
 package com.ronviet.ron.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,16 +9,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.adapters.DividerItemDecoration;
 import com.ronviet.ron.adapters.OrderReturnRecyclerViewAdapter;
 import com.ronviet.ron.api.APIConstants;
 import com.ronviet.ron.api.ResponseCommon;
+import com.ronviet.ron.api.ResponseCreateOrderCodeData;
 import com.ronviet.ron.api.ResponseReturnOrderData;
 import com.ronviet.ron.api.SaleAPIHelper;
 import com.ronviet.ron.models.OrderReturnInfo;
 import com.ronviet.ron.models.TableInfo;
+import com.ronviet.ron.utils.CommonUtils;
 import com.ronviet.ron.utils.Constants;
 import com.ronviet.ron.utils.DialogUtiils;
 
@@ -31,8 +35,10 @@ public class OrderReturnActivity extends BaseActivity {
     private Button mBtnSubmitOrder;
     private SaleAPIHelper mSaleApiHelper;
 
-    //TODO: How to Get Order Code?
     private String mCurrentOrderCode;
+    private OrderReturnInfo mCurrentSelectedOrderInfo;
+
+    private TextView mTvTongTien;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,7 @@ public class OrderReturnActivity extends BaseActivity {
     private void initLayout()
     {
         mBtnSubmitOrder = (Button)findViewById(R.id.btn_submit_order);
+        mTvTongTien = (TextView)findViewById(R.id.tv_tong_tien);
         RecyclerView rvOrder = (RecyclerView)findViewById(R.id.recycler_view_order);
         LinearLayoutManager orderLayoutManager = new LinearLayoutManager(this);
         rvOrder.setLayoutManager(orderLayoutManager);
@@ -58,13 +65,13 @@ public class OrderReturnActivity extends BaseActivity {
         mAdapterReturnOrder = new OrderReturnRecyclerViewAdapter(this, mLstReturnOrders, mHandlerProcessSubmitOrder);
         rvOrder.setAdapter(mAdapterReturnOrder);
 
+        mBtnSubmitOrder.setVisibility(View.GONE);
         mBtnSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO : Open comment to submit confirm return order
-                finish();
-//                new DialogUtiils().showDialog(mContext, "Trả hàng thành công!", true);
-//                mSaleApiHelper.confirmReturn(mContext, mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmReturnOrder, true);
+//                finish();
+                mSaleApiHelper.confirmReturn(mContext, mTableSelection.getIdPhieu(), mCurrentOrderCode, mHandlerConfirmReturnOrder, true);
             }
         });
 
@@ -76,8 +83,32 @@ public class OrderReturnActivity extends BaseActivity {
     private void loadData()
     {
         mLstReturnOrders = new ArrayList<>();
-        mSaleApiHelper.getOrderForReturn(mContext, mTableSelection.getIdPhieu(), mHandlerReturnOrder, true );
+        mSaleApiHelper.khoiTaoTraHang(mContext, mTableSelection.getIdPhieu(), mHandlerKhoiTaoTraHang, true);
+
     }
+
+    private Handler mHandlerKhoiTaoTraHang = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseCommon res = (ResponseCommon) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        mSaleApiHelper.getOrderForReturn(mContext, mTableSelection.getIdPhieu(), mHandlerReturnOrder, true );
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
 
     private Handler mHandlerReturnOrder = new Handler(){
         @Override
@@ -87,6 +118,13 @@ public class OrderReturnActivity extends BaseActivity {
                     ResponseReturnOrderData res = (ResponseReturnOrderData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         mLstReturnOrders = res.data;
+                        int tongTien = 0;
+                        for(OrderReturnInfo order : mLstReturnOrders){
+                            float total = order.getSoLuong()*order.getDonGia();
+                            order.setTotal(total);
+                            tongTien +=total;
+                        }
+                        mTvTongTien.setText(CommonUtils.formatCurrency(tongTien));
                         mAdapterReturnOrder.updateData(mLstReturnOrders);
                     } else {
                         if(res.message != null) {
@@ -110,9 +148,11 @@ public class OrderReturnActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        if(res.message != null) {
-                            new DialogUtiils().showDialog(mContext, res.message, false);
-                        }
+                        Intent iHome = new Intent(OrderReturnActivity.this, HomeActivity.class);
+                        iHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        iHome.putExtra(Constants.EXTRA_RESTART_SALE_SCREEN, true);
+                        startActivity(iHome);
+                        finish();
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
@@ -152,17 +192,56 @@ public class OrderReturnActivity extends BaseActivity {
                     mBtnSubmitOrder.setVisibility(View.GONE);
                     break;
                 case Constants.HANDLER_OPEN_SUB_MENU:
-                    OrderReturnInfo order = (OrderReturnInfo) msg.obj;
-                    //TODO : Open comment to submit return tung mon
-//                    mSaleApiHelper.submitReturnOrderTungMon(mContext, order.getIdChiTietPhieu(), order.getIdPhieu(), order.getId(),
-//                                                            order.getMaMon(), order.getTenMon(), order.getSoLuong(), order.getDonViTinhId(), "",
-//                                                            mHandlerReturnOrderTungMon, true);
+                    mCurrentSelectedOrderInfo = (OrderReturnInfo) msg.obj;
+
+                    if(mCurrentOrderCode != null) {
+                        mSaleApiHelper.submitReturnOrderTungMon(mContext, mCurrentSelectedOrderInfo.getIdChiTietPhieu(), mCurrentSelectedOrderInfo.getIdPhieu(), mCurrentSelectedOrderInfo.getId(),
+                                mCurrentSelectedOrderInfo.getMaMon(), mCurrentSelectedOrderInfo.getTenMon(), mCurrentSelectedOrderInfo.getSoLuongTra(), mCurrentSelectedOrderInfo.getDonViTinhId(), "",
+                                mHandlerReturnOrderTungMon, true);
+                    } else {
+                        mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
+                    }
                     mBtnSubmitOrder.setVisibility(View.VISIBLE);
                     break;
             }
         }
     };
 
+    private Handler mHandlerGetOrderCode = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseCreateOrderCodeData res = (ResponseCreateOrderCodeData) msg.obj;
+
+                    //Store order code for using next time till submit this order
+                    if(res.data != null && res.data.orderCode != null) {
+                        mCurrentOrderCode = res.data.orderCode;
+                        if (res.code == APIConstants.REQUEST_OK) {
+                            mSaleApiHelper.submitReturnOrderTungMon(mContext, mCurrentSelectedOrderInfo.getIdChiTietPhieu(), mCurrentSelectedOrderInfo.getIdPhieu(), mCurrentSelectedOrderInfo.getId(),
+                                    mCurrentSelectedOrderInfo.getMaMon(), mCurrentSelectedOrderInfo.getTenMon(), mCurrentSelectedOrderInfo.getSoLuongTra(), mCurrentSelectedOrderInfo.getDonViTinhId(), "",
+                                                            mHandlerReturnOrderTungMon, true);
+                        } else {
+                            if (res.message != null) {
+                                new DialogUtiils().showDialog(mContext, res.message, false);
+                            } else {
+                                new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                            }
+                        }
+                    } else {
+                        if (res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
     private Handler mHandlerReturnOrderTungMon = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -174,6 +253,8 @@ public class OrderReturnActivity extends BaseActivity {
                             new DialogUtiils().showDialog(mContext, res.message, false);
                         }
                     } else {
+                        mCurrentSelectedOrderInfo.setSoLuong(mCurrentSelectedOrderInfo.getSoLuong() + mCurrentSelectedOrderInfo.getSoLuongTra());
+                        mAdapterReturnOrder.notifyDataSetChanged();
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
                         } else {
@@ -182,6 +263,8 @@ public class OrderReturnActivity extends BaseActivity {
                     }
                     break;
                 case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    mCurrentSelectedOrderInfo.setSoLuong(mCurrentSelectedOrderInfo.getSoLuong() + mCurrentSelectedOrderInfo.getSoLuongTra());
+                    mAdapterReturnOrder.notifyDataSetChanged();
                     new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
                     break;
             }

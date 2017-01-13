@@ -182,7 +182,14 @@ public class SaleActivity extends BaseActivity {
                     if(res.code == APIConstants.REQUEST_OK) {
                         mLstTables.addAll(res.data);
                         if(mSelectedTable > -1 && mSelectedTable < mLstTables.size()) {
-                            mLstTables.get(mSelectedTable).setSelection(true);
+                            mTableSelection = mLstTables.get(mSelectedTable);
+                            mTableSelection.setSelection(true);
+                            setTotal(mTableSelection.getTotal());
+                            if(mTableSelection.getIdPhieu() > 0) {
+                                mSubMenu.setVisibility(View.VISIBLE);
+                            } else {
+                                mSubMenu.setVisibility(View.GONE);
+                            }
                         }
                         mAdapterTable.updateData(mLstTables);
                     } else {

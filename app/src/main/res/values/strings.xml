@@ -45,7 +45,8 @@
     <string name="change_order">Số lượng trả lại  :</string>
     <string name="after_change_order">Số lượng còn lại  :</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Message-->
+
+    <string name="validate_so_luong_con_lai">Số lượng còn lại phải lớn hơn 0</string>
 
 </resources>

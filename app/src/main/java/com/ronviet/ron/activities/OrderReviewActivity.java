@@ -25,10 +25,8 @@ import com.ronviet.ron.utils.Constants;
 import com.ronviet.ron.utils.DialogUtiils;
 import com.ronviet.ron.utils.SharedPreferenceUtils;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class OrderReviewActivity extends BaseActivity {
 
@@ -70,12 +68,12 @@ public class OrderReviewActivity extends BaseActivity {
             public void onClick(View view) {
                 //TODO : Open comment to submit confirm order
 //                new DialogUtiils().showDialog(mContext, "Gửi Order thành công!", true);
-                Intent iHome = new Intent(OrderReviewActivity.this, HomeActivity.class);
-                iHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                iHome.putExtra(Constants.EXTRA_RESTART_SALE_SCREEN, true);
-                startActivity(iHome);
-                finish();
-//                mSaleApiHelper.confirmOrder(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
+//                Intent iHome = new Intent(OrderReviewActivity.this, HomeActivity.class);
+//                iHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                iHome.putExtra(Constants.EXTRA_RESTART_SALE_SCREEN, true);
+//                startActivity(iHome);
+//                finish();
+                mSaleApiHelper.confirmOrder(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
             }
         });
 

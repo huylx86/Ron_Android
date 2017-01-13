@@ -422,7 +422,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.confirmOrder(idPhieu, idBan, orderCode, 3, "ORDER");
+            Call<ResponseCommon> response = service.confirmOrder(idPhieu, idBan, orderCode, 1, "ORDER");
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override
@@ -430,6 +430,48 @@ public class SaleAPIHelper extends APIHelper {
                     ResponseCommon res = response.body();
                     if (res == null) {
                         res = new ResponseReviewOrderData();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void khoiTaoTraHang(Context context, long idPhieu, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCommon> response = service.khoiTaoTraHang(idPhieu);
+
+            response.enqueue(new Callback<ResponseCommon>() {
+                @Override
+                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
+                    ResponseCommon res = response.body();
+                    if (res == null) {
+                        res = new ResponseCommon();
                         res.code = APIConstants.REQUEST_FAILED;
                     }
 
@@ -508,7 +550,7 @@ public class SaleAPIHelper extends APIHelper {
             ICallServices service = retrofit.create(ICallServices.class);
 
             Call<ResponseCommon> response = service.submitReturnOrderTungMon(idChiTietPhieu, idPhieu, idMon, maMon, tenMon, soLuongTra, donViTinhId,
-                                                                    mota, 3, 1, 3);
+                                                                    mota, 3, 1, 3, "TRAHANG", 1);
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override

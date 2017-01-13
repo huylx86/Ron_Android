@@ -67,24 +67,32 @@ public interface ICallServices {
     @GET("/api/SoDoBan/XemOrderTruocSubmit")
     Call<ResponseReviewOrderData> getReviewOrder(@Query("order_code") String orderCode);
 
-    @FormUrlEncoded
-    @POST("/api/SoDoBan/GuiOrder")
-    Call<ResponseCommon> confirmOrder(@Field("id_phieu") long idPhieu, @Field("id_ban") long idBan, @Field("order_code") String orderCode, @Field("id_nhan_vien") long isNhanVien, @Field("trang_thai") String trangThai);
+//    @FormUrlEncoded
+//    @POST("/api/SoDoBan/GuiOrder/")
+//    Call<ResponseCommon> confirmOrder(@Field("id_phieu") long idPhieu, @Field("id_ban") long idBan, @Field("order_code") String orderCode, @Field("id_nhan_vien") long isNhanVien, @Field("trang_thai") String trangThai);
+
+    @GET("/api/SoDoBan/GuiOrder")
+    Call<ResponseCommon> confirmOrder(@Query("id_phieu") long idPhieu, @Query("id_ban") long idBan, @Query("order_code") String orderCode, @Query("id_nhan_vien") long isNhanVien, @Query("trang_thai") String trangThai);
+
+
+    @GET("/api/SoDoBan/KhoiTaoXemLaiPhieu")
+    Call<ResponseCommon> khoiTaoTraHang(@Query("id_phieu") long idPhieu);
+
+
+    @GET("/api/SoDoBan/XemChiTietPhieu")
+    Call<ResponseReturnOrderData> getOrderForReturn(@Query("id_phieu") long idPhieu);
 
     @FormUrlEncoded
-    @POST("/api/SoDoBan/XemOrderSauSubmit")
-    Call<ResponseReturnOrderData> getOrderForReturn(@Field("id_phieu") long idPhieu);
-
-    @POST("")
+    @POST("/api/SoDoBan/TraTungMatHang")
     Call<ResponseCommon> submitReturnOrderTungMon(@Field("id_chi_tiet_phieu") long idChiTietPhieu, @Field("id_phieu") long idPhieu,
                                                      @Field("id_mon") long idMon, @Field("ma_mon") String maMon,
                                                      @Field("ten_mon") String tenMon, @Field("so_luong_tra") float soLuongTra,
                                                      @Field("don_vi_tinh_id") long donViTinhId, @Field("mo_ta") String moTa,
                                                      @Field("trung_tam_id") long trungTamId, @Field("tien_te_id") long tienTeId,
-                                                     @Field("pc_id") long pcId);
+                                                     @Field("pc_id") long pcId, @Field("trang_thai") String trangThai, @Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId);
 
-
-    @POST("")
+    @FormUrlEncoded
+    @POST("/api/SoDoBan/TraHang")
     Call<ResponseCommon> confirmReturn(@Field("id_phieu") long idPhieu, @Field("order_code") String orderCode, @Field("nhan_vien_id") long nhanVienId, @Field("trang_thai") String trangThai);
 
 }

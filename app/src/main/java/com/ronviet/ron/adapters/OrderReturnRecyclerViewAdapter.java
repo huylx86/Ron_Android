@@ -12,12 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.models.OrderReturnInfo;
+import com.ronviet.ron.utils.CommonUtils;
 import com.ronviet.ron.utils.Constants;
+import com.ronviet.ron.utils.DialogUtiils;
 
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private Handler mHandlerProcessSubmitOrder;
     private float mRemainingProdCheck = 0;
     private OrderReturnInfo mOrderReturnProd;
+    private float mSoLuongTra = 0;
 
     public OrderReturnRecyclerViewAdapter(Context context, List<OrderReturnInfo> lstReturnOrders, Handler handler) {
         this.mLstReturnOrders = lstReturnOrders;
@@ -57,10 +61,15 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         OrderReturnRecyclerViewHolders orderHolder = (OrderReturnRecyclerViewHolders) holder;
         OrderReturnInfo orderInfo = mLstReturnOrders.get(position);
         orderHolder.mProdName.setText(orderInfo.getTenMon());
-        orderHolder.mProdPrice.setText(String.valueOf(orderInfo.getDonGia()));
-        orderHolder.mProdPromotion.setText(orderInfo.getPromotion());
+        orderHolder.mProdPrice.setText(CommonUtils.formatCurrency((int)orderInfo.getDonGia()));
+        if(orderInfo.getPromotion() != null){
+            orderHolder.mProdPromotion.setText(orderInfo.getPromotion());
+            orderHolder.mProdPromotion.setVisibility(View.VISIBLE);
+        } else {
+            orderHolder.mProdPromotion.setVisibility(View.GONE);
+        }
         orderHolder.mProdNumber.setText(String.valueOf(orderInfo.getSoLuong()));
-        orderHolder.mProdTotal.setText(String.valueOf(orderInfo.getTotal()));
+        orderHolder.mProdTotal.setText(CommonUtils.formatCurrency((int)orderInfo.getTotal()));
         orderHolder.mView.setTag(position);
     }
 
@@ -116,19 +125,20 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
         final String textAfterChange = mContext.getString(R.string.after_change_order);
 
+        mSoLuongTra = 1;
+        mRemainingProdCheck = order.getSoLuong() - mSoLuongTra;
         tvBeforeChangeOrder.setText(mContext.getString(R.string.before_change_order) + order.getSoLuong() );
-        tvAfterChangeOrder.setText(textAfterChange + String.valueOf(order.getSoLuong()));
+        tvAfterChangeOrder.setText(textAfterChange + String.valueOf(mRemainingProdCheck));
 
         final EditText userInput = (EditText) promptsView.findViewById(R.id.edt_change_order);
         userInput.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                float number = 0;
                 try {
-                     number = Float.parseFloat(userInput.getText().toString());
+                    mSoLuongTra = Float.parseFloat(userInput.getText().toString());
                 }catch (Exception e){}
-                mRemainingProdCheck = order.getSoLuong() - number;
+                mRemainingProdCheck = order.getSoLuong() - mSoLuongTra;
                 tvAfterChangeOrder.setText(textAfterChange + String.format("%.2f", mRemainingProdCheck));
             }
 
@@ -148,20 +158,7 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                if(mRemainingProdCheck != order.getSoLuong()) {
-//                                    mOrderReturnProd.setReturnProd(true);
-                                    mOrderReturnProd.setSoLuong(mRemainingProdCheck);
-                                    Message msg = Message.obtain();
-                                    msg.obj = mOrderReturnProd;
-                                    msg.what = Constants.HANDLER_OPEN_SUB_MENU;
-                                    mHandlerProcessSubmitOrder.sendMessage(msg);
-                                    notifyDataSetChanged();
-                                }
-                            }
-                        })
+                .setPositiveButton("OK", null)
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
@@ -171,6 +168,35 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
         // create alert dialog
         final AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if(mRemainingProdCheck < 0) {
+                            new DialogUtiils().showDialog(mContext, mContext.getString(R.string.validate_so_luong_con_lai), false);
+                        } else {
+                            if (mRemainingProdCheck != order.getSoLuong()) {
+                                mOrderReturnProd.setSoLuong(mRemainingProdCheck);
+                                mOrderReturnProd.setSoLuongTra(mSoLuongTra);
+                                Message msg = Message.obtain();
+                                msg.obj = mOrderReturnProd;
+                                msg.what = Constants.HANDLER_OPEN_SUB_MENU;
+                                mHandlerProcessSubmitOrder.sendMessage(msg);
+                                notifyDataSetChanged();
+                            }
+                            alertDialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
 
         userInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

@@ -23,7 +23,6 @@ public class BaseActivity extends AppCompatActivity {
     protected LinearLayout mLnTotal;
     protected TableInfo mTableSelection;
     protected boolean isAddOrder = false;
-    protected long mOrderId;
     protected Context mContext;
 
     @Override

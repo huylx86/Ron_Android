@@ -61,15 +61,21 @@ public class SharedPreferenceUtils {
         return null;
     }
 
-    public static boolean removeOrderCode(Context context, String orderCode)
+    public static void removeOrderCode(Context context, String orderCode)
     {
         List<PendingOrder> lstPendingOrder = getPendingOrder(context);
         for(PendingOrder order : lstPendingOrder){
             if(order.orderCode.equalsIgnoreCase(orderCode)) {
                 lstPendingOrder.remove(order);
-                return true;
             }
         }
-        return false;
+        Gson gson = new Gson();
+        String result = gson.toJson(lstPendingOrder);
+
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PENDING_ORDER, result);
+        editor.commit();
     }
 }
