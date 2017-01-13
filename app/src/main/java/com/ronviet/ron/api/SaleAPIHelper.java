@@ -422,7 +422,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.confirmOrder(idPhieu, idBan, orderCode, 1);
+            Call<ResponseCommon> response = service.confirmOrder(idPhieu, idBan, orderCode, 1, "ORDER");
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override

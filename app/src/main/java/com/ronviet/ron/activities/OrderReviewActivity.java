@@ -116,9 +116,7 @@ public class OrderReviewActivity extends BaseActivity {
                     if(res.code == APIConstants.REQUEST_OK) {
                         //Remove order code of table after submit order succesfully
                         SharedPreferenceUtils.removeOrderCode(mContext, mCurrentOrderCode);
-                        if(res.message != null) {
-                            new DialogUtiils().showDialog(mContext, res.message, true);
-                        }
+                        finish();
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);

@@ -131,7 +131,7 @@ public class ProductDetailActivity extends BaseActivity {
                     ResponseCreateOrderCodeData res = (ResponseCreateOrderCodeData) msg.obj;
 
                     //Store order code for using next time till submit this order
-                    if(res.data != null) {
+                    if(res.data != null && res.data.orderCode != null) {
                         PendingOrder order = new PendingOrder();
                         order.banId = mTableSelection.getId();
                         order.orderCode = res.data.orderCode;
