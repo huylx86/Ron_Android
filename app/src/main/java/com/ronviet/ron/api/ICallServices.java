@@ -95,5 +95,14 @@ public interface ICallServices {
     @POST("/api/SoDoBan/TraHang")
     Call<ResponseCommon> confirmReturn(@Field("id_phieu") long idPhieu, @Field("order_code") String orderCode, @Field("nhan_vien_id") long nhanVienId, @Field("trang_thai") String trangThai);
 
+
+    @POST("/api/SoDoBan/XoaOrderKhongSubmit")
+    Call<ResponseCommon> deleteOrderAll(@Field("order_code") String orderCode, @Field("id_phieu") long idPhieu, @Field("id_nhan_vien") long nhanVienId);
+
+    @GET("/api/SoDoBan/XoaOrderChiTiet")
+    Call<ResponseCommon> deleteOrderTungMon(@Query("order_id") long orderId, @Query("id_phieu") long idPhieu, @Query("order_id_chi_tiet") long orderIdChiTiet,
+                                            @Query("is_setmenu") boolean isSetMenu, @Query("is_mix") boolean isMix);
+
+
 }
 

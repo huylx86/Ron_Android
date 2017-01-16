@@ -31,6 +31,7 @@ public class OrderReturnInfo extends ProductInfo {
     private float soLuongTra = 0;
     private float total;
     private String promotion;
+    private boolean isReturn = false;
 //    private boolean isReturnProd;
 
 
@@ -112,5 +113,13 @@ public class OrderReturnInfo extends ProductInfo {
 
     public void setSoLuongTra(float soLuongTra) {
         this.soLuongTra = soLuongTra;
+    }
+
+    public boolean isReturn() {
+        return isReturn;
+    }
+
+    public void setReturn(boolean aReturn) {
+        isReturn = aReturn;
     }
 }

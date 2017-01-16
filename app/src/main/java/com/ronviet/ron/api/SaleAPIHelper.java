@@ -323,7 +323,7 @@ public class SaleAPIHelper extends APIHelper {
 
     public void submitOrderTungMon(Context context, String orderCode, long idPhieu, long idMon, String maMon, String tenMon,
                                float soLuong, long donViTinhId, float giaGoc, float donGia, boolean giaCoThue, float thue,
-                               long idBan, String yeuCauThem, final Handler handler, boolean isShowProgress)
+                               long idBan, String yeuCauThem, String status, final Handler handler, boolean isShowProgress)
     {
         if(NetworkUtils.isNetworkAvailable(context)) {
             if (isShowProgress) {
@@ -336,7 +336,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.submitOrderTungMon(-1000, orderCode, -1000, idPhieu, "INSERT", idMon, maMon, tenMon, soLuong,
+            Call<ResponseCommon> response = service.submitOrderTungMon(-1000, orderCode, -1000, idPhieu, status, idMon, maMon, tenMon, soLuong,
                                                             donViTinhId, giaGoc, donGia, giaCoThue, thue, 3, 3, 1, CommonUtils.convertDateFormat(new Date()),
                                                             idBan, yeuCauThem, false, -1, 3, 3, false, 1);
 
@@ -620,4 +620,89 @@ public class SaleAPIHelper extends APIHelper {
             new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
         }
     }
+
+    public void deleteOrderAll(Context context, long idPhieu, String orderCode, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCommon> response = service.deleteOrderAll(orderCode, idPhieu, 1);
+
+            response.enqueue(new Callback<ResponseCommon>() {
+                @Override
+                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
+                    ResponseCommon res = response.body();
+                    if (res == null) {
+                        res = new ResponseCommon();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void deleteOrderTungMon(Context context, long idPhieu, long orderId, long orderIdChiTiet, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCommon> response = service.deleteOrderTungMon(orderId, idPhieu, orderIdChiTiet, false, false);
+
+            response.enqueue(new Callback<ResponseCommon>() {
+                @Override
+                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
+                    ResponseCommon res = response.body();
+                    if (res == null) {
+                        res = new ResponseCommon();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
 }

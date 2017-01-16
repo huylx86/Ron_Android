@@ -60,25 +60,18 @@ public class OrderReviewActivity extends BaseActivity {
         rvOrder.setLayoutManager(orderLayoutManager);
         rvOrder.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         rvOrder.setItemAnimator(new DefaultItemAnimator());
-        mAdapterOrder = new OrderReviewRecyclerViewAdapter(this, mLstOrders);
+        mAdapterOrder = new OrderReviewRecyclerViewAdapter(this, mLstOrders, mHandlerInputSoLuong);
         rvOrder.setAdapter(mAdapterOrder);
 
         mBtnSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO : Open comment to submit confirm order
-//                new DialogUtiils().showDialog(mContext, "Gửi Order thành công!", true);
-//                Intent iHome = new Intent(OrderReviewActivity.this, HomeActivity.class);
-//                iHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                iHome.putExtra(Constants.EXTRA_RESTART_SALE_SCREEN, true);
-//                startActivity(iHome);
-//                finish();
                 mSaleApiHelper.confirmOrder(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
             }
         });
 
         initHeader();
-        setTitle(getString(R.string.title_list_order));
+        setTitle(getString(R.string.title_list_order) + " - " + mTableSelection.getName());
         setAddOrder();
     }
 
@@ -136,6 +129,51 @@ public class OrderReviewActivity extends BaseActivity {
                         iHome.putExtra(Constants.EXTRA_RESTART_SALE_SCREEN, true);
                         startActivity(iHome);
                         finish();
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
+
+    protected Handler mHandlerInputSoLuong = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            OrderInfo orderInfo = (OrderInfo) msg.obj;
+            switch (msg.what){
+                case Constants.HANDLER_INPUT_SO_LUONG:
+                    mSaleApiHelper.submitOrderTungMon(mContext, orderInfo.getOrderCode(), mTableSelection.getIdPhieu(), orderInfo.getId(),
+                            orderInfo.getMaMon(), orderInfo.getTenMon(), orderInfo.getSoLuong(), orderInfo.getDonViTinhId(),
+                            orderInfo.getGiaGoc(), orderInfo.getDonGia(), orderInfo.isGiaCoThue(), orderInfo.getThue(), mTableSelection.getId(), "",
+                            "UPDATE", mHandlerProcessOrderTungMon, true);
+
+                    break;
+                case Constants.HANDLER_XOA_ORDER:
+                    mSaleApiHelper.deleteOrderTungMon(mContext, mTableSelection.getIdPhieu(), orderInfo.getOrderId(), orderInfo.getOrderChiTietPhieu(),
+                            mHandlerProcessOrderTungMon, true);
+                    break;
+            }
+
+
+        }
+    };
+
+    private Handler mHandlerProcessOrderTungMon = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseCommon res = (ResponseCommon) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        loadData();
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);

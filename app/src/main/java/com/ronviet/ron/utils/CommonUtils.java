@@ -34,6 +34,6 @@ public class CommonUtils {
     {
         Locale vn = new Locale("vn", "VN");
         NumberFormat vnFormat = NumberFormat.getCurrencyInstance(vn);
-        return vnFormat.format(tongTien);
+        return vnFormat.format(tongTien).substring(1);
     }
 }

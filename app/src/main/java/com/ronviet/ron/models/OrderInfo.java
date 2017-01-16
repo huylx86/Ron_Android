@@ -14,7 +14,7 @@ public class OrderInfo extends ProductInfo {
     private String orderCode;
 
     @SerializedName("order_id_chi_tiet")
-    private String orderChiTietPhieu;
+    private long orderChiTietPhieu;
 
     @SerializedName("so_luong")
     private float soLuong;
@@ -40,11 +40,11 @@ public class OrderInfo extends ProductInfo {
         this.orderCode = orderCode;
     }
 
-    public String getOrderChiTietPhieu() {
+    public long getOrderChiTietPhieu() {
         return orderChiTietPhieu;
     }
 
-    public void setOrderChiTietPhieu(String orderChiTietPhieu) {
+    public void setOrderChiTietPhieu(long orderChiTietPhieu) {
         this.orderChiTietPhieu = orderChiTietPhieu;
     }
 

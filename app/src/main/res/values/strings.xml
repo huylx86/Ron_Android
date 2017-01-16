@@ -16,6 +16,7 @@
     <string name="off_work">Ra Ca</string>
     <string name="change_password">Đổi Mật Khẩu</string>
     <string name="config">Cấu Hình</string>
+    <string name="company_name">Công ty TNHH Rôn Việt</string>
     <string name="website">Website : http://ronviet.vn</string>
     <string name="hotline">Hotline : 0937 844185</string>
 
@@ -23,18 +24,19 @@
     <string name="separate_table">Tách Bàn</string>
     <string name="move_table">Chuyển Bàn</string>
     <string name="join_table">Ghép Bàn</string>
-    <string name="return_order">Trả Hàng</string>
+    <string name="return_order">Xem Phiếu</string>
 
     <string name="food">ĐỒ ĂN</string>
     <string name="drink">ĐỒ UỐNG</string>
     <string name="others">KHÁC</string>
     <string name="title_activity_product_detail">ProductDetailActivity</string>
-    <string name="total">Tổng Tiền :</string>
+    <string name="total">T.Tiền :</string>
     <string name="submit_order">Gửi Order</string>
 
     <!-- Screen Name -->
     <string name="title_table_map">SƠ ĐỒ BÀN</string>
     <string name="title_list_order">DANH SÁCH ORDER</string>
+    <string name="title_return_order">ĐÃ ORDER</string>
     <string name="title_add_list">THÊM MÓN</string>
 
     <!-- Add Order -->
@@ -44,6 +46,7 @@
     <string name="before_change_order">SL hiện tại  :</string>
     <string name="change_order">SL trả lại  :</string>
     <string name="after_change_order">Số lượng còn lại  :</string>
+    <string name="confirm">XÁC NHẬN</string>
 
     <!--Message-->
 
@@ -51,5 +54,6 @@
     <string name="ok">ĐỒNG Ý</string>
     <string name="cancel">HỦY BỎ</string>
     <string name="delete">XÓA</string>
+
 
 </resources>

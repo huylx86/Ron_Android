@@ -3,17 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_prod_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/input_order"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        />
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -47,14 +36,28 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:text="@string/delete"
+            android:textSize="20sp"
+            android:textColor="@android:color/holo_blue_light"
+            android:id="@+id/tv_delete"
+            android:visibility="gone"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_grey"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/ok"
             android:textSize="20sp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@android:color/holo_blue_light"
             android:id="@+id/tv_ok"/>
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/color_sep"/>
+            android:background="@color/light_grey"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -62,7 +65,7 @@
             android:gravity="center"
             android:text="@string/cancel"
             android:textSize="20sp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@android:color/holo_blue_light"
             android:id="@+id/tv_cancel"/>
     </LinearLayout>
     <View

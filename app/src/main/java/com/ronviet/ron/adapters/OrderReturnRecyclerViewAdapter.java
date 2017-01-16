@@ -1,10 +1,10 @@
 package com.ronviet.ron.adapters;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -70,6 +69,11 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         }
         orderHolder.mProdNumber.setText(String.valueOf(orderInfo.getSoLuong()));
         orderHolder.mProdTotal.setText(CommonUtils.formatCurrency((int)orderInfo.getTotal()));
+        if(orderInfo.isReturn()) {
+            orderHolder.mView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_blue));
+        } else {
+            orderHolder.mView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.transparent));
+        }
         orderHolder.mView.setTag(position);
     }
 
@@ -106,35 +110,32 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             OrderReturnInfo info = mLstReturnOrders.get(pos);
             mOrderReturnProd = info;
             mRemainingProdCheck = info.getSoLuong();
-            showInputDialog(info);
+            showInputReturnOrderDialog(info);
         }
     }
 
-    private void showInputDialog(final OrderReturnInfo order)
+    private void showInputReturnOrderDialog(final OrderReturnInfo order)
     {
-        LayoutInflater li = LayoutInflater.from(mContext);
-        View promptsView = li.inflate(R.layout.dialog_input_return_prod_layout, null);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                mContext);
+        final Dialog dialog = new Dialog(mContext, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
+        dialog.setContentView(R.layout.dialog_input_return_prod_layout);
+        dialog.setTitle(order.getTenMon());
 
-        alertDialogBuilder.setView(promptsView);
+        TextView tvBeforeChangeOrder = (TextView)dialog.findViewById(R.id.tv_before_change_order);
 
-        TextView tvBeforeChangeOrder = (TextView)promptsView.findViewById(R.id.tv_before_change_order);
-
-        mSoLuongTra = 1;
-        mRemainingProdCheck = order.getSoLuong() - mSoLuongTra;
+        mRemainingProdCheck = order.getSoLuong() - 1;
         tvBeforeChangeOrder.setText(mContext.getString(R.string.before_change_order) + order.getSoLuong() );
 
-        final EditText userInput = (EditText) promptsView.findViewById(R.id.edt_change_order);
+        final EditText userInput = (EditText) dialog.findViewById(R.id.edt_change_order);
         userInput.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                float soLuongTra = 1;
                 try {
-                    mSoLuongTra = Float.parseFloat(userInput.getText().toString());
+                    soLuongTra = Float.parseFloat(userInput.getText().toString());
                 }catch (Exception e){}
-                mRemainingProdCheck = order.getSoLuong() - mSoLuongTra;
+                mRemainingProdCheck = order.getSoLuong() - soLuongTra;
             }
 
             @Override
@@ -148,48 +149,35 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
             }
         });
-        TextView tvProdName = (TextView)promptsView.findViewById(R.id.tv_prod_name);
-        tvProdName.setText(order.getTenMon());
 
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK", null)
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
 
-        // create alert dialog
-        final AlertDialog alertDialog = alertDialogBuilder.create();
+        TextView tvOk = (TextView)dialog.findViewById(R.id.tv_ok);
+        TextView tvCancel = (TextView)dialog.findViewById(R.id.tv_cancel);
 
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
+        tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onShow(DialogInterface dialog) {
-
-                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        if(mRemainingProdCheck < 0) {
-                            new DialogUtiils().showDialog(mContext, mContext.getString(R.string.validate_so_luong_con_lai), false);
-                        } else {
-                            if (mRemainingProdCheck != order.getSoLuong()) {
-                                mOrderReturnProd.setSoLuong(mRemainingProdCheck);
-                                mOrderReturnProd.setSoLuongTra(mSoLuongTra);
-                                Message msg = Message.obtain();
-                                msg.obj = mOrderReturnProd;
-                                msg.what = Constants.HANDLER_OPEN_SUB_MENU;
-                                mHandlerProcessSubmitOrder.sendMessage(msg);
-                                notifyDataSetChanged();
-                            }
-                            alertDialog.dismiss();
-                        }
+            public void onClick(View view) {
+                if(mRemainingProdCheck < 0) {
+                    new DialogUtiils().showDialog(mContext, mContext.getString(R.string.validate_so_luong_con_lai), false);
+                } else {
+                    if (mRemainingProdCheck != order.getSoLuong()) {
+                        mOrderReturnProd.setSoLuong(mRemainingProdCheck);
+                        mOrderReturnProd.setSoLuongTra(mSoLuongTra);
+                        mOrderReturnProd.setReturn(true);
+                        Message msg = Message.obtain();
+                        msg.obj = mOrderReturnProd;
+                        msg.what = Constants.HANDLER_OPEN_SUB_MENU;
+                        mHandlerProcessSubmitOrder.sendMessage(msg);
+                        notifyDataSetChanged();
                     }
-                });
+                    dialog.dismiss();
+                }
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
 
@@ -197,13 +185,14 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
             }
         });
         // show it
-        alertDialog.show();
+        dialog.show();
     }
+
 
 //    private boolean isChangeOrder()
 //    {

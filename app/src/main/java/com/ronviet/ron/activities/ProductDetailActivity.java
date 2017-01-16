@@ -59,7 +59,7 @@ public class ProductDetailActivity extends BaseActivity {
         initHeader();
         setTotal(mTableSelection.getTotal());
         if(mProductCatInfo != null) {
-            setTitle(mProductCatInfo.getTenNhom());
+            setTitle(mProductCatInfo.getTenNhom() + " - " + mTableSelection.getName());
         }
     }
 
@@ -114,7 +114,7 @@ public class ProductDetailActivity extends BaseActivity {
                 mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
                         mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
                         mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
-                        mHandlerSubmitOrderTungMon, true);
+                        "INSERT", mHandlerSubmitOrderTungMon, true);
             } else {
                 mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
             }
@@ -140,7 +140,7 @@ public class ProductDetailActivity extends BaseActivity {
                             mSaleApiHelper.submitOrderTungMon(mContext, res.data.orderCode, mTableSelection.getIdPhieu(), mCurrentOrder.getId(),
                                     mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
                                     mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
-                                    mHandlerSubmitOrderTungMon, true);
+                                    "INSERT", mHandlerSubmitOrderTungMon, true);
                         } else {
                             if (res.message != null) {
                                 new DialogUtiils().showDialog(mContext, res.message, false);
@@ -170,9 +170,7 @@ public class ProductDetailActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        if(res.message != null) {
-                            new DialogUtiils().showDialog(mContext, res.message, false);
-                        }
+
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);

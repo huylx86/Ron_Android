@@ -69,14 +69,13 @@ public class OrderReturnActivity extends BaseActivity {
         mBtnSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO : Open comment to submit confirm return order
-//                finish();
                 mSaleApiHelper.confirmReturn(mContext, mTableSelection.getIdPhieu(), mCurrentOrderCode, mHandlerConfirmReturnOrder, true);
             }
         });
+        mBtnSubmitOrder.setText(R.string.confirm);
 
         initHeader();
-        setTitle(getString(R.string.title_list_order));
+        setTitle(getString(R.string.title_return_order) + " - " + mTableSelection.getName());
         hidePayment();
     }
 

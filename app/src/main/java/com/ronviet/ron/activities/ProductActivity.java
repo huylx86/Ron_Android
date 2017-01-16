@@ -55,7 +55,7 @@ public class ProductActivity extends BaseActivity {
         setTabBar(tabLayout);
 
         initHeader();
-        setTitle(getString(R.string.title_add_list));
+        setTitle(getString(R.string.title_add_list) + " - " + mTableSelection.getName());
         setTotal(mTableInfo.getTotal());
     }
 

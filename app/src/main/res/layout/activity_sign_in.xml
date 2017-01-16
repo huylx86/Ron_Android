@@ -4,6 +4,7 @@
     android:id="@+id/activity_sign_in"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="5dp"
     tools:context="com.ronviet.ron.activities.SignInActivity">
 
     <LinearLayout
@@ -15,8 +16,9 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/return_order"
-            android:scaleType="fitXY"/>
+            android:src="@drawable/sale"
+            android:scaleType="fitXY"
+            android:layout_marginBottom="20dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,34 +56,5 @@
             android:text="@string/sign_in"
             android:id="@+id/btn_sign_in"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/return_order"
-            android:scaleType="fitXY"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text=""/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text=""/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text=""/>
-        </LinearLayout>
-    </LinearLayout>
+    <include layout="@layout/copy_right_layout"/>
 </RelativeLayout>

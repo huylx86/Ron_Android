@@ -67,7 +67,7 @@ public class ProductCatRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
 
     public class ProductCatRecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView mProdName, mProdDes;
+        public TextView mProdName; //mProdDes;
         public View mView;
 
         public ProductCatRecyclerViewHolders(View itemView) {
@@ -75,7 +75,7 @@ public class ProductCatRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
             mView = itemView;
             itemView.setOnClickListener(this);
             mProdName = (TextView) itemView.findViewById(R.id.tv_prod_name);
-            mProdDes = (TextView) itemView.findViewById(R.id.tv_prod_des);
+//            mProdDes = (TextView) itemView.findViewById(R.id.tv_prod_des);
         }
 
         @Override
