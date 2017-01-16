@@ -41,12 +41,15 @@
     <string name="input_order">Nhập số lượng muốn order</string>
 
     <!-- Order -->
-    <string name="before_change_order">Số lượng hiện tại  :</string>
-    <string name="change_order">Số lượng trả lại  :</string>
+    <string name="before_change_order">SL hiện tại  :</string>
+    <string name="change_order">SL trả lại  :</string>
     <string name="after_change_order">Số lượng còn lại  :</string>
 
     <!--Message-->
 
     <string name="validate_so_luong_con_lai">Số lượng còn lại phải lớn hơn 0</string>
+    <string name="ok">ĐỒNG Ý</string>
+    <string name="cancel">HỦY BỎ</string>
+    <string name="delete">XÓA</string>
 
 </resources>

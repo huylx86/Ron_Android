@@ -12,4 +12,7 @@
     <dimen name="height_sub_menu_button">50dp</dimen>
     <dimen name="text_size_sub_menu_button">14sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Font size-->
+    <dimen name="staff_info_font_size">16sp</dimen>
 </resources>

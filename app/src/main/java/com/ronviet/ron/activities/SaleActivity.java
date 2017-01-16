@@ -309,4 +309,16 @@ public class SaleActivity extends BaseActivity {
             }
         }
     };
+
+    //If seleeted table's id is null when user tap button "View Order" will process to open table, then order new product
+    // else open "View Order" list
+    @Override
+    protected void processViewOrder() {
+        if(mTableSelection.getIdPhieu() < 1){
+            mSaleHelper.getIdPhieu(mContext, mTableSelection.getAreaId(),
+                    mTableSelection.getId(), mHandlerGetIdPhieu, true);
+        } else {
+            super.processViewOrder();
+        }
+    }
 }

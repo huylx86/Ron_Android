@@ -12,6 +12,11 @@
         android:layout_centerVertical="true"
         android:gravity="center"
         android:orientation="vertical">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/return_order"
+            android:scaleType="fitXY"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,6 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
+            android:textAlignment="center"
             android:background="@android:color/transparent"
             android:inputType="numberPassword"
             android:hint="@string/code_sign_in"
@@ -47,5 +53,35 @@
             android:textColor="@android:color/white"
             android:text="@string/sign_in"
             android:id="@+id/btn_sign_in"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/return_order"
+            android:scaleType="fitXY"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text=""/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text=""/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text=""/>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

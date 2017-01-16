@@ -2,6 +2,7 @@ package com.ronviet.ron.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class ProductCatRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
         ProductCatRecyclerViewHolders prodHolder = (ProductCatRecyclerViewHolders) holder;
         ProductCatInfo prodCatInfo = mLstProductCats.get(position);
         prodHolder.mProdName.setText(prodCatInfo.getTenNhom());
+        prodHolder.mProdName.setBackgroundColor(Color.parseColor(prodCatInfo.getMaMau()));
         prodHolder.mView.setTag(position);
     }
 

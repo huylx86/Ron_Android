@@ -59,9 +59,7 @@ public class BaseActivity extends AppCompatActivity {
                             mContext.startActivity(iProduct);
                             ((Activity)mContext).finish();
                         } else {
-                            Intent iOrder = new Intent(mContext, OrderReviewActivity.class);
-                            iOrder.putExtra(Constants.EXTRA_TABLE, mTableSelection);
-                            startActivity(iOrder);
+                            processViewOrder();
                         }
                     }
                 }
@@ -95,5 +93,12 @@ public class BaseActivity extends AppCompatActivity {
         if(mLnTotal != null) {
             mLnTotal.setVisibility(View.GONE);
         }
+    }
+
+    protected void processViewOrder()
+    {
+        Intent iOrder = new Intent(mContext, OrderReviewActivity.class);
+        iOrder.putExtra(Constants.EXTRA_TABLE, mTableSelection);
+        startActivity(iOrder);
     }
 }

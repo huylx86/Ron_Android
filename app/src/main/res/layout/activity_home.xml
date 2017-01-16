@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="50dp"
         android:orientation="vertical">
+        <!-- Staff information -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
@@ -44,14 +45,17 @@
                     android:gravity="center_vertical"
                     android:textColor="@android:color/white"
                     android:text="Huy Le"
+                    android:textSize="@dimen/staff_info_font_size"
+                    android:textStyle="bold"
                     android:id="@+id/tv_name"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:textSize="@dimen/staff_info_font_size"
                     android:gravity="center_vertical"
                     android:textColor="@android:color/white"
-                    android:textStyle="italic"
+                    android:textStyle="italic|bold"
                     android:text="Nhan vien"
                     android:id="@+id/tv_position"/>
             </LinearLayout>
@@ -65,7 +69,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:textStyle="italic"
+                    android:textSize="@dimen/staff_info_font_size"
+                    android:textStyle="bold"
                     android:textColor="@android:color/white"
                     android:text="Ca 1"
                     android:id="@+id/tv_working_time"/>
@@ -75,16 +80,19 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:textColor="@android:color/white"
-                    android:textStyle="italic"
+                    android:textSize="@dimen/staff_info_font_size"
+                    android:textStyle="bold"
                     android:text="31/12/2016"
                     android:id="@+id/tv_data"/>
 
             </LinearLayout>
         </LinearLayout>
-
+        <!-- End Staff Information-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,64 +154,64 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="horizontal">-->
 
-                <!--Accountant Button -->
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/margin_button"
-                    android:layout_weight="1">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/background_rectangle_highlight">
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/accountant"
-                            android:layout_marginBottom="5dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/account"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_button"/>
-                    </LinearLayout>
+                <!--&lt;!&ndash;Accountant Button &ndash;&gt;-->
+                <!--<FrameLayout-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="@dimen/margin_button"-->
+                    <!--android:layout_weight="1">-->
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:gravity="center"-->
+                        <!--android:background="@drawable/background_rectangle_highlight">-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="50dp"-->
+                            <!--android:src="@drawable/accountant"-->
+                            <!--android:layout_marginBottom="5dp"/>-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="@string/account"-->
+                            <!--android:textColor="@android:color/white"-->
+                            <!--android:textSize="@dimen/text_size_button"/>-->
+                    <!--</LinearLayout>-->
 
-                </FrameLayout>
-                <!-- Off Work -->
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/margin_button"
-                    android:layout_weight="1">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/background_rectangle_highlight">
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/off_work"
-                            android:layout_marginBottom="5dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/off_work"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_button"/>
-                    </LinearLayout>
-                </FrameLayout>
-            </LinearLayout>
+                <!--</FrameLayout>-->
+                <!--&lt;!&ndash; Off Work &ndash;&gt;-->
+                <!--<FrameLayout-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:padding="@dimen/margin_button"-->
+                    <!--android:layout_weight="1">-->
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:gravity="center"-->
+                        <!--android:background="@drawable/background_rectangle_highlight">-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="50dp"-->
+                            <!--android:src="@drawable/off_work"-->
+                            <!--android:layout_marginBottom="5dp"/>-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="@string/off_work"-->
+                            <!--android:textColor="@android:color/white"-->
+                            <!--android:textSize="@dimen/text_size_button"/>-->
+                    <!--</LinearLayout>-->
+                <!--</FrameLayout>-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -269,19 +277,31 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/website"
-            android:textStyle="italic"
-            android:textColor="@color/text_link"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hotline"
-            android:textStyle="italic"
-            android:textColor="@color/text_link"/>
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/return_order"
+            android:scaleType="fitXY"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/website"
+                android:textStyle="italic"
+                android:textColor="@color/text_link"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hotline"
+                android:textStyle="italic"
+                android:textColor="@color/text_link"/>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

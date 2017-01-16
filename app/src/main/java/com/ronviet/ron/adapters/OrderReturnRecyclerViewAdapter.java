@@ -121,14 +121,10 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         alertDialogBuilder.setView(promptsView);
 
         TextView tvBeforeChangeOrder = (TextView)promptsView.findViewById(R.id.tv_before_change_order);
-        final TextView tvAfterChangeOrder = (TextView) promptsView.findViewById(R.id.tv_after_change_order);
-
-        final String textAfterChange = mContext.getString(R.string.after_change_order);
 
         mSoLuongTra = 1;
         mRemainingProdCheck = order.getSoLuong() - mSoLuongTra;
         tvBeforeChangeOrder.setText(mContext.getString(R.string.before_change_order) + order.getSoLuong() );
-        tvAfterChangeOrder.setText(textAfterChange + String.valueOf(mRemainingProdCheck));
 
         final EditText userInput = (EditText) promptsView.findViewById(R.id.edt_change_order);
         userInput.addTextChangedListener(new TextWatcher() {
@@ -139,7 +135,6 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                     mSoLuongTra = Float.parseFloat(userInput.getText().toString());
                 }catch (Exception e){}
                 mRemainingProdCheck = order.getSoLuong() - mSoLuongTra;
-                tvAfterChangeOrder.setText(textAfterChange + String.format("%.2f", mRemainingProdCheck));
             }
 
             @Override

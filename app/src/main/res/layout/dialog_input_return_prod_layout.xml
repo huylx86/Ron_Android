@@ -62,23 +62,52 @@
             android:background="@color/transparent">
         </EditText>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/color_sep"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/after_change_order"
-        android:textColor="@android:color/black"
-        android:textStyle="italic"
-        android:textSize="18sp"
-        android:id="@+id/tv_after_change_order"/>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/delete"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/tv_delete"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/color_sep"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/tv_ok"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/color_sep"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/tv_cancel"/>
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
