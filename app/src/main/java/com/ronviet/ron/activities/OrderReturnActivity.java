@@ -1,5 +1,6 @@
 package com.ronviet.ron.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,7 @@ public class OrderReturnActivity extends BaseActivity {
     private OrderReturnInfo mCurrentSelectedOrderInfo;
 
     private TextView mTvTongTien;
+    private boolean mIsChangeData = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,15 @@ public class OrderReturnActivity extends BaseActivity {
         mLstReturnOrders = new ArrayList<>();
         mSaleApiHelper.khoiTaoTraHang(mContext, mTableSelection.getIdPhieu(), mHandlerKhoiTaoTraHang, true);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mIsChangeData) {
+            showDialogConfirm();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private Handler mHandlerKhoiTaoTraHang = new Handler(){
@@ -189,6 +200,7 @@ public class OrderReturnActivity extends BaseActivity {
             switch (msg.what){
                 case Constants.HANDLER_CLOSE_SUB_MENU:
                     mBtnSubmitOrder.setVisibility(View.GONE);
+                    mIsChangeData = false;
                     break;
                 case Constants.HANDLER_OPEN_SUB_MENU:
                     mCurrentSelectedOrderInfo = (OrderReturnInfo) msg.obj;
@@ -201,6 +213,7 @@ public class OrderReturnActivity extends BaseActivity {
                         mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
                     }
                     mBtnSubmitOrder.setVisibility(View.VISIBLE);
+                    mIsChangeData = true;
                     break;
             }
         }
@@ -248,9 +261,7 @@ public class OrderReturnActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        if(res.message != null) {
-                            new DialogUtiils().showDialog(mContext, res.message, false);
-                        }
+
                     } else {
                         mCurrentSelectedOrderInfo.setSoLuong(mCurrentSelectedOrderInfo.getSoLuong() + mCurrentSelectedOrderInfo.getSoLuongTra());
                         mAdapterReturnOrder.notifyDataSetChanged();
@@ -269,4 +280,59 @@ public class OrderReturnActivity extends BaseActivity {
             }
         }
     };
+
+    private Handler mHandlerCancelReturnOrder = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseCommon res = (ResponseCommon) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        finish();
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    mCurrentSelectedOrderInfo.setSoLuong(mCurrentSelectedOrderInfo.getSoLuong() + mCurrentSelectedOrderInfo.getSoLuongTra());
+                    mAdapterReturnOrder.notifyDataSetChanged();
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
+
+    private void showDialogConfirm()
+    {
+        final Dialog dialog = new Dialog(mContext, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
+        dialog.setContentView(R.layout.dialog_confirm_return_order_layout);
+        dialog.setTitle(getString(R.string.title_message));
+
+        TextView tvOk = (TextView)dialog.findViewById(R.id.tv_ok);
+        TextView tvCancel = (TextView)dialog.findViewById(R.id.tv_cancel);
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSaleApiHelper.cancelReturnOrder(mContext, mTableSelection.getIdPhieu(), mHandlerCancelReturnOrder, true);
+                dialog.dismiss();
+            }
+        });
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        // show it
+        dialog.show();
+
+    }
 }

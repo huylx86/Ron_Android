@@ -104,5 +104,8 @@ public interface ICallServices {
                                             @Query("is_setmenu") boolean isSetMenu, @Query("is_mix") boolean isMix);
 
 
+    @GET("/api/SoDoBan/HuyTraHang")
+    Call<ResponseCommon> cancelReturnOrder(@Query("id_phieu") long idPhieu);
+
 }
 

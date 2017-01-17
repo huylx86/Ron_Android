@@ -39,7 +39,6 @@ public class SaleActivity extends BaseActivity {
     private static int mSelectedArea = 0;
     private static int mSelectedTable = -1;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,6 +180,7 @@ public class SaleActivity extends BaseActivity {
                     ResponseTableInfoData res = (ResponseTableInfoData) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         mLstTables.addAll(res.data);
+                        mAdapterTable.updateData(mLstTables);
                         if(mSelectedTable > -1 && mSelectedTable < mLstTables.size()) {
                             mTableSelection = mLstTables.get(mSelectedTable);
                             mTableSelection.setSelection(true);
@@ -190,8 +190,8 @@ public class SaleActivity extends BaseActivity {
                             } else {
                                 mSubMenu.setVisibility(View.GONE);
                             }
+                            mRecyclerTables.scrollToPosition(mSelectedTable);
                         }
-                        mAdapterTable.updateData(mLstTables);
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
