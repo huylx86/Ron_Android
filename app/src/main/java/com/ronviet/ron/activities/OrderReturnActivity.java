@@ -1,6 +1,5 @@
 package com.ronviet.ron.activities;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +40,7 @@ public class OrderReturnActivity extends BaseActivity {
 
     private TextView mTvTongTien;
     private boolean mIsChangeData = false;
+    private boolean mIsBackPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class OrderReturnActivity extends BaseActivity {
 
         initHeader();
         setTitle(getString(R.string.title_return_order) + " - " + mTableSelection.getName());
-        hidePayment();
+        setAddOrder();
     }
 
     private void loadData()
@@ -90,10 +90,22 @@ public class OrderReturnActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        mIsBackPressed = true;
         if(mIsChangeData) {
-            showDialogConfirm();
+            new DialogUtiils().showDialogConfirm(mContext, getString(R.string.massage_cancel_return_order), mHandlerProcessCancelOrder);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void processAddOrder()
+    {
+        mIsBackPressed = false;
+        if(mIsChangeData) {
+            new DialogUtiils().showDialogConfirm(mContext, getString(R.string.massage_cancel_return_order), mHandlerProcessCancelOrder);
+        } else {
+            super.processAddOrder();
         }
     }
 
@@ -261,7 +273,8 @@ public class OrderReturnActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-
+                        mLstReturnOrders = new ArrayList<>();
+                        mSaleApiHelper.getOrderForReturn(mContext, mTableSelection.getIdPhieu(), mHandlerReturnOrder, true );
                     } else {
                         mCurrentSelectedOrderInfo.setSoLuong(mCurrentSelectedOrderInfo.getSoLuong() + mCurrentSelectedOrderInfo.getSoLuongTra());
                         mAdapterReturnOrder.notifyDataSetChanged();
@@ -281,6 +294,13 @@ public class OrderReturnActivity extends BaseActivity {
         }
     };
 
+    protected Handler mHandlerProcessCancelOrder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            mSaleApiHelper.cancelReturnOrder(mContext, mTableSelection.getIdPhieu(), mHandlerCancelReturnOrder, true);
+        }
+    };
+
     private Handler mHandlerCancelReturnOrder = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -288,7 +308,11 @@ public class OrderReturnActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        finish();
+                        if(mIsBackPressed) {
+                            finish();
+                        } else {
+                            OrderReturnActivity.super.processAddOrder();
+                        }
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
@@ -306,33 +330,35 @@ public class OrderReturnActivity extends BaseActivity {
         }
     };
 
-    private void showDialogConfirm()
-    {
-        final Dialog dialog = new Dialog(mContext, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
-        dialog.setContentView(R.layout.dialog_confirm_return_order_layout);
-        dialog.setTitle(getString(R.string.title_message));
-
-        TextView tvOk = (TextView)dialog.findViewById(R.id.tv_ok);
-        TextView tvCancel = (TextView)dialog.findViewById(R.id.tv_cancel);
-
-        tvOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mSaleApiHelper.cancelReturnOrder(mContext, mTableSelection.getIdPhieu(), mHandlerCancelReturnOrder, true);
-                dialog.dismiss();
-            }
-        });
-
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-
-        // show it
-        dialog.show();
-
-    }
+//    private void showDialogConfirm()
+//    {
+//        final Dialog dialog = new Dialog(mContext, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
+//        dialog.setContentView(R.layout.dialog_confirm_return_order_layout);
+//        dialog.setTitle(getString(R.string.title_message));
+//
+//        TextView tvOk = (TextView)dialog.findViewById(R.id.tv_ok);
+//        TextView tvCancel = (TextView)dialog.findViewById(R.id.tv_cancel);
+//        TextView tvMessage = (TextView)dialog.findViewById(R.id.tv_text_message);
+//        tvMessage.setText(Html.fromHtml(getString(R.string.massage_cancel_return_order)));
+//
+//        tvOk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mSaleApiHelper.cancelReturnOrder(mContext, mTableSelection.getIdPhieu(), mHandlerCancelReturnOrder, true);
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        tvCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//
+//        // show it
+//        dialog.show();
+//
+//    }
 }

@@ -5,6 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
+import android.text.Html;
+import android.view.View;
+import android.widget.TextView;
 
 import com.ronviet.ron.R;
 
@@ -35,7 +39,37 @@ public class DialogUtiils {
 
     }
 
+    public void showDialogConfirm(Context context, String message, final Handler handlerPositiveCallback)
+    {
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
+        dialog.setContentView(R.layout.dialog_confirm_return_order_layout);
+        dialog.setTitle(context.getString(R.string.title_message));
 
+        TextView tvOk = (TextView)dialog.findViewById(R.id.tv_ok);
+        TextView tvCancel = (TextView)dialog.findViewById(R.id.tv_cancel);
+        TextView tvMessage = (TextView)dialog.findViewById(R.id.tv_text_message);
+        tvMessage.setText(Html.fromHtml(message));
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handlerPositiveCallback.sendEmptyMessage(0);
+                dialog.dismiss();
+            }
+        });
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        // show it
+        dialog.show();
+
+    }
 //    public void showInputDialog(Context context, final ProductInfo prod, final Handler hanlderCallback)
 //    {
 //        LayoutInflater li = LayoutInflater.from(context);

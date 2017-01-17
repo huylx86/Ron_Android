@@ -13,4 +13,5 @@
     <color name="tab_text_unselect">#CFF4F2</color>
     <color name="lavender">#4682B4</color>
     <color name="light_blue">#ADD8E6</color>
+    <color name="dialog_background">#4388CC</color>
 </resources>

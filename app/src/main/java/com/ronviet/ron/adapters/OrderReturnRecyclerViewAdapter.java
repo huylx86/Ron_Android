@@ -124,7 +124,7 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         TextView tvBeforeChangeOrder = (TextView)dialog.findViewById(R.id.tv_before_change_order);
 
         mRemainingProdCheck = order.getSoLuong() - 1;
-        tvBeforeChangeOrder.setText(mContext.getString(R.string.before_change_order) + order.getSoLuong() );
+        tvBeforeChangeOrder.setText(String.valueOf(order.getSoLuong()));
 
         final EditText userInput = (EditText) dialog.findViewById(R.id.edt_change_order);
         userInput.addTextChangedListener(new TextWatcher() {

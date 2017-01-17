@@ -54,10 +54,7 @@ public class BaseActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if(mTableSelection != null) {
                         if(isAddOrder){
-                            Intent iProduct = new Intent(mContext, ProductActivity.class);
-                            iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
-                            mContext.startActivity(iProduct);
-                            ((Activity)mContext).finish();
+                            processAddOrder();
                         } else {
                             processViewOrder();
                         }
@@ -100,5 +97,13 @@ public class BaseActivity extends AppCompatActivity {
         Intent iOrder = new Intent(mContext, OrderReviewActivity.class);
         iOrder.putExtra(Constants.EXTRA_TABLE, mTableSelection);
         startActivity(iOrder);
+    }
+
+    protected  void processAddOrder()
+    {
+        Intent iProduct = new Intent(mContext, ProductActivity.class);
+        iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
+        mContext.startActivity(iProduct);
+        ((Activity)mContext).finish();
     }
 }

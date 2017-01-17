@@ -20,18 +20,32 @@
         android:layout_height="1dp"
         android:background="@color/color_sep"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/before_change_order"
-        android:textColor="@android:color/black"
-        android:textStyle="italic"
-        android:textSize="22sp"
-        android:id="@+id/tv_before_change_order"/>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/before_change_order"
+            android:textColor="@android:color/black"
+            android:textStyle="italic"
+            android:textSize="22sp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/black"
+            android:textStyle="italic"
+            android:textSize="22sp"
+            android:id="@+id/tv_before_change_order"/>
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -45,8 +59,9 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/change_order"
             android:textColor="@android:color/black"
             android:textStyle="italic"
@@ -55,7 +70,8 @@
         <EditText
             android:id="@+id/edt_change_order"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="1"
             android:selectAllOnFocus="true"
             android:inputType="numberDecimal"

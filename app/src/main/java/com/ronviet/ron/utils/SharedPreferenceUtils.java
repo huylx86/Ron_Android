@@ -64,10 +64,16 @@ public class SharedPreferenceUtils {
     public static void removeOrderCode(Context context, String orderCode)
     {
         List<PendingOrder> lstPendingOrder = getPendingOrder(context);
-        for(PendingOrder order : lstPendingOrder){
+        int removedOrder = -1;
+        for(int i=0; i< lstPendingOrder.size(); i++){
+            PendingOrder order = lstPendingOrder.get(i);
             if(order.orderCode.equalsIgnoreCase(orderCode)) {
-                lstPendingOrder.remove(order);
+                removedOrder = i;
+                break;
             }
+        }
+        if(removedOrder > -1) {
+            lstPendingOrder.remove(removedOrder);
         }
         Gson gson = new Gson();
         String result = gson.toJson(lstPendingOrder);

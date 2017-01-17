@@ -36,7 +36,7 @@
     <!-- Screen Name -->
     <string name="title_table_map">SƠ ĐỒ BÀN</string>
     <string name="title_list_order">DANH SÁCH ORDER</string>
-    <string name="title_return_order">ĐÃ ORDER</string>
+    <string name="title_return_order">DANH SÁCH ĐÃ ORDER</string>
     <string name="title_add_list">THÊM MÓN</string>
 
     <!-- Add Order -->
@@ -55,6 +55,8 @@
     <string name="cancel">HỦY BỎ</string>
     <string name="delete">XÓA</string>
     <string name="title_message">Thông Báo</string>
+    <string name="message_confirm_move_to_add_order">Số lượng mặt hàng đã thay đổi, bạn có muốn tiếp tục không?</string>
+    <string name="massage_cancel_return_order">Số lượng mặt hàng đã thay đổi bạn có muốn <b>HỦY</b> thao tác trả hàng không?</string>
 
 
 </resources>

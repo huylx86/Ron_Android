@@ -37,6 +37,7 @@ public class OrderReviewActivity extends BaseActivity {
     private TextView mTvTongTien;
 
     private String mCurrentOrderCode;
+    private boolean mIsChangeData = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,16 @@ public class OrderReviewActivity extends BaseActivity {
         mCurrentOrderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
         if(mCurrentOrderCode != null) {
             mSaleApiHelper.getReviewOrder(mContext, mCurrentOrderCode, mHandlerReviewOrder, true);
+        }
+    }
+
+    @Override
+    protected void processAddOrder()
+    {
+        if(mIsChangeData) {
+            new DialogUtiils().showDialogConfirm(mContext, getString(R.string.message_confirm_move_to_add_order), mHandlerProcessMoveToAddOrder);
+        } else {
+            super.processAddOrder();
         }
     }
 
@@ -173,6 +184,7 @@ public class OrderReviewActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
+                        mIsChangeData = true;
                         loadData();
                     } else {
                         if(res.message != null) {
@@ -186,6 +198,13 @@ public class OrderReviewActivity extends BaseActivity {
                     new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
                     break;
             }
+        }
+    };
+
+    protected Handler mHandlerProcessMoveToAddOrder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            OrderReviewActivity.super.processAddOrder();
         }
     };
 
