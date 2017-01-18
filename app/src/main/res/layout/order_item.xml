@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:text="Co"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="20sp"
             android:id="@+id/tv_prod_name"/>
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:textColor="@color/dark_grey"
+            android:textColor="@android:color/white"
             android:textSize="15sp"
             android:text="200.000/kg"
             android:id="@+id/tv_prod_price"/>
@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/dark_grey"
+            android:textColor="@android:color/white"
             android:textSize="15sp"
             android:text="Giam gia 10.000"
             android:id="@+id/tv_prod_promotion"/>
@@ -46,13 +46,13 @@
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:text="SL"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="15sp"
             android:gravity="right"
             android:text="2"
@@ -70,13 +70,13 @@
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:text="TT"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="15sp"
             android:gravity="right"
             android:text="200.000"

@@ -14,4 +14,5 @@
     <color name="lavender">#4682B4</color>
     <color name="light_blue">#ADD8E6</color>
     <color name="dialog_background">#4388CC</color>
+    <color name="app_background">#2D9AAB</color>
 </resources>

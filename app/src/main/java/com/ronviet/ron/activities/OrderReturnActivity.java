@@ -273,8 +273,19 @@ public class OrderReturnActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        mLstReturnOrders = new ArrayList<>();
-                        mSaleApiHelper.getOrderForReturn(mContext, mTableSelection.getIdPhieu(), mHandlerReturnOrder, true );
+                        if(mCurrentSelectedOrderInfo.getSoLuong() < 1) {
+                            mLstReturnOrders.remove(mCurrentSelectedOrderInfo);
+                        }
+                        int tongTien = 0;
+                        for(OrderReturnInfo order : mLstReturnOrders){
+                            float total = order.getSoLuong()*order.getDonGia();
+                            order.setTotal(total);
+                            tongTien +=total;
+                        }
+                        mTvTongTien.setText(CommonUtils.formatCurrency(tongTien));
+                        mAdapterReturnOrder.updateData(mLstReturnOrders);
+//                        mLstReturnOrders = new ArrayList<>();
+//                        mSaleApiHelper.getOrderForReturn(mContext, mTableSelection.getIdPhieu(), mHandlerReturnOrder, true );
                     } else {
                         mCurrentSelectedOrderInfo.setSoLuong(mCurrentSelectedOrderInfo.getSoLuong() + mCurrentSelectedOrderInfo.getSoLuongTra());
                         mAdapterReturnOrder.notifyDataSetChanged();
