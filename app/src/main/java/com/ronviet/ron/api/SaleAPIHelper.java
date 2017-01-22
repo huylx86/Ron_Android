@@ -746,4 +746,46 @@ public class SaleAPIHelper extends APIHelper {
             new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
         }
     }
+
+    public void chuyenBan(Context context, long idPhieu, long idBanMoi, long idBanCu, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(context)) {
+            if (isShowProgress) {
+                showProgressDialog(context);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(HOST_NAME)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            Call<ResponseCommon> response = service.chuyenBan(idPhieu, idBanCu, idBanMoi, "Mai Van Chuong", 123);
+
+            response.enqueue(new Callback<ResponseCommon>() {
+                @Override
+                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
+                    ResponseCommon res = response.body();
+                    if (res == null) {
+                        res = new ResponseCommon();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(context, context.getString(R.string.network_not_avaiable), false);
+        }
+    }
 }

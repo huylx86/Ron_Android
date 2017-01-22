@@ -107,5 +107,9 @@ public interface ICallServices {
     @GET("/api/SoDoBan/HuyTraHang")
     Call<ResponseCommon> cancelReturnOrder(@Query("id_phieu") long idPhieu);
 
+    @GET("/api/SoDoBan")
+    Call<ResponseCommon> chuyenBan(@Query("id_phieu") long idPhieu, @Query("id_bancu") long idBanCu, @Query("id_banmoi") long idBanMoi, @Query("nv_ten") String tenNV,
+                                   @Query("nv_id") long nvId);
+
 }
 

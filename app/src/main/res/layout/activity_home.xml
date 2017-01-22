@@ -85,7 +85,7 @@
                     android:textSize="@dimen/staff_info_font_size"
                     android:textStyle="bold"
                     android:text="31/12/2016"
-                    android:id="@+id/tv_data"/>
+                    android:id="@+id/tv_date"/>
 
             </LinearLayout>
         </LinearLayout>

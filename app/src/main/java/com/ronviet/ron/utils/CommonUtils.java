@@ -21,6 +21,12 @@ public class CommonUtils {
         return formatter.format(date);
     }
 
+    public static String convertDateStandardFormat(Date date)
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+        return formatter.format(date);
+    }
+
     public static int getWidthScreen(Context context)
     {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

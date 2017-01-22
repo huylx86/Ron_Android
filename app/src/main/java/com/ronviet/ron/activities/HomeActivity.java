@@ -5,13 +5,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ronviet.ron.R;
+import com.ronviet.ron.utils.CommonUtils;
 import com.ronviet.ron.utils.Constants;
+
+import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
 
     private LinearLayout mBtnSale;
+    private TextView mTvDate;
     private boolean isRestartSaleScreen = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     private void initLayout()
     {
         mBtnSale = (LinearLayout) findViewById(R.id.btn_sale);
+        mTvDate = (TextView)findViewById(R.id.tv_date);
 
         mBtnSale.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +41,8 @@ public class HomeActivity extends AppCompatActivity {
             goToSaleScreen();
             }
         });
+
+        mTvDate.setText(CommonUtils.convertDateStandardFormat(new Date()));
     }
 
     private void goToSaleScreen()
