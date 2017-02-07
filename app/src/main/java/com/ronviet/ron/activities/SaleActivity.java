@@ -38,6 +38,7 @@ public class SaleActivity extends BaseActivity {
     private SaleAPIHelper mSaleHelper;
     private static int mSelectedArea = 0;
     private static int mSelectedTable = -1;
+    private boolean isMoveTable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,19 @@ public class SaleActivity extends BaseActivity {
                 Intent iReturnOrder = new Intent(mContext, OrderReturnActivity.class);
                 iReturnOrder.putExtra(Constants.EXTRA_TABLE, mTableSelection);
                 startActivity(iReturnOrder);
+            }
+        });
+
+        View vMoveTable = findViewById(R.id.fl_move_table);
+        vMoveTable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DialogUtiils().showDialogConfirm(mContext, getString(R.string.message_confirm), new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        isMoveTable = true;
+                    }
+                });
             }
         });
 
@@ -270,16 +284,26 @@ public class SaleActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case Constants.HANDLER_CLOSE_SUB_MENU:
-                    mTableSelection = (TableInfo)msg.obj;
-                    setTotal(mTableSelection.getTotal());
-                    mSubMenu.setVisibility(View.GONE);
-                    mSelectedTable = msg.arg1;
+                    if(isMoveTable) {
+
+                    } else {
+                        mTableSelection = (TableInfo) msg.obj;
+                        setTotal(mTableSelection.getTotal());
+                        mSubMenu.setVisibility(View.GONE);
+                        mSelectedTable = msg.arg1;
+                    }
+                    isMoveTable = false;
                     break;
                 case Constants.HANDLER_OPEN_SUB_MENU:
-                    mTableSelection = (TableInfo)msg.obj;
-                    setTotal(mTableSelection.getTotal());
-                    mSubMenu.setVisibility(View.VISIBLE);
-                    mSelectedTable = msg.arg1;
+                    if(isMoveTable) {
+                        new DialogUtiils().showDialog(mContext, getString(R.string.validate_chuyen_ban), false);
+                    } else {
+                        mTableSelection = (TableInfo) msg.obj;
+                        setTotal(mTableSelection.getTotal());
+                        mSubMenu.setVisibility(View.VISIBLE);
+                        mSelectedTable = msg.arg1;
+                    }
+                    isMoveTable = false;
                     break;
                 case Constants.HANDLER_OPEN_TABLE:
                     mTableSelection = (TableInfo) msg.obj;
@@ -309,7 +333,7 @@ public class SaleActivity extends BaseActivity {
             }
         }
     };
-
+    
     //If seleeted table's id is null when user tap button "View Order" will process to open table, then order new product
     // else open "View Order" list
     @Override

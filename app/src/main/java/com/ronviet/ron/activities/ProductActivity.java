@@ -11,8 +11,10 @@ import com.ronviet.ron.adapters.PagerAdapter;
 import com.ronviet.ron.fragments.DrinkingFragment;
 import com.ronviet.ron.fragments.FoodFragment;
 import com.ronviet.ron.fragments.OthersFragment;
+import com.ronviet.ron.models.PendingOrder;
 import com.ronviet.ron.models.TableInfo;
 import com.ronviet.ron.utils.Constants;
+import com.ronviet.ron.utils.SharedPreferenceUtils;
 
 public class ProductActivity extends BaseActivity {
 
@@ -27,6 +29,17 @@ public class ProductActivity extends BaseActivity {
         mTableInfo = (TableInfo) getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
         mTableSelection = mTableInfo;
         initLayout();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PendingOrder pendingOrder = SharedPreferenceUtils.getPendingOrderFromList(mContext, mTableSelection.getId());
+        if(pendingOrder != null) {
+            setTotal(pendingOrder.tongTien);
+        } else {
+            setTotal(0);
+        }
     }
 
     private void initLayout()
@@ -56,7 +69,6 @@ public class ProductActivity extends BaseActivity {
 
         initHeader();
         setTitle(getString(R.string.title_add_list) + " - " + mTableSelection.getName());
-        setTotal(mTableInfo.getTotal());
     }
 
     private void setupViewPager(ViewPager viewPager) {

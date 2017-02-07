@@ -49,8 +49,20 @@ public class SharedPreferenceUtils {
         return lstPendingOrders;
     }
 
-    public static String getOrderCodeFromPendingOrder(Context context, long banId){
+    public static PendingOrder getPendingOrderFromList(Context context, long banId){
        List<PendingOrder> lstPendingOrders = getPendingOrder(context);
+        if(lstPendingOrders != null && lstPendingOrders.size() > 0) {
+            for (PendingOrder order : lstPendingOrders) {
+                if (banId == order.banId) {
+                    return order;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getOrderCodeFromPendingOrder(Context context, long banId){
+        List<PendingOrder> lstPendingOrders = getPendingOrder(context);
         if(lstPendingOrders != null && lstPendingOrders.size() > 0) {
             for (PendingOrder order : lstPendingOrders) {
                 if (banId == order.banId) {
@@ -59,6 +71,37 @@ public class SharedPreferenceUtils {
             }
         }
         return null;
+    }
+
+    public static void updateTongTienToPendingOrder(Context context, long banId, float tongTien){
+        List<PendingOrder> lstPendingOrders = getPendingOrder(context);
+        if(lstPendingOrders != null && lstPendingOrders.size() > 0) {
+            for (PendingOrder order : lstPendingOrders) {
+                if (banId == order.banId) {
+                    order.tongTien = tongTien;
+                }
+            }
+        }
+        Gson gson = new Gson();
+        String result = gson.toJson(lstPendingOrders);
+
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PENDING_ORDER, result);
+        editor.commit();
+    }
+
+    public static float getTongTienFromPendingOrder(Context context, long banId){
+        List<PendingOrder> lstPendingOrders = getPendingOrder(context);
+        if(lstPendingOrders != null && lstPendingOrders.size() > 0) {
+            for (PendingOrder order : lstPendingOrders) {
+                if (banId == order.banId) {
+                    return order.tongTien;
+                }
+            }
+        }
+        return 0;
     }
 
     public static void removeOrderCode(Context context, String orderCode)

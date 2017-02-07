@@ -7,4 +7,5 @@ package com.ronviet.ron.models;
 public class PendingOrder {
     public long banId;
     public String orderCode;
+    public float tongTien;
 }

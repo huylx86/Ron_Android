@@ -50,7 +50,9 @@
 
     <!--Message-->
 
-    <string name="validate_so_luong_con_lai">Số lượng còn lại phải lớn hơn 0</string>
+    <string name="validate_so_luong_con_lai">Số lượng trả lại phải nhỏ hơn số lượng hiện tại</string>
+    <string name="validate_chuyen_ban">Bạn không chuyển được phiếu qua bàn đã có khách</string>
+    <string name="message_confirm">Bạn có muốn thực hiện chức năng này?</string>
     <string name="ok">ĐỒNG Ý</string>
     <string name="cancel">HỦY BỎ</string>
     <string name="delete">XÓA</string>

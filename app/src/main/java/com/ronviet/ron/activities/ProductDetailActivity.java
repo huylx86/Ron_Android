@@ -57,7 +57,13 @@ public class ProductDetailActivity extends BaseActivity {
         recyclerView.setAdapter(mAdapterProduct);
 
         initHeader();
-        setTotal(mTableSelection.getTotal());
+
+        PendingOrder pendingOrder = SharedPreferenceUtils.getPendingOrderFromList(mContext, mTableSelection.getId());
+        if(pendingOrder != null) {
+            setTotal(pendingOrder.tongTien);
+        } else {
+            setTotal(0);
+        }
         if(mProductCatInfo != null) {
             setTitle(mProductCatInfo.getTenNhom() + " - " + mTableSelection.getName());
         }
@@ -109,8 +115,17 @@ public class ProductDetailActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             mCurrentOrder = (OrderInfo) msg.obj;
-            String orderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
+            PendingOrder pendingOrder = SharedPreferenceUtils.getPendingOrderFromList(mContext, mTableSelection.getId());
+
+            String orderCode = null;
+            if(pendingOrder != null){
+                orderCode = pendingOrder.orderCode;
+            }
+
             if(orderCode != null) {
+                float tongTien = pendingOrder.tongTien + mCurrentOrder.getDonGia()*mCurrentOrder.getSoLuong();
+                SharedPreferenceUtils.updateTongTienToPendingOrder(mContext, mTableSelection.getId(), tongTien);
+                setTotal(tongTien);
                 mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
                         mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
                         mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
@@ -134,7 +149,10 @@ public class ProductDetailActivity extends BaseActivity {
                         PendingOrder order = new PendingOrder();
                         order.banId = mTableSelection.getId();
                         order.orderCode = res.data.orderCode;
+                        order.tongTien = mCurrentOrder.getDonGia()*mCurrentOrder.getSoLuong();
                         SharedPreferenceUtils.savePendingOrder(mContext, order);
+
+                        setTotal(order.tongTien);
 
                         if (res.code == APIConstants.REQUEST_OK) {
                             mSaleApiHelper.submitOrderTungMon(mContext, res.data.orderCode, mTableSelection.getIdPhieu(), mCurrentOrder.getId(),
