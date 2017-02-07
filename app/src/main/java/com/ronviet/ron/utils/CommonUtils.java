@@ -23,7 +23,7 @@ public class CommonUtils {
 
     public static String convertDateStandardFormat(Date date)
     {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(date);
     }
 
