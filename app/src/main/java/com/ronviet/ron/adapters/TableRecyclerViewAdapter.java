@@ -26,6 +26,7 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     private Context mContext;
     private Handler mHandlerProcessTable;
 
+    private boolean isMoveTable = false;
     private int mCurrentSelectPos = -1;
     private int iCount;
 
@@ -73,6 +74,9 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         notifyDataSetChanged();
     }
 
+    public void setIsMoveTable(boolean isMoveTable) {
+        this.isMoveTable = isMoveTable;
+    }
 
     public class TableRecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -111,9 +115,11 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
             if (iCount == 1) {
                 //Single click
-                refreshSelectAllTables();
-                info.setSelection(true);
-                notifyDataSetChanged();
+                if(!(isMoveTable && info.getIdPhieu() > 0)) {
+                    refreshSelectAllTables();
+                    info.setSelection(true);
+                    notifyDataSetChanged();
+                }
 
                 Message msg = Message.obtain();
                 msg.obj = info;

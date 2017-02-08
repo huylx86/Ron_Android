@@ -747,7 +747,7 @@ public class SaleAPIHelper extends APIHelper {
         }
     }
 
-    public void chuyenBan(Context context, long idPhieu, long idBanMoi, long idBanCu, final Handler handler, boolean isShowProgress)
+    public void chuyenBan(Context context, long idPhieu, long idBanCu, long idBanMoi, final Handler handler, boolean isShowProgress)
     {
         if(NetworkUtils.isNetworkAvailable(context)) {
             if (isShowProgress) {
@@ -760,7 +760,7 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.chuyenBan(idPhieu, idBanCu, idBanMoi, "Mai Van Chuong", 123);
+            Call<ResponseCommon> response = service.chuyenBan(idPhieu, idBanCu, idBanMoi, "Mai Van Chuong", 123, "Nguyen Van A", 3, 1);
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override

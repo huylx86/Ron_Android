@@ -15,6 +15,7 @@ import com.ronviet.ron.adapters.AreaRecyclerViewAdapter;
 import com.ronviet.ron.adapters.TableRecyclerViewAdapter;
 import com.ronviet.ron.api.APIConstants;
 import com.ronviet.ron.api.ResponseAreaInfoData;
+import com.ronviet.ron.api.ResponseCommon;
 import com.ronviet.ron.api.ResponseCreateMaPhieuData;
 import com.ronviet.ron.api.ResponseCreatePhieuData;
 import com.ronviet.ron.api.ResponseTableInfoData;
@@ -37,7 +38,7 @@ public class SaleActivity extends BaseActivity {
     private List<AreaInfo> mLstAreas;
     private SaleAPIHelper mSaleHelper;
     private static int mSelectedArea = 0;
-    private static int mSelectedTable = -1;
+    private static int mSelectedTable = -1, mSelectedTNewTable = -1;
     private boolean isMoveTable = false;
 
     @Override
@@ -87,6 +88,7 @@ public class SaleActivity extends BaseActivity {
                     @Override
                     public void handleMessage(Message msg) {
                         isMoveTable = true;
+                        mAdapterTable.setIsMoveTable(isMoveTable);
                     }
                 });
             }
@@ -122,7 +124,7 @@ public class SaleActivity extends BaseActivity {
     private void loadTableData(long areaId)
     {
         mLstTables = new ArrayList<>();
-        new SaleAPIHelper().getTableInfo(mContext, areaId, mHanlderGetTable, true);
+        mSaleHelper.getTableInfo(mContext, areaId, mHanlderGetTable, true);
     }
 
     private void createMaPhieu()
@@ -278,6 +280,31 @@ public class SaleActivity extends BaseActivity {
         }
     };
 
+    private Handler mHandlerMoveTable = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseCommon res = (ResponseCommon) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        new DialogUtiils().showDialog(mContext, res.message, false);
+                        mSelectedTable = mSelectedTNewTable;
+                        loadTableData(mLstAreas.get(mSelectedArea).getId());
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
+
 
     protected Handler mHandlerProcessTable = new Handler() {
         @Override
@@ -285,7 +312,9 @@ public class SaleActivity extends BaseActivity {
             switch (msg.what){
                 case Constants.HANDLER_CLOSE_SUB_MENU:
                     if(isMoveTable) {
-
+                        TableInfo newTableInfo = (TableInfo) msg.obj;
+                        mSaleHelper.chuyenBan(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), newTableInfo.getId(), mHandlerMoveTable, true);
+                        mSelectedTNewTable = msg.arg1;
                     } else {
                         mTableSelection = (TableInfo) msg.obj;
                         setTotal(mTableSelection.getTotal());
@@ -293,6 +322,7 @@ public class SaleActivity extends BaseActivity {
                         mSelectedTable = msg.arg1;
                     }
                     isMoveTable = false;
+                    mAdapterTable.setIsMoveTable(isMoveTable);
                     break;
                 case Constants.HANDLER_OPEN_SUB_MENU:
                     if(isMoveTable) {
@@ -304,6 +334,7 @@ public class SaleActivity extends BaseActivity {
                         mSelectedTable = msg.arg1;
                     }
                     isMoveTable = false;
+                    mAdapterTable.setIsMoveTable(isMoveTable);
                     break;
                 case Constants.HANDLER_OPEN_TABLE:
                     mTableSelection = (TableInfo) msg.obj;
