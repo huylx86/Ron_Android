@@ -48,11 +48,19 @@
     <string name="after_change_order">Số lượng còn lại  :</string>
     <string name="confirm">XÁC NHẬN</string>
 
+    <!-- First Config -->
+    <string name="config_website">Website :</string>
+    <string name="config_id_trung_tam">ID Trung Tâm :</string>
+    <string name="config_id_may">ID Máy :</string>
+    <string name="config_ngon_ngu">Ngôn Ngữ :</string>
+
     <!--Message-->
 
     <string name="validate_so_luong_con_lai">Số lượng trả lại phải nhỏ hơn số lượng hiện tại</string>
     <string name="validate_chuyen_ban">Bạn không chuyển được phiếu qua bàn đã có khách</string>
     <string name="message_confirm">Bạn có muốn thực hiện chức năng này?</string>
+    <string name="field_required">Làm ơn nhập đầy đủ các trường ở trên!</string>
+    <string name="input_config_required">Làm ơn nhập config cho app!</string>
     <string name="ok">ĐỒNG Ý</string>
     <string name="cancel">HỦY BỎ</string>
     <string name="delete">XÓA</string>

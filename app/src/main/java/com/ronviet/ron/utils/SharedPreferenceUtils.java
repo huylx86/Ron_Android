@@ -18,6 +18,11 @@ import java.util.List;
 public class SharedPreferenceUtils {
 
     private static final String PENDING_ORDER = "Pending_Order";
+    private static final String WEBSITE = "WebSite";
+    private static final String ID_TT = "ID_TRUNG_TAM";
+    private static final String ID_MAY = "ID_MAY";
+    private static final String NGON_NGU = "NGON_NGU";
+
     public static void savePendingOrder(Context context,PendingOrder pendingOrder)
     {
 
@@ -126,5 +131,63 @@ public class SharedPreferenceUtils {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PENDING_ORDER, result);
         editor.commit();
+    }
+
+    //Config
+
+    public static void saveWebSite(Context context, String website)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(WEBSITE, website);
+        editor.commit();
+    }
+
+    public static String getWebSite(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(WEBSITE, "");
+    }
+
+    public static void saveIdTrungTam(Context context, String idTrungTam)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ID_TT, idTrungTam);
+        editor.commit();
+    }
+
+    public static String getIdTrungTam(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(ID_TT, "");
+    }
+
+    public static void saveIdMay(Context context, String idMay)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ID_MAY, idMay);
+        editor.commit();
+    }
+
+    public static String getIdMay(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(ID_MAY, "");
+    }
+
+    public static void saveNgonNgu(Context context, String ngonNgu)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(NGON_NGU, ngonNgu);
+        editor.commit();
+    }
+
+    public static String getNgonNgu(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(NGON_NGU, "");
     }
 }

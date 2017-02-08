@@ -19,7 +19,8 @@
             android:layout_height="100dp"
             android:src="@drawable/sale"
             android:scaleType="fitXY"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:id="@+id/iv_logo"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
