@@ -15,6 +15,11 @@ public class FirstConfigActivity extends AppCompatActivity {
 
     private Context mContext;
 
+    private EditText edtWebsite;
+    private EditText edtIdTrungTam;
+    private EditText edtIdMay;
+    private EditText edtNgonNgu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,14 +27,15 @@ public class FirstConfigActivity extends AppCompatActivity {
         mContext = this;
 
         initLayout();
+        initValue();
     }
 
     private void initLayout()
     {
-        final EditText edtWebsite = (EditText)findViewById(R.id.edt_web_site);
-        final EditText edtIdTrungTam = (EditText)findViewById(R.id.edt_id_trung_tam);
-        final EditText edtIdMay = (EditText)findViewById(R.id.edt_id_may);
-        final EditText edtNgonNgu = (EditText)findViewById(R.id.edt_id_ngon_ngu);
+        edtWebsite = (EditText)findViewById(R.id.edt_web_site);
+        edtIdTrungTam = (EditText)findViewById(R.id.edt_id_trung_tam);
+        edtIdMay = (EditText)findViewById(R.id.edt_id_may);
+        edtNgonNgu = (EditText)findViewById(R.id.edt_id_ngon_ngu);
 
         Button btnOk = (Button)findViewById(R.id.btn_ok);
         Button btnCancel = (Button)findViewById(R.id.btn_cancel);
@@ -80,5 +86,36 @@ public class FirstConfigActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    private void initValue()
+    {
+        String website = SharedPreferenceUtils.getWebSite(mContext);
+        String idTT = SharedPreferenceUtils.getIdTrungTam(mContext);
+        String idMay = SharedPreferenceUtils.getIdMay(mContext);
+        String ngonNgu = SharedPreferenceUtils.getNgonNgu(mContext);
+        if(website.equalsIgnoreCase("")){
+            edtWebsite.setText("http://demo.ronviet.vn");
+        } else {
+            edtWebsite.setText(website);
+        }
+
+        if(idTT.equalsIgnoreCase("")){
+            edtIdTrungTam.setText("3");
+        } else {
+            edtIdTrungTam.setText(idTT);
+        }
+
+        if(idMay.equalsIgnoreCase("")){
+            edtIdMay.setText("3");
+        } else {
+            edtIdMay.setText(idMay);
+        }
+
+        if(ngonNgu.equalsIgnoreCase("")){
+            edtNgonNgu.setText("1");
+        } else {
+            edtNgonNgu.setText(ngonNgu);
+        }
     }
 }

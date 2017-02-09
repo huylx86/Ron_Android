@@ -88,7 +88,7 @@ public class OthersFragment extends BaseFragment {
     private void loadData()
     {
         mLstProductCats = new ArrayList<>();
-        new SaleAPIHelper().getProductCategories(getContext(), mTableInfo.getAreaId(), Constants.OTHER_CATEGORY, mHandlerProductCat, true);
+        new SaleAPIHelper(getActivity()).getProductCategories(mTableInfo.getAreaId(), Constants.OTHER_CATEGORY, mHandlerProductCat, true);
     }
 
     private void dummyData()

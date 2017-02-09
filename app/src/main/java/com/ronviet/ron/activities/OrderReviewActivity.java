@@ -45,7 +45,7 @@ public class OrderReviewActivity extends BaseActivity {
         setContentView(R.layout.activity_order);
         mContext = this;
         mTableSelection = (TableInfo) getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
-        mSaleApiHelper = new SaleAPIHelper();
+        mSaleApiHelper = new SaleAPIHelper(mContext);
         mLstOrders = new ArrayList<>();
 //        dummyData();
         initLayout();
@@ -67,7 +67,7 @@ public class OrderReviewActivity extends BaseActivity {
         mBtnSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSaleApiHelper.confirmOrder(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
+                mSaleApiHelper.confirmOrder(mTableSelection.getIdPhieu(), mTableSelection.getId(), mCurrentOrderCode, mHandlerConfirmOrder, true);
             }
         });
 
@@ -81,7 +81,7 @@ public class OrderReviewActivity extends BaseActivity {
         mLstOrders = new ArrayList<>();
         mCurrentOrderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
         if(mCurrentOrderCode != null) {
-            mSaleApiHelper.getReviewOrder(mContext, mCurrentOrderCode, mHandlerReviewOrder, true);
+            mSaleApiHelper.getReviewOrder(mCurrentOrderCode, mHandlerReviewOrder, true);
         }
     }
 
@@ -161,14 +161,14 @@ public class OrderReviewActivity extends BaseActivity {
             OrderInfo orderInfo = (OrderInfo) msg.obj;
             switch (msg.what){
                 case Constants.HANDLER_INPUT_SO_LUONG:
-                    mSaleApiHelper.submitOrderTungMon(mContext, orderInfo.getOrderCode(), mTableSelection.getIdPhieu(), orderInfo.getId(),
+                    mSaleApiHelper.submitOrderTungMon(orderInfo.getOrderCode(), mTableSelection.getIdPhieu(), orderInfo.getId(),
                             orderInfo.getMaMon(), orderInfo.getTenMon(), orderInfo.getSoLuong(), orderInfo.getDonViTinhId(),
                             orderInfo.getGiaGoc(), orderInfo.getDonGia(), orderInfo.isGiaCoThue(), orderInfo.getThue(), mTableSelection.getId(), "",
                             "UPDATE", mHandlerProcessOrderTungMon, true);
 
                     break;
                 case Constants.HANDLER_XOA_ORDER:
-                    mSaleApiHelper.deleteOrderTungMon(mContext, mTableSelection.getIdPhieu(), orderInfo.getOrderId(), orderInfo.getOrderChiTietPhieu(),
+                    mSaleApiHelper.deleteOrderTungMon(mTableSelection.getIdPhieu(), orderInfo.getOrderId(), orderInfo.getOrderChiTietPhieu(),
                             mHandlerProcessOrderTungMon, true);
                     break;
             }

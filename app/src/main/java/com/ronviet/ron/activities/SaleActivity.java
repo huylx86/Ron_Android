@@ -46,7 +46,7 @@ public class SaleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale);
         mContext = this;
-        mSaleHelper = new SaleAPIHelper();
+        mSaleHelper = new SaleAPIHelper(mContext);
         mLstAreas = new ArrayList<>();
         mLstTables = new ArrayList<>();
         initLayout();
@@ -118,18 +118,18 @@ public class SaleActivity extends BaseActivity {
     {
         mLstAreas = new ArrayList<>();
         mLstTables = new ArrayList<>();
-        mSaleHelper.getAreaInfo(mContext, mHandlerGetArea, true);
+        mSaleHelper.getAreaInfo(mHandlerGetArea, true);
     }
 
     private void loadTableData(long areaId)
     {
         mLstTables = new ArrayList<>();
-        mSaleHelper.getTableInfo(mContext, areaId, mHanlderGetTable, true);
+        mSaleHelper.getTableInfo(areaId, mHanlderGetTable, true);
     }
 
     private void createMaPhieu()
     {
-        mSaleHelper.getMaPhieu(mContext, mHandlerGetMaPhieu, true);
+        mSaleHelper.getMaPhieu(mHandlerGetMaPhieu, true);
     }
 
     private void dummyTableData(int pos)
@@ -232,7 +232,7 @@ public class SaleActivity extends BaseActivity {
                     if(res.code == APIConstants.REQUEST_OK) {
                         if(mTableSelection != null) {
                             mTableSelection.setMaPhieu(res.data.maPhieu);
-                            mSaleHelper.getIdPhieu(mContext, mTableSelection.getAreaId(),
+                            mSaleHelper.getIdPhieu(mTableSelection.getAreaId(),
                                     mTableSelection.getId(), mHandlerGetIdPhieu, true);
                         }
                     } else {
@@ -313,7 +313,7 @@ public class SaleActivity extends BaseActivity {
                 case Constants.HANDLER_CLOSE_SUB_MENU:
                     if(isMoveTable) {
                         TableInfo newTableInfo = (TableInfo) msg.obj;
-                        mSaleHelper.chuyenBan(mContext, mTableSelection.getIdPhieu(), mTableSelection.getId(), newTableInfo.getId(), mHandlerMoveTable, true);
+                        mSaleHelper.chuyenBan(mTableSelection.getIdPhieu(), mTableSelection.getId(), newTableInfo.getId(), mHandlerMoveTable, true);
                         mSelectedTNewTable = msg.arg1;
                     } else {
                         mTableSelection = (TableInfo) msg.obj;
@@ -339,7 +339,7 @@ public class SaleActivity extends BaseActivity {
                 case Constants.HANDLER_OPEN_TABLE:
                     mTableSelection = (TableInfo) msg.obj;
                     if(mTableSelection.getIdPhieu() < 1) {
-                        mSaleHelper.getIdPhieu(mContext, mTableSelection.getAreaId(),
+                        mSaleHelper.getIdPhieu(mTableSelection.getAreaId(),
                                 mTableSelection.getId(), mHandlerGetIdPhieu, true);
 //                        new SaleAPIHelper().getMaPhieu(mContext, mHandlerGetMaPhieu, true);
                     } else {
@@ -370,7 +370,7 @@ public class SaleActivity extends BaseActivity {
     @Override
     protected void processViewOrder() {
         if(mTableSelection.getIdPhieu() < 1){
-            mSaleHelper.getIdPhieu(mContext, mTableSelection.getAreaId(),
+            mSaleHelper.getIdPhieu(mTableSelection.getAreaId(),
                     mTableSelection.getId(), mHandlerGetIdPhieu, true);
         } else {
             super.processViewOrder();

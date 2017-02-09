@@ -40,7 +40,7 @@ public class ProductDetailActivity extends BaseActivity {
         mContext = this;
         mProductCatInfo = (ProductCatInfo)getIntent().getSerializableExtra(Constants.EXTRA_PRODUCT);
         mTableSelection = (TableInfo)getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
-        mSaleApiHelper = new SaleAPIHelper();
+        mSaleApiHelper = new SaleAPIHelper(mContext);
         mLstProducts = new ArrayList<>();
 //        dummyData();
         initLayout();
@@ -83,7 +83,7 @@ public class ProductDetailActivity extends BaseActivity {
 
     private void loadData()
     {
-        mSaleApiHelper.getProducts(mContext, mTableSelection.getAreaId(), mProductCatInfo.getId(), mHandlerGetProduct, true );
+        mSaleApiHelper.getProducts(mTableSelection.getAreaId(), mProductCatInfo.getId(), mHandlerGetProduct, true );
     }
 
 
@@ -126,12 +126,12 @@ public class ProductDetailActivity extends BaseActivity {
                 float tongTien = pendingOrder.tongTien + mCurrentOrder.getDonGia()*mCurrentOrder.getSoLuong();
                 SharedPreferenceUtils.updateTongTienToPendingOrder(mContext, mTableSelection.getId(), tongTien);
                 setTotal(tongTien);
-                mSaleApiHelper.submitOrderTungMon(mContext, orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
+                mSaleApiHelper.submitOrderTungMon(orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
                         mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
                         mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
                         "INSERT", mHandlerSubmitOrderTungMon, true);
             } else {
-                mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
+                mSaleApiHelper.getOrderCode(mHandlerGetOrderCode, true);
             }
 
         }
@@ -155,7 +155,7 @@ public class ProductDetailActivity extends BaseActivity {
                         setTotal(order.tongTien);
 
                         if (res.code == APIConstants.REQUEST_OK) {
-                            mSaleApiHelper.submitOrderTungMon(mContext, res.data.orderCode, mTableSelection.getIdPhieu(), mCurrentOrder.getId(),
+                            mSaleApiHelper.submitOrderTungMon(res.data.orderCode, mTableSelection.getIdPhieu(), mCurrentOrder.getId(),
                                     mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
                                     mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
                                     "INSERT", mHandlerSubmitOrderTungMon, true);

@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.ronviet.ron.R;
+import com.ronviet.ron.api.APIConstants;
+import com.ronviet.ron.api.ResponseCommon;
 import com.ronviet.ron.utils.DialogUtiils;
 import com.ronviet.ron.utils.SharedPreferenceUtils;
 
@@ -34,6 +36,8 @@ public class SignInActivity extends AppCompatActivity {
                     Intent iSignIn = new Intent(SignInActivity.this, HomeActivity.class);
                     iSignIn.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(iSignIn);
+//                    new UserAPIHelper(mContext).getListUsers(mHandlerGetListUser, true);
+
                 } else {
                     new DialogUtiils().showDialogConfirm(mContext, getString(R.string.input_config_required), new Handler(){
                         @Override
@@ -74,4 +78,29 @@ public class SignInActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    private Handler mHandlerGetListUser = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseCommon res = (ResponseCommon) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                        Intent iSignIn = new Intent(SignInActivity.this, HomeActivity.class);
+                        iSignIn.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(iSignIn);
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
 }

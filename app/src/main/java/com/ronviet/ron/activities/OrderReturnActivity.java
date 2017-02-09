@@ -48,7 +48,7 @@ public class OrderReturnActivity extends BaseActivity {
         setContentView(R.layout.activity_order);
         mContext = this;
         mTableSelection = (TableInfo) getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
-        mSaleApiHelper = new SaleAPIHelper();
+        mSaleApiHelper = new SaleAPIHelper(mContext);
         mLstReturnOrders = new ArrayList<>();
 //        dummyData();
         initLayout();
@@ -71,7 +71,7 @@ public class OrderReturnActivity extends BaseActivity {
         mBtnSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSaleApiHelper.confirmReturn(mContext, mTableSelection.getIdPhieu(), mCurrentOrderCode, mHandlerConfirmReturnOrder, true);
+                mSaleApiHelper.confirmReturn(mTableSelection.getIdPhieu(), mCurrentOrderCode, mHandlerConfirmReturnOrder, true);
             }
         });
         mBtnSubmitOrder.setText(R.string.confirm);
@@ -84,7 +84,7 @@ public class OrderReturnActivity extends BaseActivity {
     private void loadData()
     {
         mLstReturnOrders = new ArrayList<>();
-        mSaleApiHelper.khoiTaoTraHang(mContext, mTableSelection.getIdPhieu(), mHandlerKhoiTaoTraHang, true);
+        mSaleApiHelper.khoiTaoTraHang(mTableSelection.getIdPhieu(), mHandlerKhoiTaoTraHang, true);
 
     }
 
@@ -116,7 +116,7 @@ public class OrderReturnActivity extends BaseActivity {
                 case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
-                        mSaleApiHelper.getOrderForReturn(mContext, mTableSelection.getIdPhieu(), mHandlerReturnOrder, true );
+                        mSaleApiHelper.getOrderForReturn(mTableSelection.getIdPhieu(), mHandlerReturnOrder, true );
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
@@ -218,11 +218,11 @@ public class OrderReturnActivity extends BaseActivity {
                     mCurrentSelectedOrderInfo = (OrderReturnInfo) msg.obj;
 
                     if(mCurrentOrderCode != null) {
-                        mSaleApiHelper.submitReturnOrderTungMon(mContext, mCurrentSelectedOrderInfo.getIdChiTietPhieu(), mCurrentSelectedOrderInfo.getIdPhieu(), mCurrentSelectedOrderInfo.getId(),
+                        mSaleApiHelper.submitReturnOrderTungMon(mCurrentSelectedOrderInfo.getIdChiTietPhieu(), mCurrentSelectedOrderInfo.getIdPhieu(), mCurrentSelectedOrderInfo.getId(),
                                 mCurrentSelectedOrderInfo.getMaMon(), mCurrentSelectedOrderInfo.getTenMon(), mCurrentSelectedOrderInfo.getSoLuongTra(), mCurrentSelectedOrderInfo.getDonViTinhId(), "",
                                 mHandlerReturnOrderTungMon, true);
                     } else {
-                        mSaleApiHelper.getOrderCode(mContext, mHandlerGetOrderCode, true);
+                        mSaleApiHelper.getOrderCode(mHandlerGetOrderCode, true);
                     }
                     mBtnSubmitOrder.setVisibility(View.VISIBLE);
                     mIsChangeData = true;
@@ -242,7 +242,7 @@ public class OrderReturnActivity extends BaseActivity {
                     if(res.data != null && res.data.orderCode != null) {
                         mCurrentOrderCode = res.data.orderCode;
                         if (res.code == APIConstants.REQUEST_OK) {
-                            mSaleApiHelper.submitReturnOrderTungMon(mContext, mCurrentSelectedOrderInfo.getIdChiTietPhieu(), mCurrentSelectedOrderInfo.getIdPhieu(), mCurrentSelectedOrderInfo.getId(),
+                            mSaleApiHelper.submitReturnOrderTungMon(mCurrentSelectedOrderInfo.getIdChiTietPhieu(), mCurrentSelectedOrderInfo.getIdPhieu(), mCurrentSelectedOrderInfo.getId(),
                                     mCurrentSelectedOrderInfo.getMaMon(), mCurrentSelectedOrderInfo.getTenMon(), mCurrentSelectedOrderInfo.getSoLuongTra(), mCurrentSelectedOrderInfo.getDonViTinhId(), "",
                                                             mHandlerReturnOrderTungMon, true);
                         } else {
@@ -308,7 +308,7 @@ public class OrderReturnActivity extends BaseActivity {
     protected Handler mHandlerProcessCancelOrder = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            mSaleApiHelper.cancelReturnOrder(mContext, mTableSelection.getIdPhieu(), mHandlerCancelReturnOrder, true);
+            mSaleApiHelper.cancelReturnOrder(mTableSelection.getIdPhieu(), mHandlerCancelReturnOrder, true);
         }
     };
 

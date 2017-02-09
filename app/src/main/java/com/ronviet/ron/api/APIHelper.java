@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.utils.ProgressDialogUtils;
+import com.ronviet.ron.utils.SharedPreferenceUtils;
 
 /**
  * Created by LENOVO on 9/26/2016.
@@ -26,6 +27,11 @@ public class APIHelper {
         if(mProgressDialogUtils != null){
             mProgressDialogUtils.hide();
         }
+    }
+
+    protected String getHostName(Context context)
+    {
+        return SharedPreferenceUtils.getWebSite(context);
     }
 
 }
