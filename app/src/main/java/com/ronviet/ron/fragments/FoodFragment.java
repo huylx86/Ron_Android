@@ -88,7 +88,7 @@ public class FoodFragment extends BaseFragment {
     private void loadData()
     {
         mLstProductCats = new ArrayList<>();
-        new SaleAPIHelper().getProductCategories(getContext(), mTableInfo.getAreaId(), Constants.FOOD_CATEGORY, mHandlerProductCat, true);
+        new SaleAPIHelper(getActivity()).getProductCategories(mTableInfo.getAreaId(), Constants.FOOD_CATEGORY, mHandlerProductCat, true);
     }
 
     private void dummyData()

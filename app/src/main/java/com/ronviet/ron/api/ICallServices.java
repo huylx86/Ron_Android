@@ -49,7 +49,7 @@ public interface ICallServices {
 
     @GET("/api/SoDoBan/GetDanhSachMonAn")
     Call<ResponseProductData> getProducts(@Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Query("khu_vuc_id") long khuId, @Query("ngay_ban_hang") String ngayBanHang, @Query("id_nhom") long idProductCat,
-                                                      @Query("loai_tien_te") long tienTeId,  @Query("ngon_ngu_id") int ngonNguId, @Query("trung_tam_id") long trungTamId);
+                                                      @Query("loai_tien_te") long tienTeId,  @Query("ngon_ngu_id") long ngonNguId, @Query("trung_tam_id") long trungTamId);
 
     @GET("/api/SoDoBan/GetMaOrder")
     Call<ResponseCreateOrderCodeData> getOrderCode(@Query("trung_tam_id") long trungTamId, @Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDanhId, @Query("quay_id") long quayId, @Query("ngay_ban_hang") String ngayBanHang, @Query("ban_hang_khac_ngay") boolean isBanHangNgayKhac);
@@ -59,7 +59,7 @@ public interface ICallServices {
     Call<ResponseCommon> submitOrderTungMon(@Field("order_id") long orderId, @Field("order_code") String orderCode, @Field("order_id_chi_tiet") long orderIdChiTietPhieu, @Field("id_phieu") long idPhieu,
                                         @Field("trang_thai") String trangThai, @Field("id_mon") long idMon, @Field("ma_mon") String maMon, @Field("ten_mon") String tenMon,
                                         @Field("so_luong") float soLuong, @Field("don_vi_tinh_id") long idDonViTinh, @Field("gia_goc") float giaGoc, @Field("don_gia") float donGia,
-                                        @Field("gia_co_thue") boolean isGiaCoThue, @Field("thue") float thue, @Field("ma_may") int maMay, @Field("trung_tam_id") long trungTamId,
+                                        @Field("gia_co_thue") boolean isGiaCoThue, @Field("thue") float thue, @Field("ma_may") long maMay, @Field("trung_tam_id") long trungTamId,
                                         @Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Field("ngay_ban_hang") String ngayBanHang, @Field("id_ban") long idBan, @Field("yeu_cau_them") String yeuCauThem,
                                             @Field("is_mix") boolean isMix, @Field("id_mat_hang_cha") long idMatHangCha, @Field("nv_id") long nvId,
                                             @Field("user_fullname") long userFullName, @Field("ban_hang_khac_ngay") boolean banHangKhacNgay, @Field("loai_tien_te_id") long loaiTienTeId);
@@ -110,6 +110,9 @@ public interface ICallServices {
     @GET("/api/SoDoBan/ChuyenBan")
     Call<ResponseCommon> chuyenBan(@Query("id_phieu") long idPhieu, @Query("id_bancu") long idBanCu, @Query("id_banmoi") long idBanMoi, @Query("ten_nhanvien") String tenNV,
                                    @Query("id_nhanvien") long nvId, @Query("ten_quanly") String tenQuanLy, @Query("id_trungtam") long idTrungTam, @Query("id_ngonngu") long idNgonNgu);
+
+    @GET("api/Login/GetListUserTrungTam")
+    Call<ResponseCommon> getListUsers(@Query("ngon_ngu_id") long ngonNguId, @Query("trung_tam_id") long trungTamId);
 
 }
 
