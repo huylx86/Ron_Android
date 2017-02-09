@@ -46,7 +46,7 @@
             android:hint="@string/code_sign_in"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white"
-            android:id="@+id/edt_sign_in" />
+            android:id="@+id/edt_code" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

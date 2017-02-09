@@ -179,12 +179,14 @@ public class SaleAPIHelper extends APIHelper {
             ICallServices service = retrofit.create(ICallServices.class);
 
             long ttId = Long.parseLong(SharedPreferenceUtils.getIdTrungTam(mContext));
+            long caId = SharedPreferenceUtils.getCaId(mContext);
+            String maCa = SharedPreferenceUtils.getMaCa(mContext);
 
             Call<ResponseCreatePhieuData> response = service.getPhieuId(-1000, 1, "huy", "aaa", "bbb", "", -1000, "", "", 1,
                                                         false, false, "", 0, 0, 0, khuId, false, false, false, false, false, false,
                                                         false, false, 1, 2, ttId, banId, CommonUtils.convertDateFormat(new Date()), false,
                                                         CommonUtils.convertDateFormat(new Date()), CommonUtils.convertDateFormat(new Date()),
-                                                        "INSERT", 1, "1");
+                                                        "INSERT", caId, maCa);
 
             response.enqueue(new Callback<ResponseCreatePhieuData>() {
                 @Override
@@ -364,10 +366,11 @@ public class SaleAPIHelper extends APIHelper {
 
             long ttId = Long.parseLong(SharedPreferenceUtils.getIdTrungTam(mContext));
             long idMay = Long.parseLong(SharedPreferenceUtils.getIdMay(mContext));
+            long nvId = SharedPreferenceUtils.getNhanVienId(mContext);
 
             Call<ResponseCommon> response = service.submitOrderTungMon(-1000, orderCode, -1000, idPhieu, status, idMon, maMon, tenMon, soLuong,
                                                             donViTinhId, giaGoc, donGia, giaCoThue, thue, idMay, ttId, 1, CommonUtils.convertDateFormat(new Date()),
-                                                            idBan, yeuCauThem, false, -1, 3, 3, false, 1);
+                                                            idBan, yeuCauThem, false, -1, nvId, 3, false, 1);
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override
@@ -451,7 +454,9 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.confirmOrder(idPhieu, idBan, orderCode, 1, "ORDER");
+            long nvId = SharedPreferenceUtils.getNhanVienId(mContext);
+
+            Call<ResponseCommon> response = service.confirmOrder(idPhieu, idBan, orderCode, nvId, "ORDER");
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override
@@ -624,7 +629,9 @@ public class SaleAPIHelper extends APIHelper {
 
             ICallServices service = retrofit.create(ICallServices.class);
 
-            Call<ResponseCommon> response = service.confirmReturn(idPhieu, orderCode, 1,"TRAHANG");
+            long nvId = SharedPreferenceUtils.getNhanVienId(mContext);
+
+            Call<ResponseCommon> response = service.confirmReturn(idPhieu, orderCode, nvId,"TRAHANG");
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override
@@ -794,8 +801,10 @@ public class SaleAPIHelper extends APIHelper {
 
             long ttId = Long.parseLong(SharedPreferenceUtils.getIdTrungTam(mContext));
             long ngonNgu = Long.parseLong(SharedPreferenceUtils.getNgonNgu(mContext));
+            String tenNV = SharedPreferenceUtils.getTenNhanVien(mContext);
+            long nvId = SharedPreferenceUtils.getNhanVienId(mContext);
 
-            Call<ResponseCommon> response = service.chuyenBan(idPhieu, idBanCu, idBanMoi, "Mai Van Chuong", 123, "Nguyen Van A", ttId, ngonNgu);
+            Call<ResponseCommon> response = service.chuyenBan(idPhieu, idBanCu, idBanMoi, tenNV, nvId, "Nguyen Van A", ttId, ngonNgu);
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override

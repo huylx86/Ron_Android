@@ -9,13 +9,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserInfo {
 
-    @SerializedName("uS_AUTOID")
-    private long us_autoid;
+    @SerializedName("nV_AUTOID")
+    private long nv_autoid;
 
     @SerializedName("uS_USERNAME")
     private String us_username;
 
-    @SerializedName("uS_PASSWORD")
+    @SerializedName("uS_THETU")
     private String us_password;
 
     @SerializedName("nV_TENNV")
@@ -32,12 +32,12 @@ public class UserInfo {
 //    private String us_ngay_tao;
 
 
-    public long getUs_autoid() {
-        return us_autoid;
+    public long getNv_autoid() {
+        return nv_autoid;
     }
 
-    public void setUs_autoid(long us_autoid) {
-        this.us_autoid = us_autoid;
+    public void setNv_autoid(long nv_autoid) {
+        this.nv_autoid = nv_autoid;
     }
 
     public String getUs_username() {

@@ -27,7 +27,7 @@ public class FirstConfigActivity extends AppCompatActivity {
         mContext = this;
 
         initLayout();
-        initValue();
+        initData();
     }
 
     private void initLayout()
@@ -88,7 +88,7 @@ public class FirstConfigActivity extends AppCompatActivity {
         });
     }
 
-    private void initValue()
+    private void initData()
     {
         String website = SharedPreferenceUtils.getWebSite(mContext);
         String idTT = SharedPreferenceUtils.getIdTrungTam(mContext);

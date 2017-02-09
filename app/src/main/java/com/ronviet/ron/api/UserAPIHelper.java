@@ -45,14 +45,14 @@ public class UserAPIHelper extends APIHelper {
             long ttId = Long.parseLong(SharedPreferenceUtils.getIdTrungTam(mContext));
             long ngonNgu = Long.parseLong(SharedPreferenceUtils.getNgonNgu(mContext));
 
-            Call<ResponseCommon> response = service.getListUsers(ngonNgu, ttId);
+            Call<ResponseUsersData> response = service.getListUsers(ngonNgu, ttId);
 
-            response.enqueue(new Callback<ResponseCommon>() {
+            response.enqueue(new Callback<ResponseUsersData>() {
                 @Override
-                public void onResponse(Call<ResponseCommon> call, Response<ResponseCommon> response) {
-                    ResponseCommon res = response.body();
+                public void onResponse(Call<ResponseUsersData> call, Response<ResponseUsersData> response) {
+                    ResponseUsersData res = response.body();
                     if (res == null) {
-                        res = new ResponseCommon();
+                        res = new ResponseUsersData();
                         res.code = APIConstants.REQUEST_FAILED;
                     }
 
@@ -64,7 +64,51 @@ public class UserAPIHelper extends APIHelper {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseCommon> call, Throwable t) {
+                public void onFailure(Call<ResponseUsersData> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(mContext, mContext.getString(R.string.network_not_avaiable), false);
+        }
+    }
+
+    public void getCaLamViec(String username, final Handler handler, boolean isShowProgress)
+    {
+        if(NetworkUtils.isNetworkAvailable(mContext)) {
+            if (isShowProgress) {
+                showProgressDialog(mContext);
+            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(mHostName)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            long ttId = Long.parseLong(SharedPreferenceUtils.getIdTrungTam(mContext));
+
+            Call<ResponseCaLamViecData> response = service.getCaLamViec(ttId, 1, 1, username);
+
+            response.enqueue(new Callback<ResponseCaLamViecData>() {
+                @Override
+                public void onResponse(Call<ResponseCaLamViecData> call, Response<ResponseCaLamViecData> response) {
+                    ResponseCaLamViecData res = response.body();
+                    if (res == null) {
+                        res = new ResponseCaLamViecData();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCaLamViecData> call, Throwable t) {
                     handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
                     closeDialog();
                 }

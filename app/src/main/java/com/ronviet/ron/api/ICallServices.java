@@ -72,7 +72,7 @@ public interface ICallServices {
 //    Call<ResponseCommon> confirmOrder(@Field("id_phieu") long idPhieu, @Field("id_ban") long idBan, @Field("order_code") String orderCode, @Field("id_nhan_vien") long isNhanVien, @Field("trang_thai") String trangThai);
 
     @GET("/api/SoDoBan/GuiOrder")
-    Call<ResponseCommon> confirmOrder(@Query("id_phieu") long idPhieu, @Query("id_ban") long idBan, @Query("order_code") String orderCode, @Query("id_nhan_vien") long isNhanVien, @Query("trang_thai") String trangThai);
+    Call<ResponseCommon> confirmOrder(@Query("id_phieu") long idPhieu, @Query("id_ban") long idBan, @Query("order_code") String orderCode, @Query("id_nhan_vien") long idNhanVien, @Query("trang_thai") String trangThai);
 
 
     @GET("/api/SoDoBan/KhoiTaoXemLaiPhieu")
@@ -112,7 +112,10 @@ public interface ICallServices {
                                    @Query("id_nhanvien") long nvId, @Query("ten_quanly") String tenQuanLy, @Query("id_trungtam") long idTrungTam, @Query("id_ngonngu") long idNgonNgu);
 
     @GET("api/Login/GetListUserTrungTam")
-    Call<ResponseCommon> getListUsers(@Query("ngon_ngu_id") long ngonNguId, @Query("trung_tam_id") long trungTamId);
+    Call<ResponseUsersData> getListUsers(@Query("ngon_ngu_id") long ngonNguId, @Query("trung_tam_id") long trungTamId);
 
+    @GET("/api/VaoCa/GetCaLamViec")
+    Call<ResponseCaLamViecData> getCaLamViec(@Query("trung_tam_id") long trungTamId, @Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanh,
+                                         @Query("quay_id") long quayId, @Query("username") String username);
 }
 

@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public class ResponseUsersData extends ResponseCommon {
-    List<UserInfo> data;
+    public List<UserInfo> data;
 }
