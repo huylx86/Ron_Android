@@ -89,7 +89,7 @@ public class UserAPIHelper extends APIHelper {
 
             long ttId = Long.parseLong(SharedPreferenceUtils.getIdTrungTam(mContext));
 
-            Call<ResponseCaLamViecData> response = service.getCaLamViec(ttId, 1, 1, username);
+            Call<ResponseCaLamViecData> response = service.getCaLamViec(ttId, 1, 2, username);
 
             response.enqueue(new Callback<ResponseCaLamViecData>() {
                 @Override
