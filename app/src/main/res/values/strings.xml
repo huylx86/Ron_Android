@@ -63,6 +63,8 @@
     <string name="input_config_required">Làm ơn nhập config cho app!</string>
     <string name="input_code">Làm ơn nhập mã đăng nhập!</string>
     <string name="code_incorrect">Nhập mã không đúng. Làm ơn nhập lại!</string>
+    <string name="message_confirm_out_order_screen">Tồn tại mặt hàng chưa gửi order. Bạn muốn tiếp tuc không?</string>
+    <string name="message_confirm_exit">Bạn có muốn thoát ứng dụng không?</string>
     <string name="ok">ĐỒNG Ý</string>
     <string name="cancel">HỦY BỎ</string>
     <string name="delete">XÓA</string>

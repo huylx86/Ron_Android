@@ -65,7 +65,11 @@ public class ProductDetailActivity extends BaseActivity {
             setTotal(0);
         }
         if(mProductCatInfo != null) {
-            setTitle(mProductCatInfo.getTenNhom() + " - " + mTableSelection.getName());
+            String tenNhom = mProductCatInfo.getTenNhom();
+            if(tenNhom.length()>5) {
+                tenNhom = tenNhom.substring(0, 5) + "...";
+            }
+            setTitle(tenNhom + " - " + mTableSelection.getName());
         }
     }
 

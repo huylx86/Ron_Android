@@ -131,11 +131,11 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                float soLuongTra = 1;
+//                float soLuongTra = 1;
                 try {
-                    soLuongTra = Float.parseFloat(userInput.getText().toString());
+                    mSoLuongTra = Float.parseFloat(userInput.getText().toString());
                 }catch (Exception e){}
-                mRemainingProdCheck = order.getSoLuong() - soLuongTra;
+                mRemainingProdCheck = order.getSoLuong() - mSoLuongTra;
             }
 
             @Override

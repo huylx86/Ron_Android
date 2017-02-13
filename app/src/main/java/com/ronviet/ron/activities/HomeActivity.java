@@ -1,5 +1,6 @@
 package com.ronviet.ron.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,6 +42,16 @@ public class HomeActivity extends AppCompatActivity {
         initLayout();
         initData();
         loadData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        new DialogUtiils().showDialogConfirm(mContext, mContext.getString(R.string.message_confirm_exit), new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                ((Activity)mContext).finish();
+            }
+        });
     }
 
     private void initLayout()

@@ -1,6 +1,9 @@
 package com.ronviet.ron.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import com.ronviet.ron.fragments.OthersFragment;
 import com.ronviet.ron.models.PendingOrder;
 import com.ronviet.ron.models.TableInfo;
 import com.ronviet.ron.utils.Constants;
+import com.ronviet.ron.utils.DialogUtiils;
 import com.ronviet.ron.utils.SharedPreferenceUtils;
 
 public class ProductActivity extends BaseActivity {
@@ -39,6 +43,21 @@ public class ProductActivity extends BaseActivity {
             setTotal(pendingOrder.tongTien);
         } else {
             setTotal(0);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        PendingOrder pendingOrder = SharedPreferenceUtils.getPendingOrderFromList(mContext, mTableSelection.getId());
+        if(pendingOrder != null) {
+            new DialogUtiils().showDialogConfirm(mContext, mContext.getString(R.string.message_confirm_out_order_screen), new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    ((Activity) mContext).finish();
+                }
+            });
+        } else {
+            super.onBackPressed();
         }
     }
 

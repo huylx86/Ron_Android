@@ -82,6 +82,8 @@ public class OrderReviewActivity extends BaseActivity {
         mCurrentOrderCode = SharedPreferenceUtils.getOrderCodeFromPendingOrder(mContext, mTableSelection.getId());
         if(mCurrentOrderCode != null) {
             mSaleApiHelper.getReviewOrder(mCurrentOrderCode, mHandlerReviewOrder, true);
+        } else {
+            processAddOrder();
         }
     }
 
