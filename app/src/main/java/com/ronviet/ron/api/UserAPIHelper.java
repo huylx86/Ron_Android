@@ -117,4 +117,49 @@ public class UserAPIHelper extends APIHelper {
             new DialogUtiils().showDialog(mContext, mContext.getString(R.string.network_not_avaiable), false);
         }
     }
+
+    public void getTrungTamChiTiet(final Handler handler)
+    {
+        if(NetworkUtils.isNetworkAvailable(mContext)) {
+
+            showProgressDialog(mContext);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(mHostName)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ICallServices service = retrofit.create(ICallServices.class);
+
+            long ttId = Long.parseLong(SharedPreferenceUtils.getIdTrungTam(mContext));
+            long ngonNgu = Long.parseLong(SharedPreferenceUtils.getNgonNgu(mContext));
+
+            Call<ResponseTrungTamData> response = service.getTrungTamChiTiet(ttId, ngonNgu);
+
+            response.enqueue(new Callback<ResponseTrungTamData>() {
+                @Override
+                public void onResponse(Call<ResponseTrungTamData> call, Response<ResponseTrungTamData> response) {
+                    ResponseTrungTamData res = response.body();
+                    if (res == null) {
+                        res = new ResponseTrungTamData();
+                        res.code = APIConstants.REQUEST_FAILED;
+                    }
+
+                    Message msg = Message.obtain();
+                    msg.what = APIConstants.HANDLER_REQUEST_SERVER_SUCCESS;
+                    msg.obj = res;
+                    handler.sendMessage(msg);
+                    closeDialog();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseTrungTamData> call, Throwable t) {
+                    handler.sendEmptyMessage(APIConstants.HANDLER_REQUEST_SERVER_FAILED);
+                    closeDialog();
+                }
+            });
+        } else {
+            new DialogUtiils().showDialog(mContext, mContext.getString(R.string.network_not_avaiable), false);
+        }
+    }
 }

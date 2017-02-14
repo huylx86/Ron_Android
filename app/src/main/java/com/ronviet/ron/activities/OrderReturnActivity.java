@@ -50,7 +50,7 @@ public class OrderReturnActivity extends BaseActivity {
         mTableSelection = (TableInfo) getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
         mSaleApiHelper = new SaleAPIHelper(mContext);
         mLstReturnOrders = new ArrayList<>();
-//        dummyData();
+
         initLayout();
         loadData();
     }
@@ -189,22 +189,6 @@ public class OrderReturnActivity extends BaseActivity {
             }
         }
     };
-
-    private void dummyData()
-    {
-        mLstReturnOrders = new ArrayList<>();
-        for(int i=0;i<10;i++)
-        {
-            OrderReturnInfo info = new OrderReturnInfo();
-            info.setTenMon("Product " + i);
-            info.setDonGia(i*1000 + 1000);
-            info.setPromotion("Giam gia " + i*1000);
-            info.setSoLuong(i);
-            info.setTotal((i*1000 + 1000)*i);
-//            info.setReturnProd(false);
-            mLstReturnOrders.add(info);
-        }
-    }
 
     protected Handler mHandlerProcessSubmitOrder = new Handler() {
         @Override

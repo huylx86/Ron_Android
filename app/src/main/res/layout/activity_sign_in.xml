@@ -10,17 +10,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/ln_copyright"
         android:orientation="vertical">
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/sale"
-            android:scaleType="fitXY"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/iv_logo"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +25,8 @@
             android:layout_marginRight="15dp"
             android:textColor="@android:color/white"
             android:layout_marginBottom="50dp"
-            android:textSize="25sp"/>
+            android:textSize="25sp"
+            android:id="@+id/tv_trung_tam"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -39,7 +34,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
             android:textAlignment="center"
             android:background="@android:color/transparent"
             android:inputType="numberPassword"
@@ -60,5 +54,6 @@
             android:text="@string/sign_in"
             android:id="@+id/btn_sign_in"/>
     </LinearLayout>
-    <include layout="@layout/copy_right_layout"/>
+    <include layout="@layout/copy_right_layout"
+             android:id="@id/ln_copyright"/>
 </RelativeLayout>
