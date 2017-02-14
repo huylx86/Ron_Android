@@ -113,6 +113,7 @@ public class OrderReviewActivity extends BaseActivity {
                         }
                         mTvTongTien.setText(CommonUtils.formatCurrency(tongTien));
                         mAdapterOrder.updateData(mLstOrders);
+                        SharedPreferenceUtils.updateTongTienToPendingOrder(mContext, mTableSelection.getId(), tongTien);
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);

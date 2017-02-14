@@ -48,6 +48,19 @@ public class ProductDetailActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mTableSelection != null) {
+            PendingOrder pendingOrder = SharedPreferenceUtils.getPendingOrderFromList(mContext, mTableSelection.getId());
+            if (pendingOrder != null) {
+                setTotal(pendingOrder.tongTien);
+            } else {
+                setTotal(0);
+            }
+        }
+    }
+
     private void initLayout()
     {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view_product);

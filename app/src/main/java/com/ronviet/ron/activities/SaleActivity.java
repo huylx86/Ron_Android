@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.adapters.AreaRecyclerViewAdapter;
@@ -27,6 +28,8 @@ import com.ronviet.ron.utils.DialogUtiils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SaleActivity extends BaseActivity {
 
@@ -50,12 +53,21 @@ public class SaleActivity extends BaseActivity {
         mLstAreas = new ArrayList<>();
         mLstTables = new ArrayList<>();
         initLayout();
+        initTimerToRefreshTable();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         loadAreaData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(timerRefreshTable != null){
+            timerRefreshTable.cancel();
+        }
     }
 
     private void initLayout()
@@ -94,10 +106,6 @@ public class SaleActivity extends BaseActivity {
             }
         });
 
-//        dummyTableData(0);
-//        dummyAreaTableData();
-
-
         GridLayoutManager tableLayoutManager = new GridLayoutManager(this, 3);
         mRecyclerTables.setLayoutManager(tableLayoutManager);
         mAdapterTable = new TableRecyclerViewAdapter(this, mLstTables, mHandlerProcessTable);
@@ -113,7 +121,23 @@ public class SaleActivity extends BaseActivity {
         setTitle(getString(R.string.title_table_map));
         setTotal(0);
     }
-
+    Timer timerRefreshTable;
+    private void initTimerToRefreshTable() {
+        timerRefreshTable = new Timer();
+        final Handler handler = new Handler();
+        TimerTask doRefreshTableTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(mContext, "Demo Timer", Toast.LENGTH_LONG).show();
+//                        loadTableData(mLstAreas.get(mSelectedArea).getId());
+                    }
+                });
+            }
+        };
+        timerRefreshTable.schedule(doRefreshTableTask, 1000,3000);
+    }
     private void loadAreaData()
     {
         mLstAreas = new ArrayList<>();

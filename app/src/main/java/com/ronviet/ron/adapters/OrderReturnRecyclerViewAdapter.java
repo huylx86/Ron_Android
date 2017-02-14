@@ -33,7 +33,7 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private Handler mHandlerProcessSubmitOrder;
     private float mRemainingProdCheck = 0;
     private OrderReturnInfo mOrderReturnProd;
-    private float mSoLuongTra = 0;
+    private float mSoLuongTra = 1;
 
     public OrderReturnRecyclerViewAdapter(Context context, List<OrderReturnInfo> lstReturnOrders, Handler handler) {
         this.mLstReturnOrders = lstReturnOrders;
@@ -123,7 +123,7 @@ public class OrderReturnRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
         TextView tvBeforeChangeOrder = (TextView)dialog.findViewById(R.id.tv_before_change_order);
 
-        mRemainingProdCheck = order.getSoLuong() - 1;
+        mRemainingProdCheck = order.getSoLuong() - mSoLuongTra;
         tvBeforeChangeOrder.setText(String.valueOf(order.getSoLuong()));
 
         final EditText userInput = (EditText) dialog.findViewById(R.id.edt_change_order);
