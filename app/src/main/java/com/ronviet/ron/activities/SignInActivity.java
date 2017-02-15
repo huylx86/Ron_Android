@@ -9,11 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.ronviet.ron.R;
 import com.ronviet.ron.api.APIConstants;
+import com.ronviet.ron.api.ResponseTrungTamData;
 import com.ronviet.ron.api.ResponseUsersData;
 import com.ronviet.ron.api.UserAPIHelper;
 import com.ronviet.ron.models.UserInfo;
@@ -27,8 +28,9 @@ public class SignInActivity extends AppCompatActivity {
 
     private Button mBtnSignIn;
     private Context mContext;
-    private ImageView mIvLogo;
+    private TextView mTvTrungTam;
     private EditText mEdtCode;
+    private UserAPIHelper mUserAPIHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +44,6 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isInputFirstConfig()) {
-//                    Intent iSignIn = new Intent(SignInActivity.this, HomeActivity.class);
-//                    iSignIn.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(iSignIn);
                     if(mEdtCode.getText().toString().trim().equalsIgnoreCase("")) {
                         new DialogUtiils().showDialog(mContext, getString(R.string.input_code), false);
                     } else {
@@ -63,8 +62,8 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        mIvLogo = (ImageView) findViewById(R.id.iv_logo);
-        mIvLogo.setOnClickListener(new View.OnClickListener() {
+        mTvTrungTam = (TextView) findViewById(R.id.tv_trung_tam);
+        mTvTrungTam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent iConfig = new Intent(SignInActivity.this, FirstConfigActivity.class);
@@ -82,6 +81,15 @@ public class SignInActivity extends AppCompatActivity {
                     startActivity(iConfig);
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String website = SharedPreferenceUtils.getWebSite(mContext);
+        if(!website.equalsIgnoreCase("")) {
+            new UserAPIHelper(mContext).getTrungTamChiTiet(mHandlerTrungTamChiTiet);
         }
     }
 
@@ -123,6 +131,29 @@ public class SignInActivity extends AppCompatActivity {
                             mEdtCode.setText("");
                         }
 
+                    } else {
+                        if(res.message != null) {
+                            new DialogUtiils().showDialog(mContext, res.message, false);
+                        } else {
+                            new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                        }
+                    }
+                    break;
+                case APIConstants.HANDLER_REQUEST_SERVER_FAILED:
+                    new DialogUtiils().showDialog(mContext, getString(R.string.server_error), false);
+                    break;
+            }
+        }
+    };
+
+    private Handler mHandlerTrungTamChiTiet = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case APIConstants.HANDLER_REQUEST_SERVER_SUCCESS:
+                    ResponseTrungTamData res = (ResponseTrungTamData) msg.obj;
+                    if(res.code == APIConstants.REQUEST_OK) {
+                       mTvTrungTam.setText(res.data.getName());
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);

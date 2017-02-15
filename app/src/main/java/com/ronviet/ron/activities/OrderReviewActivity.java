@@ -47,7 +47,7 @@ public class OrderReviewActivity extends BaseActivity {
         mTableSelection = (TableInfo) getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
         mSaleApiHelper = new SaleAPIHelper(mContext);
         mLstOrders = new ArrayList<>();
-//        dummyData();
+
         initLayout();
         loadData();
     }
@@ -114,6 +114,9 @@ public class OrderReviewActivity extends BaseActivity {
                         mTvTongTien.setText(CommonUtils.formatCurrency(tongTien));
                         mAdapterOrder.updateData(mLstOrders);
                         SharedPreferenceUtils.updateTongTienToPendingOrder(mContext, mTableSelection.getId(), tongTien);
+                        if(mLstOrders.size() <= 0 && !mIsChangeData){
+                            processAddOrder();
+                        }
                     } else {
                         if(res.message != null) {
                             new DialogUtiils().showDialog(mContext, res.message, false);
@@ -211,17 +214,4 @@ public class OrderReviewActivity extends BaseActivity {
         }
     };
 
-    private void dummyData() {
-        mLstOrders = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            OrderInfo info = new OrderInfo();
-            info.setTenMon("Product " + i);
-            info.setDonGia(i * 1000 + 1000);
-            info.setPromotion("Giam gia " + i * 1000);
-            info.setSoLuong(i);
-            info.setTotal((i * 1000 + 1000) * i);
-//            info.setReturnProd(false);
-            mLstOrders.add(info);
-        }
-    }
 }

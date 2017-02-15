@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.ronviet.ron.R;
 import com.ronviet.ron.adapters.AreaRecyclerViewAdapter;
@@ -52,10 +51,8 @@ public class SaleActivity extends BaseActivity {
         mSaleHelper = new SaleAPIHelper(mContext);
         mLstAreas = new ArrayList<>();
         mLstTables = new ArrayList<>();
-        initLayout();
-        initTimerToRefreshTable();
 
-        throw new RuntimeException("Test crash");
+        initLayout();
     }
 
     @Override
@@ -132,13 +129,13 @@ public class SaleActivity extends BaseActivity {
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        Toast.makeText(mContext, "Demo Timer", Toast.LENGTH_LONG).show();
-//                        loadTableData(mLstAreas.get(mSelectedArea).getId());
+//                        Toast.makeText(mContext, "Demo Timer", Toast.LENGTH_LONG).show();
+                        loadTableData(mLstAreas.get(mSelectedArea).getId());
                     }
                 });
             }
         };
-        timerRefreshTable.schedule(doRefreshTableTask, 1000,3000);
+        timerRefreshTable.schedule(doRefreshTableTask, 1000, 10000);
     }
     private void loadAreaData()
     {
@@ -153,37 +150,6 @@ public class SaleActivity extends BaseActivity {
         mSaleHelper.getTableInfo(areaId, mHanlderGetTable, true);
     }
 
-    private void createMaPhieu()
-    {
-        mSaleHelper.getMaPhieu(mHandlerGetMaPhieu, true);
-    }
-
-    private void dummyTableData(int pos)
-    {
-        mLstTables = new ArrayList<>();
-        for(int i=0;i<5;i++)
-        {
-            TableInfo info = new TableInfo();
-            info.setAreaId(3);
-            info.setName(String.format("%d - %d", pos, i));
-            info.setIdPhieu(1);
-            mLstTables.add(info);
-        }
-    }
-
-    private void dummyAreaTableData()
-    {
-        mLstAreas = new ArrayList<>();
-        for(int i = 0 ;i<5; i++){
-            AreaInfo area = new AreaInfo();
-            area.setName(String.valueOf("Khu " + i));
-            area.setmIsSelection(false);
-            if(i==0) {
-                area.setmIsSelection(true);
-            }
-            mLstAreas.add(area);
-        }
-    }
 
     private Handler mHandlerGetArea = new Handler(){
         @Override
@@ -197,6 +163,7 @@ public class SaleActivity extends BaseActivity {
                         if(mLstAreas.size() > 0 && mSelectedArea < mLstAreas.size()) {
                             mLstAreas.get(mSelectedArea).setmIsSelection(true);
                             loadTableData(mLstAreas.get(mSelectedArea).getId());
+                            initTimerToRefreshTable();
                         }
                         mAdapterArea.updateData(mLstAreas);
                     } else {

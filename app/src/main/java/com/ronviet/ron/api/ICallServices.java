@@ -117,5 +117,8 @@ public interface ICallServices {
     @GET("/api/VaoCa/GetCaLamViec")
     Call<ResponseCaLamViecData> getCaLamViec(@Query("trung_tam_id") long trungTamId, @Query("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanh,
                                          @Query("quay_id") long quayId, @Query("username") String username);
+
+    @GET("/api/Login/GetTrungTamChiTiet")
+    Call<ResponseTrungTamData> getTrungTamChiTiet(@Query("id_trungtam") long trungTamId, @Query("id_ngonngu") long idNgonNgu);
 }
 

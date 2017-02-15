@@ -42,7 +42,7 @@ public class ProductDetailActivity extends BaseActivity {
         mTableSelection = (TableInfo)getIntent().getSerializableExtra(Constants.EXTRA_TABLE);
         mSaleApiHelper = new SaleAPIHelper(mContext);
         mLstProducts = new ArrayList<>();
-//        dummyData();
+
         initLayout();
         loadData();
 
@@ -83,18 +83,6 @@ public class ProductDetailActivity extends BaseActivity {
                 tenNhom = tenNhom.substring(0, 5) + "...";
             }
             setTitle(tenNhom + " - " + mTableSelection.getName());
-        }
-    }
-
-    private void dummyData()
-    {
-        mLstProducts = new ArrayList<>();
-        for(int i=0; i<20; i++) {
-            ProductInfo info = new ProductInfo();
-            info.setId(i);
-            info.setTenMon(mProductCatInfo.getTenNhom() + " - " + i);
-            info.setDonGia(i);
-            mLstProducts.add(info);
         }
     }
 
