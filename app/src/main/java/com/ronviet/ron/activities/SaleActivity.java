@@ -54,6 +54,8 @@ public class SaleActivity extends BaseActivity {
         mLstTables = new ArrayList<>();
         initLayout();
         initTimerToRefreshTable();
+
+        throw new RuntimeException("Test crash");
     }
 
     @Override

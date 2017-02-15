@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.crashlytics.android.Crashlytics;
 import com.ronviet.ron.R;
 import com.ronviet.ron.api.APIConstants;
 import com.ronviet.ron.api.ResponseUsersData;
@@ -19,6 +20,7 @@ import com.ronviet.ron.models.UserInfo;
 import com.ronviet.ron.utils.DialogUtiils;
 import com.ronviet.ron.utils.SharedPreferenceUtils;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_sign_in);
         mContext = this;
 

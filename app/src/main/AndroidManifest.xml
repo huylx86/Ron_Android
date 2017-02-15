@@ -48,6 +48,9 @@
         <activity android:name=".activities.FirstConfigActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="526355f92571a6994097fe9df35fba919c2da78c" />
     </application>
 
 </manifest>
