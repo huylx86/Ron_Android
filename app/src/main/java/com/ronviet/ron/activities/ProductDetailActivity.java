@@ -131,7 +131,7 @@ public class ProductDetailActivity extends BaseActivity {
                 float tongTien = pendingOrder.tongTien + mCurrentOrder.getDonGia()*mCurrentOrder.getSoLuong();
                 SharedPreferenceUtils.updateTongTienToPendingOrder(mContext, mTableSelection.getId(), tongTien);
                 setTotal(tongTien);
-                mSaleApiHelper.submitOrderTungMon(orderCode, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
+                mSaleApiHelper.submitOrderTungMon(-1000, orderCode, -1000, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
                         mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
                         mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
                         "INSERT", mHandlerSubmitOrderTungMon, true);
@@ -160,7 +160,7 @@ public class ProductDetailActivity extends BaseActivity {
                         setTotal(order.tongTien);
 
                         if (res.code == APIConstants.REQUEST_OK) {
-                            mSaleApiHelper.submitOrderTungMon(res.data.orderCode, mTableSelection.getIdPhieu(), mCurrentOrder.getId(),
+                            mSaleApiHelper.submitOrderTungMon(-1000, res.data.orderCode, -1000, mTableSelection.getIdPhieu(), mCurrentOrder.getId(),
                                     mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
                                     mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
                                     "INSERT", mHandlerSubmitOrderTungMon, true);

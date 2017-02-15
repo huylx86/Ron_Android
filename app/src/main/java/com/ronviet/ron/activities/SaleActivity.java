@@ -24,6 +24,7 @@ import com.ronviet.ron.models.AreaInfo;
 import com.ronviet.ron.models.TableInfo;
 import com.ronviet.ron.utils.Constants;
 import com.ronviet.ron.utils.DialogUtiils;
+import com.ronviet.ron.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,8 @@ public class SaleActivity extends BaseActivity {
     private static int mSelectedArea = 0;
     private static int mSelectedTable = -1, mSelectedTNewTable = -1;
     private boolean isMoveTable = false;
+    private long idBanCu = -1;
+    private long idBanMoi = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,6 +284,7 @@ public class SaleActivity extends BaseActivity {
                     ResponseCommon res = (ResponseCommon) msg.obj;
                     if(res.code == APIConstants.REQUEST_OK) {
                         new DialogUtiils().showDialog(mContext, res.message, false);
+                        SharedPreferenceUtils.updateTableIdToNewOne(mContext, idBanCu, idBanMoi);
                         mSelectedTable = mSelectedTNewTable;
                         loadTableData(mLstAreas.get(mSelectedArea).getId());
                     } else {
@@ -306,6 +310,8 @@ public class SaleActivity extends BaseActivity {
                 case Constants.HANDLER_CLOSE_SUB_MENU:
                     if(isMoveTable) {
                         TableInfo newTableInfo = (TableInfo) msg.obj;
+                        idBanCu = mTableSelection.getId();
+                        idBanMoi = newTableInfo.getId();
                         mSaleHelper.chuyenBan(mTableSelection.getIdPhieu(), mTableSelection.getId(), newTableInfo.getId(), mHandlerMoveTable, true);
                         mSelectedTNewTable = msg.arg1;
                     } else {

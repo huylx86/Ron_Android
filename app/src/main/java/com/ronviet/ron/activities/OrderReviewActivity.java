@@ -167,7 +167,7 @@ public class OrderReviewActivity extends BaseActivity {
             OrderInfo orderInfo = (OrderInfo) msg.obj;
             switch (msg.what){
                 case Constants.HANDLER_INPUT_SO_LUONG:
-                    mSaleApiHelper.submitOrderTungMon(orderInfo.getOrderCode(), mTableSelection.getIdPhieu(), orderInfo.getId(),
+                    mSaleApiHelper.submitOrderTungMon(orderInfo.getOrderId(), orderInfo.getOrderCode(), orderInfo.getOrderChiTietPhieu(), mTableSelection.getIdPhieu(), orderInfo.getId(),
                             orderInfo.getMaMon(), orderInfo.getTenMon(), orderInfo.getSoLuong(), orderInfo.getDonViTinhId(),
                             orderInfo.getGiaGoc(), orderInfo.getDonGia(), orderInfo.isGiaCoThue(), orderInfo.getThue(), mTableSelection.getId(), "",
                             "UPDATE", mHandlerProcessOrderTungMon, true);

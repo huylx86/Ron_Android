@@ -349,7 +349,7 @@ public class SaleAPIHelper extends APIHelper {
         }
     }
 
-    public void submitOrderTungMon(String orderCode, long idPhieu, long idMon, String maMon, String tenMon,
+    public void submitOrderTungMon(long orderId, String orderCode, long orderIdChiTietPhieu, long idPhieu, long idMon, String maMon, String tenMon,
                                float soLuong, long donViTinhId, float giaGoc, float donGia, boolean giaCoThue, float thue,
                                long idBan, String yeuCauThem, String status, final Handler handler, boolean isShowProgress)
     {
@@ -368,7 +368,7 @@ public class SaleAPIHelper extends APIHelper {
             long idMay = Long.parseLong(SharedPreferenceUtils.getIdMay(mContext));
             long nvId = SharedPreferenceUtils.getNhanVienId(mContext);
 
-            Call<ResponseCommon> response = service.submitOrderTungMon(-1000, orderCode, -1000, idPhieu, status, idMon, maMon, tenMon, soLuong,
+            Call<ResponseCommon> response = service.submitOrderTungMon(orderId, orderCode, orderIdChiTietPhieu, idPhieu, status, idMon, maMon, tenMon, soLuong,
                                                             donViTinhId, giaGoc, donGia, giaCoThue, thue, idMay, ttId, 1, CommonUtils.convertDateFormat(new Date()),
                                                             idBan, yeuCauThem, false, -1, nvId, 3, false, 1);
 

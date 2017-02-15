@@ -102,6 +102,25 @@ public class SharedPreferenceUtils {
         editor.commit();
     }
 
+    public static void updateTableIdToNewOne(Context context, long banIdCu, long banIdMoi)
+    {
+        List<PendingOrder> lstPendingOrders = getPendingOrder(context);
+        if(lstPendingOrders != null && lstPendingOrders.size() > 0) {
+            for (PendingOrder order : lstPendingOrders) {
+                if (banIdCu == order.banId) {
+                    order.banId = banIdMoi;
+                }
+            }
+        }
+        Gson gson = new Gson();
+        String result = gson.toJson(lstPendingOrders);
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PENDING_ORDER, result);
+        editor.commit();
+    }
+
     public static float getTongTienFromPendingOrder(Context context, long banId){
         List<PendingOrder> lstPendingOrders = getPendingOrder(context);
         if(lstPendingOrders != null && lstPendingOrders.size() > 0) {

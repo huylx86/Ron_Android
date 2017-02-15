@@ -21,8 +21,9 @@ import com.ronviet.ron.models.UserInfo;
 import com.ronviet.ron.utils.DialogUtiils;
 import com.ronviet.ron.utils.SharedPreferenceUtils;
 
-import io.fabric.sdk.android.Fabric;
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -30,7 +31,6 @@ public class SignInActivity extends AppCompatActivity {
     private Context mContext;
     private TextView mTvTrungTam;
     private EditText mEdtCode;
-    private UserAPIHelper mUserAPIHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
