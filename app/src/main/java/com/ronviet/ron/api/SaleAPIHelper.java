@@ -182,7 +182,8 @@ public class SaleAPIHelper extends APIHelper {
             long caId = SharedPreferenceUtils.getCaId(mContext);
             String maCa = SharedPreferenceUtils.getMaCa(mContext);
 
-            Call<ResponseCreatePhieuData> response = service.getPhieuId(-1000, 1, "huy", "aaa", "bbb", "", -1000, "", "", 1,
+            String tenNv = SharedPreferenceUtils.getTenNhanVien(mContext);
+            Call<ResponseCreatePhieuData> response = service.getPhieuId(-1000, 1, tenNv, "", "", "", -1000, "", "", 1,
                                                         false, false, "", 0, 0, 0, khuId, false, false, false, false, false, false,
                                                         false, false, 1, 2, ttId, banId, CommonUtils.convertDateFormat(new Date()), false,
                                                         CommonUtils.convertDateFormat(new Date()), CommonUtils.convertDateFormat(new Date()),

@@ -38,6 +38,7 @@
     <string name="title_list_order">DANH SÁCH ORDER</string>
     <string name="title_return_order">DANH SÁCH ĐÃ ORDER</string>
     <string name="title_add_list">THÊM MÓN</string>
+    <string name="title_select_table">ĐANG CHỌN</string>
 
     <!-- Add Order -->
     <string name="input_order">Nhập số lượng muốn order</string>

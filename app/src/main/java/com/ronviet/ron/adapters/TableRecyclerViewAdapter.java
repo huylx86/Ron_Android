@@ -56,7 +56,7 @@ public class TableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         TableInfo tableInfo = mLstTables.get(position);
         tableHolder.mTableName.setText(tableInfo.getName());
         if(tableInfo.isSelection()){
-            tableHolder.mTableName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.button_select));
+            tableHolder.mTableName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.button_selected));
         } else {
             tableHolder.mTableName.setBackgroundColor(Color.parseColor(tableInfo.getMaMau()));
         }

@@ -120,7 +120,11 @@ public class SaleActivity extends BaseActivity {
         mRecyclerAreas.setAdapter(mAdapterArea);
 
         initHeader();
-        setTitle(getString(R.string.title_table_map));
+        if(mTableSelection != null){
+            setTitle(getString(R.string.title_select_table) + " " + mTableSelection.getName());
+        } else {
+            setTitle(getString(R.string.title_table_map));
+        }
         setTotal(0);
     }
     Timer timerRefreshTable;
@@ -203,6 +207,7 @@ public class SaleActivity extends BaseActivity {
                                 mSubMenu.setVisibility(View.GONE);
                             }
                             mRecyclerTables.scrollToPosition(mSelectedTable);
+                            setTitle(getString(R.string.title_select_table) + " " + mTableSelection.getName());
                         }
                     } else {
                         if(res.message != null) {
@@ -319,6 +324,7 @@ public class SaleActivity extends BaseActivity {
                         setTotal(mTableSelection.getTotal());
                         mSubMenu.setVisibility(View.GONE);
                         mSelectedTable = msg.arg1;
+                        setTitle(getString(R.string.title_select_table) + " " + mTableSelection.getName());
                     }
                     isMoveTable = false;
                     mAdapterTable.setIsMoveTable(isMoveTable);
@@ -331,6 +337,7 @@ public class SaleActivity extends BaseActivity {
                         setTotal(mTableSelection.getTotal());
                         mSubMenu.setVisibility(View.VISIBLE);
                         mSelectedTable = msg.arg1;
+                        setTitle(getString(R.string.title_select_table) + " " + mTableSelection.getName());
                     }
                     isMoveTable = false;
                     mAdapterTable.setIsMoveTable(isMoveTable);
@@ -346,6 +353,7 @@ public class SaleActivity extends BaseActivity {
                         iProduct.putExtra(Constants.EXTRA_TABLE, mTableSelection);
                         mContext.startActivity(iProduct);
                     }
+                    setTitle(getString(R.string.title_select_table) + " " + mTableSelection.getName());
                     break;
             }
         }

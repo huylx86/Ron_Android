@@ -55,7 +55,7 @@ public class AreaRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         AreaInfo areaInfo = mLstAreas.get(position);
         areaHolder.mAreaName.setText(areaInfo.getName());
         if(areaInfo.ismIsSelection()) {
-            areaHolder.mAreaName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.button_select));
+            areaHolder.mAreaName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.button_selected));
         } else {
             areaHolder.mAreaName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lavender));
         }
