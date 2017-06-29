@@ -42,7 +42,7 @@ public class CommonUtils {
     {
         Locale vn = new Locale("vn", "VN");
         NumberFormat vnFormat = NumberFormat.getCurrencyInstance(vn);
-        return vnFormat.format(tongTien).substring(1);
+        return vnFormat.format(tongTien);//.substring(1);
     }
 
     public static String md5(final String s) {

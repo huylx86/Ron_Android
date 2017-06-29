@@ -42,6 +42,7 @@
 
     <!-- Add Order -->
     <string name="input_order">Nhập số lượng muốn order</string>
+    <string name="noted">Ghi chú</string>
 
     <!-- Order -->
     <string name="before_change_order">SL hiện tại  :</string>

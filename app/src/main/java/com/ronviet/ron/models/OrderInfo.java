@@ -19,6 +19,7 @@ public class OrderInfo extends ProductInfo {
     @SerializedName("so_luong")
     private float soLuong;
 
+    private String ghiChu;
     private float total;
     private String promotion;
 //    private boolean isReturnProd;
@@ -70,5 +71,13 @@ public class OrderInfo extends ProductInfo {
 
     public void setSoLuong(float soLuong) {
         this.soLuong = soLuong;
+    }
+
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
     }
 }

@@ -133,7 +133,7 @@ public class ProductDetailActivity extends BaseActivity {
                 setTotal(tongTien);
                 mSaleApiHelper.submitOrderTungMon(-1000, orderCode, -1000, mTableSelection.getIdPhieu(),mCurrentOrder.getId(),
                         mCurrentOrder.getMaMon(), mCurrentOrder.getTenMon(), mCurrentOrder.getSoLuong(), mCurrentOrder.getDonViTinhId(),
-                        mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), "",
+                        mCurrentOrder.getGiaGoc(), mCurrentOrder.getDonGia(), mCurrentOrder.isGiaCoThue(), mCurrentOrder.getThue(), mTableSelection.getId(), mCurrentOrder.getGhiChu(),
                         "INSERT", mHandlerSubmitOrderTungMon, true);
             } else {
                 mSaleApiHelper.getOrderCode(mHandlerGetOrderCode, true);

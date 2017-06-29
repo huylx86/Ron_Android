@@ -96,10 +96,11 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void showInputSoLuongDialog(Context context, final ProductInfo prod, final Handler hanlderCallback)
     {
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
-        dialog.setContentView(R.layout.dialog_input_number_layout);
+        dialog.setContentView(R.layout.dialog_input_number_and_note_layout);
         dialog.setTitle(prod.getTenMon());
 
         final EditText userInput = (EditText) dialog.findViewById(R.id.edt_input_number);
+        final EditText userNoted = (EditText) dialog.findViewById(R.id.edt_note);
 
         TextView tvOk = (TextView)dialog.findViewById(R.id.tv_ok);
         TextView tvCancel = (TextView)dialog.findViewById(R.id.tv_cancel);
@@ -111,11 +112,13 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             @Override
             public void onClick(View view) {
                 String soLuong = userInput.getText().toString();
+                String ghiChu = userNoted.getText().toString();
                 float fSoLuong = Float.parseFloat(soLuong);
                 OrderInfo order = new OrderInfo();
                 order.setId(prod.getId());
                 order.setTenMon(prod.getTenMon());
                 order.setSoLuong(fSoLuong);
+                order.setGhiChu(ghiChu);
                 order.setMaMon(prod.getMaMon());
                 order.setDonGia(prod.getDonGia());
                 order.setDonViTinhId(prod.getDonViTinhId());
