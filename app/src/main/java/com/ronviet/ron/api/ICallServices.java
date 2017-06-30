@@ -62,7 +62,7 @@ public interface ICallServices {
                                         @Field("gia_co_thue") boolean isGiaCoThue, @Field("thue") float thue, @Field("ma_may") long maMay, @Field("trung_tam_id") long trungTamId,
                                         @Field("loai_hinh_kinh_doanh_id") long loaiHinhKinhDoanhId, @Field("ngay_ban_hang") String ngayBanHang, @Field("id_ban") long idBan, @Field("yeu_cau_them") String yeuCauThem,
                                             @Field("is_mix") boolean isMix, @Field("id_mat_hang_cha") long idMatHangCha, @Field("nv_id") long nvId,
-                                            @Field("user_fullname") long userFullName, @Field("ban_hang_khac_ngay") boolean banHangKhacNgay, @Field("loai_tien_te_id") long loaiTienTeId);
+                                            @Field("user_fullname") String userFullName, @Field("ban_hang_khac_ngay") boolean banHangKhacNgay, @Field("loai_tien_te_id") long loaiTienTeId);
 
     @GET("/api/SoDoBan/XemOrderTruocSubmit")
     Call<ResponseReviewOrderData> getReviewOrder(@Query("order_code") String orderCode);

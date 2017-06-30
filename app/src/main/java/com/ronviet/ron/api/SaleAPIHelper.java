@@ -368,10 +368,11 @@ public class SaleAPIHelper extends APIHelper {
             long ttId = Long.parseLong(SharedPreferenceUtils.getIdTrungTam(mContext));
             long idMay = Long.parseLong(SharedPreferenceUtils.getIdMay(mContext));
             long nvId = SharedPreferenceUtils.getNhanVienId(mContext);
+            String tennv = SharedPreferenceUtils.getTenNhanVien(mContext);
 
             Call<ResponseCommon> response = service.submitOrderTungMon(orderId, orderCode, orderIdChiTietPhieu, idPhieu, status, idMon, maMon, tenMon, soLuong,
                                                             donViTinhId, giaGoc, donGia, giaCoThue, thue, idMay, ttId, 1, CommonUtils.convertDateFormat(new Date()),
-                                                            idBan, yeuCauThem, false, -1, nvId, 3, false, 1);
+                                                            idBan, yeuCauThem, false, -1, nvId, tennv, false, 1);
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override
