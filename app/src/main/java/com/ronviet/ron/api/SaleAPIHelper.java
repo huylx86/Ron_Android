@@ -806,7 +806,7 @@ public class SaleAPIHelper extends APIHelper {
             String tenNV = SharedPreferenceUtils.getTenNhanVien(mContext);
             long nvId = SharedPreferenceUtils.getNhanVienId(mContext);
 
-            Call<ResponseCommon> response = service.chuyenBan(idPhieu, idBanCu, idBanMoi, tenNV, nvId, "Nguyen Van A", ttId, ngonNgu);
+            Call<ResponseCommon> response = service.chuyenBan(idPhieu, idBanCu, idBanMoi, tenNV, nvId, "", ttId, ngonNgu);
 
             response.enqueue(new Callback<ResponseCommon>() {
                 @Override
